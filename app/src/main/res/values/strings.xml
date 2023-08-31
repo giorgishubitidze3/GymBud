@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Fitness app</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navHome">HOME</string>
+    <string name="navProfile">PROFILE</string>
+    <string name="navWorkouts">WORKOUTS</string>
+    <string name="navSession">SESSION</string>
+</resources>
