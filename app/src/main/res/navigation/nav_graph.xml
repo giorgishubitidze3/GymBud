@@ -40,5 +40,13 @@
         <action
             android:id="@+id/action_workoutsFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_workoutsFragment_to_workoutDetails"
+            app:destination="@id/workoutDetails" />
     </fragment>
+    <fragment
+        android:id="@+id/workoutDetails"
+        android:name="com.example.fitnessapp.WorkoutDetails"
+        android:label="fragment_workout_details"
+        tools:layout="@layout/fragment_workout_details" />
 </navigation>
