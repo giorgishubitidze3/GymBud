@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ImageView.Corner" parent="">
+        <item name="cornerSize">12%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="search_rounded" parent="">
+        <item name="color">?attr/colorSecondary</item>
+        <item name="cornerSize">12%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+</resources>

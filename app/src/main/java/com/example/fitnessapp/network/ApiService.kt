@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 interface ApiService {
 
-    @GET("/exercises")
+    @GET("/exercises/bodyPart/back?limit=200")
     suspend fun getExercise(): List<GymExercise>
 }

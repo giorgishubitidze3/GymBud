@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -47,17 +48,32 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'  // Update version
-    implementation 'com.google.android.material:material:1.5.0'  // Update version
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'  // Update version
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.5'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.3.1'  // Update version
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.3.1'  // Update version
-    implementation 'androidx.databinding:viewbinding:7.0.2'
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'// Update version
+    implementation ('androidx.core:core-ktx:1.12.0')
+    implementation 'androidx.appcompat:appcompat:1.6.1'  // Update version
+    implementation 'com.google.android.material:material:1.11.0'  // Update version
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'  // Update version
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.6'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.6'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'  // Update version
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.6.2'  // Update version
+    implementation 'androidx.databinding:viewbinding:8.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'// Update version
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0' // glide for loading gifs
 
 
+
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    kapt "androidx.room:room-compiler:2.6.1"
+
+    implementation 'androidx.room:room-ktx:2.6.1'
+
+    implementation ('com.sothree.slidinguppanel:library:3.4.0'){
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support'
+    } // sliding panel
+    kapt "androidx.room:room-compiler:2.6.1"
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.fitnessapp.HomeFragment"
+        android:name="com.example.fitnessapp.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.fitnessapp.ProfileFragment"
+        android:name="com.example.fitnessapp.fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -25,16 +25,22 @@
     </fragment>
     <fragment
         android:id="@+id/sessionFragment"
-        android:name="com.example.fitnessapp.SessionFragment"
+        android:name="com.example.fitnessapp.fragment.SessionFragment"
         android:label="fragment_session"
         tools:layout="@layout/fragment_session" >
         <action
             android:id="@+id/action_sessionFragment_to_workoutsFragment"
-            app:destination="@id/workoutsFragment" />
+            app:destination="@id/workoutsFragment"
+            app:enterAnim="@transition/slide_down_anim"/>
+        <action
+            android:id="@+id/action_sessionFragment_to_currentSession"
+            app:destination="@id/currentSession"
+            app:enterAnim="@transition/slide_up_anim"
+            app:exitAnim="@transition/slide_down_anim"/>
     </fragment>
     <fragment
         android:id="@+id/workoutsFragment"
-        android:name="com.example.fitnessapp.WorkoutsFragment"
+        android:name="com.example.fitnessapp.fragment.WorkoutsFragment"
         android:label="fragment_workouts"
         tools:layout="@layout/fragment_workouts" >
         <action
@@ -49,4 +55,22 @@
         android:name="com.example.fitnessapp.WorkoutDetails"
         android:label="fragment_workout_details"
         tools:layout="@layout/fragment_workout_details" />
+    <fragment
+        android:id="@+id/currentSession"
+        android:name="com.example.fitnessapp.fragment.CurrentSession"
+        android:label="CurrentSession" >
+        <action
+            android:id="@+id/action_currentSession_to_sessionFragment"
+            app:destination="@id/sessionFragment"
+            app:enterAnim="@transition/slide_down_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/workoutPicker"
+        android:name="com.example.fitnessapp.fragment.WorkoutPicker"
+        android:label="fragment_workout_picker"
+        tools:layout="@layout/fragment_workout_picker" >
+        <action
+            android:id="@+id/action_workoutPicker_to_workoutDetails"
+            app:destination="@id/workoutDetails" />
+    </fragment>
 </navigation>

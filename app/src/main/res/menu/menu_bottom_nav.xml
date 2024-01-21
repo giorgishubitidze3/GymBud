@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <item
-    android:id="@+id/itHome"
+    android:id="@+id/homeFragment"
     android:title="@string/navHome"
 
     android:icon="@drawable/home_icon" />
     <item
-        android:id="@+id/itSession"
+        android:id="@+id/sessionFragment"
         android:title="@string/navSession"
 
         android:icon="@drawable/google_analytics"/>
 
     <item
-        android:id="@+id/itWorkouts"
+        android:id="@+id/workoutsFragment"
         android:title="@string/navWorkouts"
 
         android:icon="@drawable/bookmark_icon"/>
 
 
     <item
-        android:id="@+id/itProfile"
+        android:id="@+id/profileFragment"
         android:title="@string/navProfile"
 
         android:icon="@drawable/profile_icon" />

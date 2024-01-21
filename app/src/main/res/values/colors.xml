@@ -13,4 +13,5 @@
     <color name="listGray">#F5F5F5</color>
     <color name="letterBlack">#212121</color>
     <color name="menuBlue">#0099FF</color>
+    <color name="errorRed">#ED4337</color>
 </resources>

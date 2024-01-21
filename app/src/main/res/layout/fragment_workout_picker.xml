@@ -4,47 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.WorkoutsFragment"
-    android:background="@color/cardview_shadow_end_color">
-
+    tools:context=".fragment.WorkoutPicker">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="15dp"
+        android:paddingVertical="6dp"
         android:paddingLeft="10dp"
+        android:paddingRight="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
-            android:text="WORKOUTS"
-            android:textSize="30dp"
-            android:textColor="?attr/colorPrimary"
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/back_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/search_button"
-            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintEnd_toStartOf="@id/input"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp"/>
+            app:tint="?attr/colorPrimary"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/search_button"
+            app:layout_constraintStart_toEndOf="@+id/back_button"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_rounded"
+                android:hint="Your Hint" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageButton
             android:id="@+id/search_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginLeft="6dp"
             android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
             android:src="@drawable/search_icon"
             app:fabCustomSize="40dp"
-            app:tint="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_button"
+            app:layout_constraintStart_toEndOf="@id/input"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp"/>
+            app:tint="?attr/colorPrimary"/>
 
         <ImageButton
             android:id="@+id/filter_button"
@@ -56,21 +75,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp"
-            app:tint="?attr/colorPrimary"
-            />
-
-
+            app:tint="?attr/colorPrimary"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/add_workout_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

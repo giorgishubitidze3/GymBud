@@ -7,23 +7,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    private val client: OkHttpClient = OkHttpClient.Builder().apply {
-        addInterceptor { chain ->
-            val original: Request = chain.request()
-            val requestBuilder: Request.Builder = original.newBuilder()
-                .addHeader("rapidapi-key", "fa5bf1c985mshcf82b95f2f66e15p18bbd6jsn8a9d85c4e2ab")
-                .addHeader("X-RapidAPI-Host", "exercisedb.p.rapidapi.com")
+    private const val BASE_URL = "https://exercisedb.p.rapidapi.com"
 
-            val request: Request = requestBuilder.build()
-            chain.proceed(request)
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor{chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("X-RapidAPI-Key","b5b7058d99msh0e249f9f1a4c87bp1ba7d8jsn72df5fafc8d6")
+                .addHeader("X-RapidAPI-Host", "exercisedb.p.rapidapi.com")
+                chain.proceed(request.build())
         }
-    }.build()
+        .build()
+
+
 
     val api: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://exercisedb.p.rapidapi.com")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .client(okHttpClient)
             .build()
             .create(ApiService::class.java)
     }

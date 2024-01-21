@@ -7,4 +7,6 @@
     <string name="navProfile">PROFILE</string>
     <string name="navWorkouts">WORKOUTS</string>
     <string name="navSession">SESSION</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>
