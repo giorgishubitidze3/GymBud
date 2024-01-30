@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.fitnessapp.R
+import com.example.fitnessapp.adapter.CurrentSessionAdapter
 import com.example.fitnessapp.data.WorkoutViewModel
 
 class SessionFragment : Fragment() {

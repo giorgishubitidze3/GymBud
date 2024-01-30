@@ -79,6 +79,7 @@ class CurrentSession : Fragment() {
                 navController?.navigate(R.id.sessionFragment)
                 viewModel.stopTimer()
                 viewModel.endWorkout()
+                exercisesAdapter.clearData()
                 Log.d("ALERTBOX","yes clicked")
 
         }

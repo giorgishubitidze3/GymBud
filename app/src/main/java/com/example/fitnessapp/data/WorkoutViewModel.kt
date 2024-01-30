@@ -31,6 +31,8 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
 
     private var elapsedTimeInSeconds = -1L
 
+
+
     fun updateCurrentWorkout(exercise: GymExercise){
         val currentExercises = _currentWorkouts.value ?: emptyList()
         val updatedExercises = currentExercises.toMutableList().also {
@@ -38,8 +40,16 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
         }
 
         Log.d("ViewModel", "Added exercise ${exercise.name}, new size: ${updatedExercises.size}")
-
+        for (n in 0 until updatedExercises.size){
+            if(updatedExercises[n].setCount == 0){
+                updatedExercises[n].setCount = 1
+            }
+        }
         _currentWorkouts.postValue(updatedExercises)
+    }
+
+    fun addSetCount(exercise: GymExercise){
+        exercise.setCount++
     }
 
     fun startWorkout(){

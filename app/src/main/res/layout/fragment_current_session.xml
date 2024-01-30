@@ -15,81 +15,71 @@
         android:layout_height="wrap_content"
         android:text="00:00"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp"
-        android:layout_marginLeft="8dp"/>
+        tools:layout_conversion_absoluteWidth="0dp" />
 
     <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/inter_bold"
-            android:paddingVertical="0dp"
-            android:text="CANCEL WORKOUT"
-            android:textColor="@color/errorRed"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdd"
-            tools:layout_conversion_absoluteHeight="0dp"
-            tools:layout_conversion_absoluteWidth="0dp" />
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/inter_bold"
+        android:paddingVertical="0dp"
+        android:text="CANCEL WORKOUT"
+        android:textColor="@color/errorRed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewCurrentSession"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingHorizontal="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/currentTimer"
-            tools:itemCount="3"
-            tools:listitem="@layout/current_session_rv_item"
-            />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCurrentSession"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/currentTimer"
+        tools:itemCount="1"
+        tools:listitem="@layout/current_session_rv_item" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/inter"
         android:text="Evening Workout"
-        android:textSize="18sp"
         android:textColor="?attr/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"/>
+        tools:layout_conversion_absoluteWidth="0dp" />
 
     <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/inter_bold"
-            android:paddingVertical="0dp"
-            android:text="ADD EXERCISE"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewCurrentSession"
-            tools:layout_conversion_absoluteHeight="0dp"
-            tools:layout_conversion_absoluteWidth="0dp" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="1"
         android:background="@android:color/transparent"
-        android:src="@drawable/baseline_more_vert_24"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        android:fontFamily="@font/inter_bold"
+        android:paddingVertical="0dp"
+        android:text="ADD EXERCISE"
+        app:layout_constraintBottom_toTopOf="@+id/btnCancel"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
         tools:layout_conversion_absoluteHeight="0dp"
-        tools:layout_conversion_absoluteWidth="0dp"
-        android:layout_marginTop="5dp"
-        app:tint="?attr/colorPrimary" />
+        tools:layout_conversion_absoluteWidth="0dp" />
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"

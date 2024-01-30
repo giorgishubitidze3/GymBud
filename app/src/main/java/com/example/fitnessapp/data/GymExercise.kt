@@ -21,9 +21,11 @@ data class GymExercise(
     @SerializedName("secondaryMuscles")
     val secondaryMuscles: List<String>,
     @SerializedName("target")
-    val target: String
+    val target: String,
+    @SerializedName("setCount")
+    var setCount: Int = 1
+
 ): Parcelable {
-    // Constructor for parcelable
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
@@ -32,10 +34,12 @@ data class GymExercise(
         parcel.createStringArrayList() ?: listOf(),
         parcel.readString() ?: "",
         parcel.createStringArrayList() ?: listOf(),
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
     )
 
-    // Write to parcel
+
+
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(bodyPart)
         parcel.writeString(equipment)
@@ -47,12 +51,10 @@ data class GymExercise(
         parcel.writeString(target)
     }
 
-    // Describe the kinds of special objects contained in this Parcelable's marshalled representation
     override fun describeContents(): Int {
         return 0
     }
 
-    // Companion object to create instances of your Parcelable class from a Parcel
     companion object CREATOR : Parcelable.Creator<GymExercise> {
         override fun createFromParcel(parcel: Parcel): GymExercise {
             return GymExercise(parcel)
@@ -66,7 +68,7 @@ data class GymExercise(
 
     fun toWorkout(): Workout {
         return Workout(
-            id = 0, // Since it's auto-generated in the database
+            id = 0,
             name = this.name,
             bodyPart = this.bodyPart,
             gifUrl = this.gifUrl

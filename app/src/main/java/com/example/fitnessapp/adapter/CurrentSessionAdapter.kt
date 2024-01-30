@@ -17,7 +17,7 @@ import com.example.fitnessapp.data.WorkoutViewModel
 class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<CurrentSessionAdapter.CurrentViewHolder>() {
 
     private var exercises: List<GymExercise> = emptyList()
-
+    val viewModel = viewModel
 
     init {
 //        viewModel.currentWorkouts.observe(lifecycleOwner) { newExercises ->
@@ -60,31 +60,32 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         holder.tvTitle?.text = currentWorkout.name ?: "Default Name"
         holder.prev?.text = currentWorkout.bodyPart ?: "Default Body Part"
 
+        for(n in 1 until currentWorkout.setCount){
+            val setCounterLayout = holder.itemView.findViewById<LinearLayout>(R.id.verticalLinear)
+            addSetCounterLayout(setCounterLayout)
+        }
 
         holder.addBtn.setOnClickListener {
             // Add the logic to handle the button click and dynamically add setCounterLayout
-            val setCounterLayout = holder.itemView.findViewById<LinearLayout>(R.id.setCounterLayout)
+            val setCounterLayout = holder.itemView.findViewById<LinearLayout>(R.id.verticalLinear)
             addSetCounterLayout(setCounterLayout)
+            viewModel.addSetCount(currentWorkout)
         }
     }
 
+
+
     private fun addSetCounterLayout(linearLayout: LinearLayout) {
-        val textView = TextView(linearLayout.context)
-        val editTextKG = EditText(linearLayout.context)
-        val editTextREP = EditText(linearLayout.context)
-        val checkBox = CheckBox(linearLayout.context)
-
-        // Set properties for the views
-        textView.text = "60KG/8REPS"
-        editTextKG.hint = "KG"
-        editTextREP.hint = "REP"
-
-        // Add new views to the linearLayout
-        linearLayout.addView(textView)
-        linearLayout.addView(editTextKG)
-        linearLayout.addView(editTextREP)
-        linearLayout.addView(checkBox)
+        val inflater = LayoutInflater.from(linearLayout.context)
+        val setCounterLayout = inflater.inflate(R.layout.inner_rv_item, linearLayout, false)
+        linearLayout.addView(setCounterLayout)
     }
+
+    fun clearData(){
+        exercises= emptyList()
+        notifyDataSetChanged()
+    }
+
 
     fun setData(newExercises: List<GymExercise>) {
         exercises = newExercises
@@ -93,6 +94,8 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         Log.d("setData", "size of data: ${exercises}")
         Log.d("observer3", "data: ${exercises}")
     }
+
+
 }
 
 

@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
-
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/appCompatCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp">
 
     <TextView
-        android:id="@+id/tvLast"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editText"
-        app:layout_constraintStart_toEndOf="@+id/appCompatCheckBox"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="20dp"/>
+        android:id="@+id/previousSetTV"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:text="60KG/8REPS"
+        android:layout_gravity="center"
+        android:textSize="12sp"
+        android:gravity="center_vertical"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/editText"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvLast"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etKG"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:hint="KG"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/search_rounded"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
+    <androidx.appcompat.widget.AppCompatEditText
+        android:textSize="18sp"
+        android:id="@+id/etREP"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:hint="REP"
+        android:gravity="center"
+        android:background="@drawable/search_rounded"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="50dp"/>
+    <CheckBox
+        android:id="@+id/setCheckBox"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
