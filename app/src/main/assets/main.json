@@ -1,0 +1,657 @@
+[
+  {
+    "bodyPart": "waist",
+    "equipment": "wheel roller",
+    "gifUrl": "ab_wheel",
+    "id": "0857",
+    "name": "Ab Wheel",
+    "target": "abs",
+    "secondaryMuscles": [
+      "lower back"
+    ],
+    "instructions": [
+      "Kneel on the floor and place the wheel roller in front of you.",
+      "Place your hands on the handles of the wheel roller and extend your arms straight out in front of you.",
+      "Engage your core muscles and slowly roll the wheel forward, keeping your back straight and your abs tight.",
+      "Continue rolling forward until your body is fully extended and your arms are overhead.",
+      "Pause for a moment, then slowly roll the wheel back towards your knees, maintaining control and keeping your abs engaged.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "shoulders",
+    "equipment": "dumbbell",
+    "gifUrl": "arnold_press_dumbbell",
+    "id": "0287",
+    "name": "Arnold Press Dumbbell",
+    "target": "delts",
+    "secondaryMuscles": [
+      "triceps",
+      "upper chest"
+    ],
+    "instructions": [
+      "Sit on a bench with back support and hold a dumbbell in each hand at shoulder level, palms facing your body and elbows bent.",
+      "Press the dumbbells upward until your arms are fully extended and your palms are facing forward.",
+      "Rotate your wrists as you lift, so that your palms end up facing forward at the top of the movement.",
+      "Pause for a moment at the top, then slowly lower the dumbbells back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "body weight",
+    "gifUrl": "back_extension",
+    "id": "0489",
+    "name": "Back Extension",
+    "target": "spine",
+    "secondaryMuscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "instructions": [
+      "Adjust the hyperextension bench so that your upper thighs are resting on the pad and your feet are secured.",
+      "Cross your arms over your chest or place your hands behind your head.",
+      "Lower your upper body towards the ground while keeping your back straight.",
+      "Pause for a moment at the bottom, then raise your upper body back up until it is in line with your legs.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "leverage machine",
+    "gifUrl": "back_extension_machine",
+    "id": "0573",
+    "name": "Back Extension Machine",
+    "target": "spine",
+    "secondaryMuscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "instructions": [
+      "Adjust the machine to fit your body size and range of motion.",
+      "Sit on the machine with your back against the pad and your feet secured.",
+      "Place your hands on the handles or grip bars.",
+      "Engage your core and slowly lean forward, allowing your back to round slightly.",
+      "Pause for a moment at the bottom position, feeling a stretch in your lower back.",
+      "Using your back muscles, slowly raise your torso back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "medicine ball",
+    "gifUrl": "ball_slams",
+    "id": "1354",
+    "name": "Ball Slams",
+    "target": "upper back",
+    "secondaryMuscles": [
+      "shoulders",
+      "core"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart, holding a medicine ball with both hands above your head.",
+      "Engage your core and keep your back straight.",
+      "Bend your knees slightly and forcefully slam the medicine ball down to the ground in front of you.",
+      "As you slam the ball down, use your entire body to generate power, including your shoulders and core.",
+      "Catch the ball on the bounce and repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "shoulders",
+    "equipment": "rope",
+    "gifUrl": "battle_ropes",
+    "id": "0128",
+    "name": "Battle Ropes",
+    "target": "delts",
+    "secondaryMuscles": [
+      "forearms",
+      "core"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and knees slightly bent.",
+      "Hold one end of the rope in each hand, with your palms facing each other.",
+      "Raise your arms to shoulder height, keeping your elbows slightly bent.",
+      "Begin making alternating waves with the ropes by rapidly raising and lowering each arm.",
+      "Continue for the desired duration or number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "body weight",
+    "gifUrl": "bench_dip",
+    "id": "1399",
+    "name": "Bench Dip",
+    "target": "triceps",
+    "secondaryMuscles": [
+      "chest",
+      "shoulders"
+    ],
+    "instructions": [
+      "Sit on the edge of a bench or chair with your hands gripping the edge, fingers pointing forward.",
+      "Slide your butt off the bench, supporting your weight with your hands.",
+      "Lower your body by bending your elbows until your upper arms are parallel to the floor.",
+      "Push yourself back up to the starting position by straightening your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "barbell",
+    "gifUrl": "bench_press_barbell",
+    "id": "0025",
+    "name": "Bench Press Barbell",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "triceps",
+      "shoulders"
+    ],
+    "instructions": [
+      "Lie flat on a bench with your feet flat on the ground and your back pressed against the bench.",
+      "Grasp the barbell with an overhand grip slightly wider than shoulder-width apart.",
+      "Lift the barbell off the rack and hold it directly above your chest with your arms fully extended.",
+      "Lower the barbell slowly towards your chest, keeping your elbows tucked in.",
+      "Pause for a moment when the barbell touches your chest.",
+      "Push the barbell back up to the starting position by extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "cable",
+    "gifUrl": "bench_press_cable",
+    "id": "0151",
+    "name": "Bench Press Cable",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "triceps",
+      "shoulders"
+    ],
+    "instructions": [
+      "Adjust the cable machine to chest height and attach the handles.",
+      "Stand facing away from the machine with your feet shoulder-width apart.",
+      "Grasp the handles with an overhand grip and step forward to create tension in the cables.",
+      "Position your feet firmly on the ground and engage your core.",
+      "Bend your elbows and bring your hands to shoulder level, keeping your elbows at a 90-degree angle.",
+      "Push the handles forward, extending your arms fully in front of you.",
+      "Pause for a moment, then slowly reverse the movement, bringing your hands back to shoulder level.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "dumbbell",
+    "gifUrl": "bench_press_dumbbell",
+    "id": "0289",
+    "name": "Bench Press Dumbbell",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "triceps",
+      "shoulders"
+    ],
+    "instructions": [
+      "Lie flat on a bench with your feet flat on the ground and your back pressed against the bench.",
+      "Hold a dumbbell in each hand, with your palms facing forward and your arms extended above your chest.",
+      "Lower the dumbbells slowly to the sides of your chest, keeping your elbows at a 90-degree angle.",
+      "Pause for a moment, then push the dumbbells back up to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "smith machine",
+    "gifUrl": "bench_press_smith_machine",
+    "id": "0748",
+    "name": "Bench Press Smith Machine",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "triceps",
+      "shoulders"
+    ],
+    "instructions": [
+      "Adjust the height of the smith machine bar to chest level.",
+      "Lie flat on the bench with your feet firmly planted on the ground.",
+      "Grip the bar with an overhand grip slightly wider than shoulder-width apart.",
+      "Unrack the bar and lower it towards your chest, keeping your elbows tucked in.",
+      "Pause for a moment when the bar touches your chest.",
+      "Push the bar back up to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "bench_press_close_grip_barbell",
+    "id": "0030",
+    "name": "Bench Press Close Grip Barbell",
+    "target": "triceps",
+    "secondaryMuscles": [
+      "chest",
+      "shoulders"
+    ],
+    "instructions": [
+      "Lie flat on a bench with your feet flat on the ground and your back pressed against the bench.",
+      "Grasp the barbell with a close grip, slightly narrower than shoulder-width apart.",
+      "Unrack the barbell and lower it slowly towards your chest, keeping your elbows close to your body.",
+      "Pause for a moment when the barbell touches your chest.",
+      "Push the barbell back up to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "barbell",
+    "gifUrl": "bench_press_wide_grip_barbell",
+    "id": "0122",
+    "name": "Bench Press Wide Grip Barbell",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "instructions": [
+      "Lie flat on a bench with your feet flat on the ground and your back pressed against the bench.",
+      "Grasp the barbell with a wide grip, slightly wider than shoulder-width apart.",
+      "Lift the barbell off the rack and hold it directly above your chest with your arms fully extended.",
+      "Lower the barbell slowly towards your chest, keeping your elbows slightly flared out.",
+      "Pause for a moment when the barbell touches your chest, then push it back up to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "dumbbell",
+    "gifUrl": "bent_over_one_arm_row_dumbbell",
+    "id": "0292",
+    "name": "Bent Over One Arm Row Dumbbell",
+    "target": "upper back",
+    "secondaryMuscles": [
+      "biceps",
+      "forearms"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart, holding a dumbbell in one hand with your palm facing your body.",
+      "Bend your knees slightly and hinge forward at the hips, keeping your back straight and your core engaged.",
+      "Let the dumbbell hang straight down towards the floor, with your arm fully extended.",
+      "Pull the dumbbell up towards your chest, keeping your elbow close to your body and squeezing your shoulder blades together.",
+      "Pause for a moment at the top, then slowly lower the dumbbell back down to the starting position.",
+      "Repeat for the desired number of repetitions, then switch sides."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "barbell",
+    "gifUrl": "bent_over_row_barbell",
+    "id": "0027",
+    "name": "Bent Over Row Barbell",
+    "target": "upper back",
+    "secondaryMuscles": [
+      "biceps",
+      "forearms"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and knees slightly bent.",
+      "Bend forward at the hips while keeping your back straight and chest up.",
+      "Grasp the barbell with an overhand grip, hands slightly wider than shoulder-width apart.",
+      "Pull the barbell towards your lower chest by retracting your shoulder blades and squeezing your back muscles.",
+      "Pause for a moment at the top, then slowly lower the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "dumbbell",
+    "gifUrl": "bent_over_row_dumbbell",
+    "id": "0293",
+    "name": "Bent Over Row Dumbbell",
+    "target": "upper back",
+    "secondaryMuscles": [
+      "biceps",
+      "forearms"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart, knees slightly bent, and hold a dumbbell in each hand with your palms facing your body.",
+      "Bend forward at the hips, keeping your back straight and your core engaged.",
+      "Let your arms hang straight down towards the floor, with your elbows slightly bent.",
+      "Pull the dumbbells up towards your chest, squeezing your shoulder blades together.",
+      "Pause for a moment at the top, then slowly lower the dumbbells back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "back",
+    "equipment": "barbell",
+    "gifUrl": "bent_over_row_underhand_barbell",
+    "id": "0118",
+    "name": "Bent Over Row Underhand Barbell",
+    "target": "upper back",
+    "secondaryMuscles": [
+      "biceps",
+      "forearms"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart and knees slightly bent.",
+      "Hold a barbell with an overhand grip, palms facing down, and hands slightly wider than shoulder-width apart.",
+      "Bend forward at the hips, keeping your back straight and chest up, until your torso is almost parallel to the floor.",
+      "Pull the barbell towards your lower chest, squeezing your shoulder blades together.",
+      "Pause for a moment at the top, then slowly lower the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "barbell",
+    "gifUrl": "bicep_curl_barbell",
+    "id": "0031",
+    "name": "Bicep Curl Barbell",
+    "target": "biceps",
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "instructions": [
+      "Stand up straight with your feet shoulder-width apart and hold a barbell with an underhand grip, palms facing forward.",
+      "Keep your elbows close to your torso and exhale as you curl the weights while contracting your biceps.",
+      "Continue to raise the bar until your biceps are fully contracted and the bar is at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale as you slowly begin to lower the bar back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "cable",
+    "gifUrl": "bicep_curl_cable",
+    "id": "0868",
+    "name": "Bicep Curl Cable",
+    "target": "biceps",
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "instructions": [
+      "Stand facing the cable machine with your feet shoulder-width apart.",
+      "Grasp the cable attachment with an underhand grip, palms facing up.",
+      "Keep your elbows close to your sides and your upper arms stationary.",
+      "Exhale and curl the cable attachment towards your shoulders, contracting your biceps.",
+      "Pause for a moment at the top of the movement, squeezing your biceps.",
+      "Inhale and slowly lower the cable attachment back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "dumbbell",
+    "gifUrl": "bicep_curl_dumbbell",
+    "id": "0294",
+    "name": "Bicep Curl Dumbbell",
+    "target": "biceps",
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "instructions": [
+      "Stand up straight with a dumbbell in each hand, palms facing forward and arms fully extended.",
+      "Keeping your upper arms stationary, exhale and curl the weights while contracting your biceps.",
+      "Continue to raise the weights until your biceps are fully contracted and the dumbbells are at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale and slowly begin to lower the dumbbells back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "leverage machine",
+    "gifUrl": "bicep_curl_machine",
+    "id": "0575",
+    "name": "Bicep Curl Machine",
+    "target": "biceps",
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "instructions": [
+      "Adjust the seat height and position yourself on the machine with your back against the pad.",
+      "Grasp the handles with an underhand grip, palms facing up, and keep your elbows close to your sides.",
+      "Exhale and curl the handles upward, contracting your biceps.",
+      "Pause for a moment at the top of the movement, squeezing your biceps.",
+      "Inhale and slowly lower the handles back to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "waist",
+    "equipment": "band",
+    "gifUrl": "bicycle_crunch_band",
+    "id": "0972",
+    "name": "Bicycle Crunch Band",
+    "target": "abs",
+    "secondaryMuscles": [
+      "hip flexors",
+      "obliques"
+    ],
+    "instructions": [
+      "Lie flat on your back with your hands behind your head and your knees bent.",
+      "Lift your feet off the ground and bring your right knee towards your chest while simultaneously twisting your torso to bring your left elbow towards your right knee.",
+      "Straighten your right leg while bringing your left knee towards your chest and twisting your torso to bring your right elbow towards your left knee.",
+      "Continue alternating the twisting motion, as if you are pedaling a bicycle, while keeping your core engaged throughout the movement.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "lower legs",
+    "equipment": "body weight",
+    "gifUrl": "box_jump_one_leg",
+    "id": "1374",
+    "name": "Box Jump One Leg",
+    "target": "calves",
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings",
+      "glutes"
+    ],
+    "instructions": [
+      "Stand in front of a box or platform with your feet shoulder-width apart.",
+      "Bend your knees and jump onto the box, landing softly with one foot on the box and the other foot hanging off the edge.",
+      "Stabilize yourself on the box with the foot that is on it, while keeping the other foot off the ground.",
+      "Hold this position for a few seconds, engaging your calf muscles to maintain balance.",
+      "Slowly step down with the foot that is on the box, returning to the starting position.",
+      "Repeat the exercise with the other leg."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "barbell",
+    "gifUrl": "bench_squat_barbell",
+    "id": "0026",
+    "name": "Bench Squat Barbell",
+    "target": "quads",
+    "secondaryMuscles": [
+      "glutes",
+      "hamstrings",
+      "calves"
+    ],
+    "instructions": [
+      "Set up a barbell on a squat rack at chest height.",
+      "Stand facing away from the rack, with your feet shoulder-width apart.",
+      "Bend your knees and lower your body down into a squat position, keeping your back straight and chest up.",
+      "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+      "Lift the barbell off the rack and step back, ensuring your feet are still shoulder-width apart.",
+      "Lower your body down into a squat, keeping your knees in line with your toes.",
+      "Pause for a moment at the bottom, then push through your heels to return to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "dumbbell",
+    "gifUrl": "bulgarian_split_squat",
+    "id": "0410",
+    "name": "Bulgarian Split Squat",
+    "target": "quads",
+    "secondaryMuscles": [
+      "glutes",
+      "hamstrings",
+      "calves"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart, holding a dumbbell in each hand.",
+      "Take a step forward with one foot and position your feet so that your front foot is flat on the ground and your back foot is elevated on a bench or step.",
+      "Lower your body by bending your front knee and hip, keeping your back knee slightly bent and your back heel off the ground.",
+      "Continue lowering until your front thigh is parallel to the ground, then push through your front heel to return to the starting position.",
+      "Repeat for the desired number of repetitions, then switch legs and repeat."
+    ]
+  },
+  {
+    "bodyPart": "cardio",
+    "equipment": "body weight",
+    "gifUrl": "burpee",
+    "id": "1160",
+    "name": "Burpee",
+    "target": "cardiovascular system",
+    "secondaryMuscles": [
+      "quadriceps",
+      "hamstrings",
+      "calves",
+      "shoulders",
+      "chest"
+    ],
+    "instructions": [
+      "Start in a standing position with your feet shoulder-width apart.",
+      "Lower your body into a squat position by bending your knees and placing your hands on the floor in front of you.",
+      "Kick your feet back into a push-up position.",
+      "Perform a push-up, keeping your body in a straight line.",
+      "Jump your feet back into the squat position.",
+      "Jump up explosively, reaching your arms overhead.",
+      "Land softly and immediately lower back into a squat position to begin the next repetition."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "cable",
+    "gifUrl": "cable_crossover",
+    "id": "1269",
+    "name": "Cable Crossover",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "deltoids",
+      "triceps"
+    ],
+    "instructions": [
+      "Stand in the middle of a cable machine with your feet shoulder-width apart.",
+      "Hold the handles of the cables with your palms facing down and your arms extended straight out to the sides.",
+      "Keeping your arms straight, bring your hands together in front of your body, crossing them over each other.",
+      "Pause for a moment, then slowly return to the starting position, keeping your arms extended.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "waist",
+    "equipment": "cable",
+    "gifUrl": "cable_crunch",
+    "id": "0874",
+    "name": "Cable Crunch",
+    "target": "abs",
+    "secondaryMuscles": [
+      "obliques"
+    ],
+    "instructions": [
+      "Attach a rope to a cable machine at chest height.",
+      "Stand facing away from the machine with your feet shoulder-width apart.",
+      "Hold the rope with both hands and bring it behind your head, keeping your elbows bent.",
+      "Engage your abs and slowly crunch your torso forward, bringing your elbows towards your knees.",
+      "Pause for a moment at the top of the crunch, then slowly return to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "upper arms",
+    "equipment": "cable",
+    "gifUrl": "cable_kickback",
+    "id": "0860",
+    "name": "Cable Kickback",
+    "target": "triceps",
+    "secondaryMuscles": [
+      "shoulders"
+    ],
+    "instructions": [
+      "Stand facing a cable machine with your feet shoulder-width apart.",
+      "Hold the cable handle with your right hand and step back to create tension in the cable.",
+      "Bend your knees slightly and hinge forward at the hips, keeping your back straight.",
+      "Keep your upper arm close to your body and your elbow bent at a 90-degree angle.",
+      "Extend your forearm backward, straightening your arm fully.",
+      "Pause for a moment, then slowly return to the starting position.",
+      "Repeat for the desired number of repetitions, then switch sides."
+    ]
+  },
+  {
+    "bodyPart": "upper legs",
+    "equipment": "cable",
+    "gifUrl": "cable_pull_through",
+    "id": "0196",
+    "name": "Cable Pull Through",
+    "target": "glutes",
+    "secondaryMuscles": [
+      "hamstrings",
+      "lower back"
+    ],
+    "instructions": [
+      "Stand facing away from the cable machine with your feet shoulder-width apart.",
+      "Grab the rope attachment with both hands and step forward, creating tension in the cable.",
+      "Bend at the hips and lower your upper body until it is parallel to the ground, keeping your back straight.",
+      "Engage your glutes and hamstrings to pull your body back up to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "waist",
+    "equipment": "cable",
+    "gifUrl": "cable_twist",
+    "id": "0243",
+    "name": "Cable Twist",
+    "target": "abs",
+    "secondaryMuscles": [
+      "obliques"
+    ],
+    "instructions": [
+      "Stand with your feet shoulder-width apart, facing the cable machine.",
+      "Hold the cable handle with both hands in front of your chest, keeping your arms slightly bent.",
+      "Engage your core and twist your torso to the right, pulling the cable across your body.",
+      "Pause for a moment at the end of the movement, feeling the contraction in your abs and obliques.",
+      "Slowly return to the starting position, resisting the cable's pull.",
+      "Repeat the movement to the left side.",
+      "Continue alternating sides for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "lower legs",
+    "equipment": "sled machine",
+    "gifUrl": "calf_press_on_leg_press",
+    "id": "0738",
+    "name": "Calf Press on Leg Press",
+    "target": "calves",
+    "secondaryMuscles": [
+      "hamstrings"
+    ],
+    "instructions": [
+      "Adjust the sled machine to a 45-degree angle.",
+      "Place your feet on the sled platform with your toes pointing forward.",
+      "Push the sled platform away from you by extending your ankles and calves.",
+      "Pause for a moment at the top, then slowly lower the sled platform back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ]
+  },
+  {
+    "bodyPart": "chest",
+    "equipment": "body weight",
+    "gifUrl": "chest_dip",
+    "id": "0251",
+    "name": "Chest Dip",
+    "target": "pectorals",
+    "secondaryMuscles": [
+      "triceps",
+      "shoulders"
+    ],
+    "instructions": [
+      "Position yourself on parallel bars with your arms fully extended and your body straight.",
+      "Lower your body by bending your elbows until your shoulders are below your elbows.",
+      "Push yourself back up to the starting position by straightening your arms.",
+      "Repeat for the desired number of repetitions."
+    ]
+  }
+]
