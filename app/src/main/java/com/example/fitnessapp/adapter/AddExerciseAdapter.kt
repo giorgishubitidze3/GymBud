@@ -1,5 +1,6 @@
 package com.example.fitnessapp.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
 
 class AddExerciseAdapter
-    (var exercises: List<GymExercise>, private val myApplication: MyApplication,
+    (val context: Context,  var exercises: List<GymExercise>, private val myApplication: MyApplication,
      val viewModel: WorkoutViewModel,
      private val switchToDetailCallback: (GymExercise) -> Unit): RecyclerView.Adapter<AddExerciseAdapter.ExerciseViewHolder>() {
 
@@ -51,7 +52,12 @@ class AddExerciseAdapter
         holder.tvTitle.isSelected
         holder.tvTitle.text = exercise.name
         holder.tvClass.text = exercise.bodyPart
-        holder.imageViewMuscle.load(exercise.gifUrl)
+
+        val gifUrl = exercise.gifUrl
+        val resourceId = context.resources.getIdentifier(gifUrl,"drawable", context.packageName)
+        holder.imageViewMuscle.setImageResource(resourceId)
+
+//        holder.imageViewMuscle.load(exercise.gifUrl)
 
 
         holder.itemView.setOnClickListener{

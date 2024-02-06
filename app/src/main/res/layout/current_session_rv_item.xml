@@ -111,6 +111,15 @@
                 android:textColor="?attr/colorPrimary"
                 />
 
+            <Button
+                android:id="@+id/removeSetBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove a set"
+                android:textColor="@color/errorRed"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"/>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

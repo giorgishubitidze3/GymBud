@@ -1,5 +1,6 @@
 package com.example.fitnessapp
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -39,9 +40,20 @@ class WorkoutDetails : Fragment() {
             view?.findViewById<TextView>(R.id.tvDetailName)?.text = selectedExercise.name
             view?.findViewById<TextView>(R.id.tvDetailMuscle)?.text = selectedExercise.bodyPart
             view?.findViewById<TextView>(R.id.tvDetailDescription)?.text = selectedExercise.instructions.joinToString("\n")
+            val gifUrl = selectedExercise.gifUrl
+            val resourceId = requireContext().resources?.getIdentifier(gifUrl,"drawable", requireContext().packageName)
 
-            view?.findViewById<ImageView>(R.id.detailImage)
-                ?.let { Glide.with(it.context).load(selectedExercise.gifUrl).into(view.findViewById<ImageView>(R.id.detailImage)) }
+            if (resourceId != null) {
+                val imageView = view?.findViewById<ImageView>(R.id.detailImage)
+
+                if (imageView != null) {
+                    Glide.with(requireContext())
+                        .load(resourceId)
+                        .into(imageView)
+                }
+            }
+
+
 
 
         }else {

@@ -42,6 +42,7 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         val editTextREP = itemView.findViewById<EditText>(R.id.etREP)
         val checkBox = itemView.findViewById<CheckBox>(R.id.setCheckBox)
         val prev = itemView.findViewById<TextView>(R.id.previousSetTV)
+        val removeBtn = itemView.findViewById<Button>(R.id.removeSetBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentViewHolder {
@@ -71,6 +72,12 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
             addSetCounterLayout(setCounterLayout)
             viewModel.addSetCount(currentWorkout)
         }
+
+        holder.removeBtn.setOnClickListener {
+            val setCounterLayout = holder.itemView.findViewById<LinearLayout>(R.id.verticalLinear)
+            removeSetCounterLayout(setCounterLayout)
+            viewModel.removeSetCount(currentWorkout)
+        }
     }
 
 
@@ -79,6 +86,13 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         val inflater = LayoutInflater.from(linearLayout.context)
         val setCounterLayout = inflater.inflate(R.layout.inner_rv_item, linearLayout, false)
         linearLayout.addView(setCounterLayout)
+    }
+
+    private fun removeSetCounterLayout(linearLayout: LinearLayout) {
+        val childCount = linearLayout.childCount
+        if (childCount > 1) {
+            linearLayout.removeViewAt(childCount - 1)
+        }
     }
 
     fun clearData(){
@@ -94,6 +108,7 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         Log.d("setData", "size of data: ${exercises}")
         Log.d("observer3", "data: ${exercises}")
     }
+
 
 
 }

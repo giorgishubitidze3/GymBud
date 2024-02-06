@@ -42,7 +42,7 @@ class WorkoutsFragment : Fragment() {
         val workoutDetail = WorkoutDetails()
 
         var data: List<GymExercise> = emptyList()
-        val adapter = ExerciseAdapter(data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
+        val adapter = ExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
 
             val detail = WorkoutDetails()
             val args = Bundle()

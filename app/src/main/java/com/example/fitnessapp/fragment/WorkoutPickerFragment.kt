@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -16,12 +15,11 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.SharedViewModel
 import com.example.fitnessapp.WorkoutDetails
 import com.example.fitnessapp.adapter.AddExerciseAdapter
-import com.example.fitnessapp.adapter.ExerciseAdapter
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
 
 
-class WorkoutPicker : Fragment() {
+class WorkoutPickerFragment : Fragment() {
     private lateinit var workoutViewModel: WorkoutViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +43,7 @@ class WorkoutPicker : Fragment() {
         val navController = activity?.findNavController(R.id.fragment_container)
         val backButton = view.findViewById<ImageButton>(R.id.back_button)
         var data: List<GymExercise> = emptyList()
-        val adapter = AddExerciseAdapter(data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
+        val adapter = AddExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
 
             val detail = WorkoutDetails()
             val args = Bundle()

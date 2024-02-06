@@ -1,7 +1,6 @@
 package com.example.fitnessapp.fragment
 
 import android.app.AlertDialog
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,12 +11,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.fitnessapp.R
-import com.example.fitnessapp.adapter.CurrentSessionAdapter
 import com.example.fitnessapp.data.WorkoutViewModel
 
 class SessionFragment : Fragment() {
@@ -102,7 +98,7 @@ class SessionFragment : Fragment() {
     }
 
     private fun openNewSessionFragment() {
-        val currentSessionFragment = CurrentSession()
+        val currentSessionFragment = CurrentSessionFragment()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
 
         // Replace the current fragment with the NewSessionFragment

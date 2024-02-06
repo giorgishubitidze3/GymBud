@@ -16,7 +16,7 @@ class HistoryAdapter(): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val tv1 = itemView.findViewById<TextView>(R.id.tv1)
-        val tv2 = itemView.findViewById<TextView>(R.id.tv2)
+//        val tv2 = itemView.findViewById<TextView>(R.id.tv2)
         val tv3 = itemView.findViewById<TextView>(R.id.tv3)
 
     }
@@ -34,7 +34,7 @@ class HistoryAdapter(): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
         val workout = workoutList[position]
 
         holder.tv1.text = workout.name
-        holder.tv2.text = workout.bodyPart
+//        holder.tv2.text = workout.bodyPart
         holder.tv3.text = workout.gifUrl
     }
 

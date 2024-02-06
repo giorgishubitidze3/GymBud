@@ -1,5 +1,7 @@
 package com.example.fitnessapp.network
 
+import android.content.Context
+import androidx.core.content.ContentProviderCompat
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit

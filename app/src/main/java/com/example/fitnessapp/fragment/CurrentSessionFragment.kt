@@ -1,9 +1,7 @@
 package com.example.fitnessapp.fragment
 
 import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
-import android.se.omapi.Session
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,14 +11,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
@@ -29,9 +21,10 @@ import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
 
 
-class CurrentSession : Fragment() {
+class CurrentSessionFragment : Fragment() {
     private lateinit var viewModel: WorkoutViewModel
-
+    private lateinit var cancelDialogBuilder: AlertDialog.Builder
+    private lateinit var finishDialogBuilder: AlertDialog.Builder
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +34,9 @@ class CurrentSession : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        cancelDialogBuilder = AlertDialog.Builder(requireContext())
+        finishDialogBuilder = AlertDialog.Builder(requireContext())
 
         viewModel= ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
         val finishButton = view.findViewById<Button>(R.id.buttonFinish)
@@ -69,13 +65,13 @@ class CurrentSession : Fragment() {
         recyclerViewCurrent.adapter = exercisesAdapter
 
 
-        alertDialogBuilder.setTitle("Warning")
-        alertDialogBuilder.setMessage("Are you sure you want to finish this workout?")
+        cancelDialogBuilder.setTitle("Cancel Workout")
+        cancelDialogBuilder.setMessage("Are you sure you want to cancel this workout?")
 
 
         //finishButton
         //alertBoxYES
-        alertDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
+        cancelDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
                 navController?.navigate(R.id.sessionFragment)
                 viewModel.stopTimer()
                 viewModel.endWorkout()
@@ -85,7 +81,7 @@ class CurrentSession : Fragment() {
         }
 
         //alertBoxNO
-        alertDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
+        cancelDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
             Toast.makeText(requireContext(),
                 android.R.string.no, Toast.LENGTH_SHORT).show()
         }
@@ -103,7 +99,20 @@ class CurrentSession : Fragment() {
 
 
 
+        finishDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
+            navController?.navigate(R.id.sessionFragment)
+            viewModel.stopTimer()
+            viewModel.endWorkout()
+            exercisesAdapter.clearData()
+            Log.d("ALERTBOX","yes clicked")
 
+        }
+
+        //alertBoxNO
+        finishDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
+            Toast.makeText(requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT).show()
+        }
 
 
 
@@ -113,7 +122,7 @@ class CurrentSession : Fragment() {
             currentTimer.text = formattedTime
         }
 
-        finishButton.setOnClickListener { alertDialogBuilder.show() }
+        finishButton.setOnClickListener { finishDialogBuilder.show() }
 
         slideDownButton.setOnClickListener {
             navController?.navigate(R.id.sessionFragment)

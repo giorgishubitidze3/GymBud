@@ -52,6 +52,10 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
         exercise.setCount++
     }
 
+    fun removeSetCount(exercise: GymExercise){
+        exercise.setCount--
+    }
+
     fun startWorkout(){
         _workoutState.value = true
     }
@@ -70,6 +74,9 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
         repository = AppRepository(workoutDao)
         readAllData = repository.readAllData
         initializeTimer()
+//        viewModelScope.launch {
+//            workoutDao.deleteAll()
+//        }
     }
 
     private fun initializeTimer() {
