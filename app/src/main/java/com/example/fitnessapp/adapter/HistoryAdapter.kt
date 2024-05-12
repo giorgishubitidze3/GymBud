@@ -35,7 +35,6 @@ class HistoryAdapter(): RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
         holder.tv1.text = workout.name
 //        holder.tv2.text = workout.bodyPart
-        holder.tv3.text = workout.gifUrl
     }
 
 

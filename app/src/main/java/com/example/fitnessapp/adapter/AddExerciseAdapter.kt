@@ -69,4 +69,9 @@ class AddExerciseAdapter
             Log.d("addExerciseBtn","exercise btn pressed")
         }
     }
+
+
+    fun something(list: List<Int>){
+
+    }
 }

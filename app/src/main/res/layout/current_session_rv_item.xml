@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/setsLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -60,10 +61,10 @@
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="60KG/8REPS"
+                android:text="PREV"
                 android:layout_gravity="center"
                 android:textSize="12sp"
-                android:gravity="center_vertical"/>
+                android:gravity="center"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etKG"
@@ -74,7 +75,8 @@
                 android:gravity="center"
                 android:background="@drawable/search_rounded"
                 android:textSize="18sp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:inputType="number"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etREP"
@@ -86,7 +88,8 @@
                 android:background="@drawable/search_rounded"
                 android:layout_marginLeft="20dp"
                 android:textSize="18sp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:inputType="number"/>
 
             <CheckBox
                 android:id="@+id/setCheckBox"

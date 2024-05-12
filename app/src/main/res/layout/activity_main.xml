@@ -20,7 +20,6 @@
         app:navGraph="@navigation/nav_graph"
         app:defaultNavHost="true"/>
 
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"

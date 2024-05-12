@@ -9,22 +9,8 @@ data class Workout(
     val id: Int,
     val name:String,
 //    val bodyPart: String,
-    val  lastWeight: Int,
-    val lastReps: Int,
-    var bestSet: BestSet,
-    val gifUrl:String,
+    val  weight: String,
+    val reps: String,
     var setCount: Int,
-    var weightsAndReps: String,
     var sessionId: Int
-)
-
-
-data class WeightsAndReps(
-    val weights: Int,
-    val reps: Int
-)
-
-data class BestSet(
-    val weights:Int,
-    val reps: Int
 )

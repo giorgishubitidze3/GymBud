@@ -66,18 +66,4 @@ data class GymExercise(
     }
 
 
-    fun toWorkout(bestSet: BestSet, weightsAndReps: String): Workout {
-        return Workout(
-            id = 0,
-            name = this.name,
-//            bodyPart = this.bodyPart,
-            lastWeight= 0,
-            lastReps=0,
-            gifUrl = this.gifUrl,
-            setCount = this.setCount,
-            sessionId=1,
-            bestSet = bestSet,
-            weightsAndReps = weightsAndReps
-        )
-    }
 }

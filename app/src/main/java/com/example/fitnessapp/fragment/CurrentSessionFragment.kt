@@ -90,14 +90,15 @@ class CurrentSessionFragment : Fragment() {
         //Cancel Button
         buttonCancel.setOnClickListener {
             //TODO modify later
-            alertDialogBuilder.show()
+            cancelDialogBuilder.show()
         }
 
         val slideDownButton = view.findViewById<ImageButton>(R.id.slide_down_button)
         val currentTimer = view.findViewById<TextView>(R.id.currentTimer)
 
 
-
+        finishDialogBuilder.setTitle("Finish Workout")
+        finishDialogBuilder.setMessage("Are you sure you want to finish this workout?")
 
         finishDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
             navController?.navigate(R.id.sessionFragment)

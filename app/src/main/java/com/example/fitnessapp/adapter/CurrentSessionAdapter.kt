@@ -1,18 +1,26 @@
 package com.example.fitnessapp.adapter
 
 import android.app.Application
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
+import com.example.fitnessapp.data.AppRepository
+import com.example.fitnessapp.data.ExerciseInfo
 import com.example.fitnessapp.data.GymExercise
+import com.example.fitnessapp.data.Workout
+import com.example.fitnessapp.data.WorkoutDao
 import com.example.fitnessapp.data.WorkoutViewModel
+import kotlinx.coroutines.launch
 
 class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<CurrentSessionAdapter.CurrentViewHolder>() {
 
@@ -20,17 +28,11 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
     val viewModel = viewModel
 
     init {
-//        viewModel.currentWorkouts.observe(lifecycleOwner) { newExercises ->
-//            exercises = newExercises
-//            notifyDataSetChanged()
-
             Log.d("observer2", "size of data: ${exercises.size}")
         Log.d("observer3", "data: ${exercises}")
-//        }
     }
 
 
-    //TODO destroy observer later
 
     inner class CurrentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val tvTitle = itemView.findViewById<TextView>(R.id.setTitle)
@@ -67,7 +69,6 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         }
 
         holder.addBtn.setOnClickListener {
-            // Add the logic to handle the button click and dynamically add setCounterLayout
             val setCounterLayout = holder.itemView.findViewById<LinearLayout>(R.id.verticalLinear)
             addSetCounterLayout(setCounterLayout)
             viewModel.addSetCount(currentWorkout)
@@ -78,8 +79,45 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
             removeSetCounterLayout(setCounterLayout)
             viewModel.removeSetCount(currentWorkout)
         }
+
+        holder.apply{
+            val constraintLayout = itemView.findViewById<ConstraintLayout>(R.id.setsLayout)
+            extractExerciseData(constraintLayout)
+            Log.d("exerciseData",exerciseData.toString())
+        }
+
+
     }
 
+
+
+    data class SetData(val kg: String, val reps: String)
+    data class SetItem(
+//        val workoutName: String,
+//        val setNumber: Int,
+        val kg: String,
+        val reps: String
+    )
+
+    val exerciseData = ArrayList<ExerciseInfo>()
+    private fun extractExerciseData(constraintLayout: ConstraintLayout) {
+        for(i in 0 until constraintLayout.childCount) {
+            val dynamicLayout = constraintLayout.getChildAt(i) as ViewGroup
+            val editTextWeight = dynamicLayout.findViewById<EditText>(R.id.etKG)
+            val editTextRep = dynamicLayout.findViewById<EditText>(R.id.etREP)
+            val workoutName = constraintLayout.findViewById<TextView>(R.id.setTitle).text.toString()
+            val kgText = editTextWeight.text.toString()
+            val repText = editTextRep.text.toString()
+            val setNumber = 1
+            val exerciseInfo = ExerciseInfo(
+                setNumber,
+                workoutName,
+                kgText,
+                repText
+            )
+            exerciseData.add(exerciseInfo)
+        }
+    }
 
 
     private fun addSetCounterLayout(linearLayout: LinearLayout) {
@@ -108,8 +146,6 @@ class CurrentSessionAdapter(viewModel: WorkoutViewModel, private val lifecycleOw
         Log.d("setData", "size of data: ${exercises}")
         Log.d("observer3", "data: ${exercises}")
     }
-
-
 
 }
 

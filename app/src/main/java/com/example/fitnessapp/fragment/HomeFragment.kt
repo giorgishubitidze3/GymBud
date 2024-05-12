@@ -26,7 +26,7 @@ import com.google.gson.reflect.TypeToken
 class HomeFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var workoutViewModel: WorkoutViewModel
+        private lateinit var workoutViewModel: WorkoutViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
