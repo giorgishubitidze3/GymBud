@@ -47,7 +47,7 @@ class CurrentSessionFragment : Fragment() {
 
         var listCurrentWorkouts = emptyList<GymExercise>()
 
-        val exercisesAdapter = CurrentSessionAdapter(viewModel, viewLifecycleOwner)
+        val exercisesAdapter = CurrentSessionAdapter(viewModel, viewLifecycleOwner, requireContext())
 
         viewModel.currentWorkouts.observe(viewLifecycleOwner){
             Log.d("Observer", "Called")

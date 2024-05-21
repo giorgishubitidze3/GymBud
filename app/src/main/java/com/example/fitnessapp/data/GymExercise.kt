@@ -23,18 +23,20 @@ data class GymExercise(
     @SerializedName("target")
     val target: String,
     @SerializedName("setCount")
-    var setCount: Int = 1
+    var setCount: Int = 1,
+
+
 
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readString() ?: "",
-    parcel.readString() ?: "",
-        parcel.createStringArrayList() ?: listOf(),
         parcel.readString() ?: "",
         parcel.createStringArrayList() ?: listOf(),
         parcel.readString() ?: "",
+        parcel.createStringArrayList() ?: listOf(),
+        parcel.readString() ?: ""
     )
 
 

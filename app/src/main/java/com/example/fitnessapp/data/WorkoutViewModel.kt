@@ -29,9 +29,36 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
     private val _elapsedTime = MutableLiveData<String>()
     val elapsedtime: LiveData<String> get() = _elapsedTime
 
+    private val _currentSets = MutableLiveData<List<WorkoutSet>>()
+    val currentSets : LiveData<List<WorkoutSet>> get() = _currentSets
+
     private var elapsedTimeInSeconds = -1L
 
+    private fun createDefaultSet(workoutName: String): WorkoutSet {
+        return WorkoutSet(workoutName, 1, 0, 0, false)
+    }
+    fun updateCurrentSets(set: WorkoutSet){
+        val currentSets = _currentSets.value ?: emptyList()
+        val updatedSets = currentSets.toMutableList().also{
+            it.add(set)
+        }
+        Log.d("ViewModel", "Added set ${set.workoutName}, new size: ${updatedSets.size}")
 
+        _currentSets.postValue(updatedSets)
+    }
+   // To add a set
+    fun updateCurrentSets(sets: List<WorkoutSet>) {
+        _currentSets.postValue(sets)
+    }
+
+    // Function to remove a set
+    fun removeSet(set: WorkoutSet) {
+        val currentSets = _currentSets.value ?: return
+        val updatedSets = currentSets.toMutableList().also {
+            it.remove(set)
+        }
+        _currentSets.postValue(updatedSets)
+    }
 
     fun updateCurrentWorkout(exercise: GymExercise){
         val currentExercises = _currentWorkouts.value ?: emptyList()
@@ -39,14 +66,18 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
             it.add(exercise)
         }
 
-        Log.d("ViewModel", "Added exercise ${exercise.name}, new size: ${updatedExercises.size}")
-        for (n in 0 until updatedExercises.size){
-            if(updatedExercises[n].setCount == 0){
-                updatedExercises[n].setCount = 1
-            }
-        }
+//        Log.d("ViewModel", "Added exercise ${exercise.name}, new size: ${updatedExercises.size}")
+//        for (n in 0 until updatedExercises.size){
+//            if(updatedExercises[n].setCount == 0){
+//                updatedExercises[n].setCount = 1
+//            }
+//        }
+        val defaultSet = createDefaultSet(exercise.name)
+        updateCurrentSets(defaultSet)
         _currentWorkouts.postValue(updatedExercises)
     }
+
+
 
     fun addSetCount(exercise: GymExercise){
         exercise.setCount++

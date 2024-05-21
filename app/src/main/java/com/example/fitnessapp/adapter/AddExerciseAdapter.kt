@@ -1,6 +1,9 @@
 package com.example.fitnessapp.adapter
 
 import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.fitnessapp.MyApplication
@@ -28,16 +32,14 @@ class AddExerciseAdapter
         notifyDataSetChanged()
     }
 
-    inner class ExerciseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle2)
         val tvClass = itemView.findViewById<TextView>(R.id.tvClass2)
         val imageViewMuscle = itemView.findViewById<ImageView>(R.id.imageViewMuscle2)
         val addBtn = itemView.findViewById<ImageButton>(R.id.add_btn)
-        // val addBtn = itemView.findViewById<Button>(R.id.addBtn)
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddExerciseAdapter.ExerciseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_add_exercise_item, parent, false)
         return ExerciseViewHolder(view)
     }
@@ -46,32 +48,40 @@ class AddExerciseAdapter
         return exercises.size
     }
 
-    override fun onBindViewHolder(holder: AddExerciseAdapter.ExerciseViewHolder, position: Int) {
-        var exercise = exercises[position]
+    override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
+        val exercise = exercises[position]
         holder.tvTitle.setTextIsSelectable(true)
         holder.tvTitle.isSelected
         holder.tvTitle.text = exercise.name
         holder.tvClass.text = exercise.bodyPart
 
         val gifUrl = exercise.gifUrl
-        val resourceId = context.resources.getIdentifier(gifUrl,"drawable", context.packageName)
+        val resourceId = context.resources.getIdentifier(gifUrl, "drawable", context.packageName)
         holder.imageViewMuscle.setImageResource(resourceId)
 
-//        holder.imageViewMuscle.load(exercise.gifUrl)
-
-
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             switchToDetailCallback(exercise)
         }
 
-        holder.addBtn.setOnClickListener{
-            viewModel.updateCurrentWorkout(exercise)
-            Log.d("addExerciseBtn","exercise btn pressed")
+        holder.addBtn.setOnClickListener {
+            val currentWorkouts = viewModel.currentWorkouts.value ?: emptyList()
+            if (currentWorkouts.any { it.name == exercise.name }) {
+                Toast.makeText(context, "Exercise already added", Toast.LENGTH_SHORT).show()
+                vibratePhone(context, 500)
+            } else {
+                viewModel.updateCurrentWorkout(exercise)
+                vibratePhone(context,50)
+                Log.d("addExerciseBtn", "exercise btn pressed")
+            }
         }
     }
 
-
-    fun something(list: List<Int>){
-
+    private fun vibratePhone(context: Context, duration: Long) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(100)
+        }
     }
 }
