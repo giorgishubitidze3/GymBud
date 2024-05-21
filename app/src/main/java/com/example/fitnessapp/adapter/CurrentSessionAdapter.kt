@@ -28,7 +28,7 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
     val viewModel = viewModel
 
     init {
-            Log.d("observer2", "size of data: ${exercises.size}")
+        Log.d("observer2", "size of data: ${exercises.size}")
         Log.d("observer3", "data: ${exercises}")
     }
 
@@ -39,7 +39,6 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
         val tvClass = itemView.findViewById<TextView>(R.id.tvClass2)
         val imageViewMuscle = itemView.findViewById<ImageView>(R.id.imageViewMuscle2)
         val addBtn = itemView.findViewById<Button>(R.id.addSetBtn)
-//        val setCounterLayout = itemView.findViewById<LinearLayout>(R.id.setCounterLayout)
         val editTextKG = itemView.findViewById<EditText>(R.id.etKG)
         val editTextREP = itemView.findViewById<EditText>(R.id.etREP)
         val checkBox = itemView.findViewById<CheckBox>(R.id.setCheckBox)
@@ -84,11 +83,6 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
             holder.childRecyclerView.adapter = InnerSetAdapter(filteredSets)
         }
 
-//        for(n in 1 until currentWorkout.setCount){
-//            val setCounterLayout = holder.itemView.findViewById<LinearLayout>(R.id.verticalLinear)
-//            addSetCounterLayout(setCounterLayout)
-//        }
-//
         holder.addBtn.setOnClickListener {
             val newSet = WorkoutSet(currentWorkout.name, 0, 0, 0, false)
             viewModel.updateCurrentSets(newSet)
