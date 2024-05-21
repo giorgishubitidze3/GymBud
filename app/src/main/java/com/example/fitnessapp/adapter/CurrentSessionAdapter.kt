@@ -73,10 +73,14 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
         holder.tvTitle?.text = currentWorkout.name ?: "Default Name"
         holder.prev?.text = currentWorkout.bodyPart ?: "Default Body Part"
 
-        val childLayoutManager = LinearLayoutManager(holder.childRecyclerView.context, LinearLayoutManager.VERTICAL, false)
+        val childLayoutManager = LinearLayoutManager(
+            holder.childRecyclerView.context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         holder.childRecyclerView.layoutManager = childLayoutManager
-        viewModel.currentSets.observe(lifecycleOwner){sets ->
-            val filteredSets = sets.filter {it.workoutName == currentWorkout.name}
+        viewModel.currentSets.observe(lifecycleOwner) { sets ->
+            val filteredSets = sets.filter { it.workoutName == currentWorkout.name }
             holder.childRecyclerView.adapter = InnerSetAdapter(filteredSets)
         }
 
@@ -86,7 +90,7 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
 //        }
 //
         holder.addBtn.setOnClickListener {
-            val newSet = WorkoutSet(currentWorkout.name, 0 ,0 ,0, false)
+            val newSet = WorkoutSet(currentWorkout.name, 0, 0, 0, false)
             viewModel.updateCurrentSets(newSet)
             viewModel.addSetCount(currentWorkout)
         }
@@ -103,79 +107,24 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
                 Toast.makeText(context, "Cannot remove the last set", Toast.LENGTH_SHORT).show()
                 vibratePhone(context)
             }
-//            val updatedSets = currentSets.toMutableList()
-//            updatedSets.removeAll { it.workoutName == currentWorkout.name }
-//            viewModel.updateCurrentSets(updatedSets.toList())
-//            viewModel.removeSetCount(currentWorkout)
         }
 
-//        holder.apply{
-//            val constraintLayout = itemView.findViewById<ConstraintLayout>(R.id.setsLayout)
-//            extractExerciseData(constraintLayout)
-//            Log.d("exerciseData",exerciseData.toString())
-//        }
 
-
-    }
-
-
-
-    data class SetData(val kg: String, val reps: String)
-    data class SetItem(
-//        val workoutName: String,
-//        val setNumber: Int,
-        val kg: String,
-        val reps: String
-    )
-
-//    val exerciseData = ArrayList<ExerciseInfo>()
-//    private fun extractExerciseData(constraintLayout: ConstraintLayout) {
-//        for(i in 0 until constraintLayout.childCount) {
-//            val dynamicLayout = constraintLayout.getChildAt(i) as ViewGroup
-//            val editTextWeight = dynamicLayout.findViewById<EditText>(R.id.etKG)
-//            val editTextRep = dynamicLayout.findViewById<EditText>(R.id.etREP)
-//            val workoutName = constraintLayout.findViewById<TextView>(R.id.setTitle).text.toString()
-//            val kgText = editTextWeight.text.toString() ?: "null"
-//            val repText = editTextRep.text.toString() ?: "null"
-//            val setNumber = 1
-//            val exerciseInfo = ExerciseInfo(
-//                setNumber,
-//                workoutName,
-//                kgText,
-//                repText
-//            )
-//            exerciseData.add(exerciseInfo)
-//        }
-//    }
-
-
-    private fun addSetCounterLayout(linearLayout: LinearLayout) {
-        val inflater = LayoutInflater.from(linearLayout.context)
-        val setCounterLayout = inflater.inflate(R.layout.inner_rv_item, linearLayout, false)
-        linearLayout.addView(setCounterLayout)
-    }
-
-    private fun removeSetCounterLayout(linearLayout: LinearLayout) {
-        val childCount = linearLayout.childCount
-        if (childCount > 1) {
-            linearLayout.removeViewAt(childCount - 1)
+        fun clearData() {
+            exercises = emptyList()
+            notifyDataSetChanged()
         }
+
+
+        fun setData(newExercises: List<GymExercise>) {
+            exercises = newExercises
+            notifyDataSetChanged()
+            Log.d("setData", "size of data: ${exercises.size}")
+            Log.d("setData", "size of data: ${exercises}")
+            Log.d("observer3", "data: ${exercises}")
+        }
+
     }
-
-    fun clearData(){
-        exercises= emptyList()
-        notifyDataSetChanged()
-    }
-
-
-    fun setData(newExercises: List<GymExercise>) {
-        exercises = newExercises
-        notifyDataSetChanged()
-        Log.d("setData", "size of data: ${exercises.size}")
-        Log.d("setData", "size of data: ${exercises}")
-        Log.d("observer3", "data: ${exercises}")
-    }
-
-}
+                                }
 
 
