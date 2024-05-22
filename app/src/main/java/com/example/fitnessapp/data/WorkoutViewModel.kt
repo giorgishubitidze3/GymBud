@@ -46,6 +46,35 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
 
         _currentSets.postValue(updatedSets)
     }
+
+
+    fun updateWorkoutSetValues(workoutName: String, currentKg: Int, currentReps: Int, isCompleted:Boolean){
+        val currentSets = _currentSets.value ?: return
+        val updatedSets = currentSets.map {set ->
+            if(set.workoutName == workoutName){
+                set.copy(
+                    currentKg= currentKg,
+                    currentReps = currentReps,
+                    isCompleted = isCompleted
+                )
+            }else{
+                set
+            }
+        }
+
+        _currentSets.postValue(updatedSets)
+
+    }
+
+    fun updateCurrentSet(updatedSet: WorkoutSet) {
+        val currentSets = _currentSets.value ?: emptyList()
+        val updatedSets = currentSets.map { if (it.workoutName == updatedSet.workoutName) updatedSet else it }
+        _currentSets.postValue(updatedSets)
+    }
+
+
+
+
    // To add a set
     fun updateCurrentSets(sets: List<WorkoutSet>) {
         _currentSets.postValue(sets)

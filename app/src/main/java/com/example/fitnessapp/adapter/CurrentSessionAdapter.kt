@@ -1,5 +1,6 @@
 package com.example.fitnessapp.adapter
 
+import InnerSetAdapter
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
@@ -19,32 +20,21 @@ import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutSet
 import com.example.fitnessapp.data.WorkoutViewModel
 
-class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
-                                private val lifecycleOwner: LifecycleOwner,
-                                val context: Context
-                                ):RecyclerView.Adapter<CurrentSessionAdapter.CurrentViewHolder>() {
+class CurrentSessionAdapter(
+    private val viewModel: WorkoutViewModel,
+    private val lifecycleOwner: LifecycleOwner,
+    private val context: Context
+) : RecyclerView.Adapter<CurrentSessionAdapter.CurrentViewHolder>() {
 
     private var exercises: List<GymExercise> = emptyList()
-    val viewModel = viewModel
 
-    init {
-        Log.d("observer2", "size of data: ${exercises.size}")
-        Log.d("observer3", "data: ${exercises}")
-    }
-
-
-
-    inner class CurrentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val tvTitle = itemView.findViewById<TextView>(R.id.setTitle)
-        val tvClass = itemView.findViewById<TextView>(R.id.tvClass2)
-        val imageViewMuscle = itemView.findViewById<ImageView>(R.id.imageViewMuscle2)
-        val addBtn = itemView.findViewById<Button>(R.id.addSetBtn)
-        val editTextKG = itemView.findViewById<EditText>(R.id.etKG)
-        val editTextREP = itemView.findViewById<EditText>(R.id.etREP)
-        val checkBox = itemView.findViewById<CheckBox>(R.id.setCheckBox)
-        val prev = itemView.findViewById<TextView>(R.id.previousSetTV)
-        val removeBtn = itemView.findViewById<Button>(R.id.removeSetBtn)
-        val childRecyclerView = itemView.findViewById<RecyclerView>(R.id.childRecyclerView)
+    inner class CurrentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvTitle: TextView? = itemView.findViewById(R.id.setTitle)
+        val tvClass: TextView? = itemView.findViewById(R.id.tvClass2)
+//        val imageViewMuscle: ImageView = itemView.findViewById(R.id.imageViewMuscle2)
+        val addBtn: Button = itemView.findViewById(R.id.addSetBtn)
+        val removeBtn: Button = itemView.findViewById(R.id.removeSetBtn)
+        val childRecyclerView: RecyclerView = itemView.findViewById(R.id.childRecyclerView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentViewHolder {
@@ -53,24 +43,13 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
         return CurrentViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return exercises.size
-    }
-
-    private fun vibratePhone(context: Context) {
-        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
-        } else {
-            vibrator.vibrate(100)
-        }
-    }
+    override fun getItemCount(): Int = exercises.size
 
     override fun onBindViewHolder(holder: CurrentViewHolder, position: Int) {
         val currentWorkout = exercises[position]
 
         holder.tvTitle?.text = currentWorkout.name ?: "Default Name"
-        holder.prev?.text = currentWorkout.bodyPart ?: "Default Body Part"
+        holder.tvClass?.text = currentWorkout.bodyPart ?: "Default Body Part"
 
         val childLayoutManager = LinearLayoutManager(
             holder.childRecyclerView.context,
@@ -78,9 +57,13 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
             false
         )
         holder.childRecyclerView.layoutManager = childLayoutManager
+
+        val innerAdapter = InnerSetAdapter(emptyList(), viewModel, lifecycleOwner)
+        holder.childRecyclerView.adapter = innerAdapter
+
         viewModel.currentSets.observe(lifecycleOwner) { sets ->
             val filteredSets = sets.filter { it.workoutName == currentWorkout.name }
-            holder.childRecyclerView.adapter = InnerSetAdapter(filteredSets)
+            innerAdapter.setData(filteredSets)
         }
 
         holder.addBtn.setOnClickListener {
@@ -92,7 +75,6 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
         holder.removeBtn.setOnClickListener {
             val currentSets = viewModel.currentSets.value ?: return@setOnClickListener
             if (currentSets.size > 1) {
-                // Remove the set normally
                 val updatedSets = currentSets.toMutableList().apply {
                     removeAt(position)
                 }
@@ -102,23 +84,20 @@ class CurrentSessionAdapter(    viewModel: WorkoutViewModel,
                 vibratePhone(context)
             }
         }
-
-
-        fun clearData() {
-            exercises = emptyList()
-            notifyDataSetChanged()
-        }
-
-
-        fun setData(newExercises: List<GymExercise>) {
-            exercises = newExercises
-            notifyDataSetChanged()
-            Log.d("setData", "size of data: ${exercises.size}")
-            Log.d("setData", "size of data: ${exercises}")
-            Log.d("observer3", "data: ${exercises}")
-        }
-
     }
-                                }
 
+    fun setData(newExercises: List<GymExercise>) {
+        exercises = newExercises
+        notifyDataSetChanged()
+    }
+
+    private fun vibratePhone(context: Context) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator.vibrate(100)
+        }
+    }
+}
 

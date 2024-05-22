@@ -59,6 +59,7 @@ class CurrentSessionFragment : Fragment() {
 //        viewModel.currentWorkouts.observe(viewLifecycleOwner) { exercises ->
 //            exercisesAdapter.setData(exercises)
 //        }
+        ///????????????????
 
         val recyclerViewCurrent = view.findViewById<RecyclerView>(R.id.recyclerViewCurrentSession)
         recyclerViewCurrent.layoutManager = LinearLayoutManager(requireContext())
@@ -75,10 +76,11 @@ class CurrentSessionFragment : Fragment() {
                 navController?.navigate(R.id.sessionFragment)
                 viewModel.stopTimer()
                 viewModel.endWorkout()
-                exercisesAdapter.clearData()
+//                exercisesAdapter.clearData()
                 Log.d("ALERTBOX","yes clicked")
 
         }
+
 
         //alertBoxNO
         cancelDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
@@ -104,7 +106,7 @@ class CurrentSessionFragment : Fragment() {
             navController?.navigate(R.id.sessionFragment)
             viewModel.stopTimer()
             viewModel.endWorkout()
-            exercisesAdapter.clearData()
+//            exercisesAdapter.clearData()
             Log.d("ALERTBOX","yes clicked")
 
         }

@@ -42,10 +42,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/search_rounded"
-                android:hint="Your Hint" />
+                android:hint="Search" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
