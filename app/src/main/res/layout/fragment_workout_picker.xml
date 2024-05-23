@@ -22,49 +22,63 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
             android:background="@android:color/transparent"
             android:src="@drawable/back_icon"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/input"
+            app:layout_constraintEnd_toStartOf="@id/workoutPickerSearchView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="?attr/colorPrimary"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/search_button"
-            app:layout_constraintStart_toEndOf="@+id/back_button"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/search_rounded"
-                android:hint="Search" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/input"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            app:boxStrokeWidth="0dp"-->
+<!--            app:boxStrokeWidthFocused="0dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/filter_button"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/back_button"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
 
-        <ImageButton
-            android:id="@+id/search_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/search_icon"
-            app:fabCustomSize="40dp"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/workoutPickerSearchView"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/search_rounded"
+            android:layoutDirection="rtl"
+            app:iconifiedByDefault="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_button"
-            app:layout_constraintStart_toEndOf="@id/input"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?attr/colorPrimary"/>
+            app:layout_constraintStart_toEndOf="@+id/back_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+            <!--            <com.google.android.material.textfield.TextInputEditText-->
+            <!--                android:id="@+id/search_bar"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@drawable/search_rounded"-->
+            <!--                android:hint="Search" />-->
+
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/search_button"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginLeft="6dp"-->
+<!--            android:layout_marginRight="10dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/search_icon"-->
+<!--            app:fabCustomSize="40dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/filter_button"-->
+<!--            app:layout_constraintStart_toEndOf="@id/input"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:tint="?attr/colorPrimary"/>-->
 
         <ImageButton
             android:id="@+id/filter_button"

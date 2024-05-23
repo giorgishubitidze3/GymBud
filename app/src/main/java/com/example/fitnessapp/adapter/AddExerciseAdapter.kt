@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,6 +28,8 @@ class AddExerciseAdapter
      private val switchToDetailCallback: (GymExercise) -> Unit): RecyclerView.Adapter<AddExerciseAdapter.ExerciseViewHolder>() {
 
     val appDatabase: AppDatabase = myApplication.database
+
+    var exercisesAll : MutableList<GymExercise> = exercises.toMutableList()
 
     fun setData(newData: List<GymExercise>) {
         exercises = newData
@@ -84,4 +88,38 @@ class AddExerciseAdapter
             vibrator.vibrate(100)
         }
     }
+//    override fun getFilter(): Filter {
+//        return object : Filter() {
+//            //background thread
+//            override fun performFiltering(charSequence: CharSequence?): FilterResults {
+//                val filteredList = mutableListOf<GymExercise>()
+//
+//                if (charSequence == null || charSequence.isEmpty()) {
+//                    filteredList.addAll(exercisesAll)
+//                } else {
+//                    val filterPattern = charSequence.toString().toLowerCase().trim()
+//                    for (item in exercisesAll) {
+//                        if (item.name.toLowerCase().contains(filterPattern)) {
+//                            filteredList.add(item)
+//                        }
+//                    }
+//                }
+//
+//                val results = FilterResults()
+//                results.values = filteredList
+//                return results
+//            }
+//
+//            // Automatic on UI thread
+//            override fun publishResults(charSequence: CharSequence?, filterResults: FilterResults?) {
+//                exercisesAll.clear()
+//                exercisesAll.addAll(filterResults?.values as Collection<GymExercise>)
+//                notifyDataSetChanged()
+//            }
+//        }
+//    }
+
 }
+
+
+

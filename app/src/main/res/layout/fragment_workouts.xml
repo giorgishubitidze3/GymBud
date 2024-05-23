@@ -11,52 +11,49 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:paddingRight="15dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:outlineAmbientShadowColor="@color/borderGray"
+        android:paddingBottom="4dp">
 
         <TextView
+            android:id="@+id/workoutsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:fontFamily="@font/inter_bold"
             android:text="WORKOUTS"
             android:textSize="30dp"
             android:textColor="?attr/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/search_button"
-            app:layout_constraintHorizontal_bias="0.04"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp"/>
+            />
 
-        <ImageButton
-            android:id="@+id/search_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/search_icon"
-            app:fabCustomSize="40dp"
-            app:tint="?attr/colorPrimary"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/filter_button"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp"/>
+            app:layout_constraintHorizontal_bias="0.976"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/filter_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:src="@drawable/filter_icon"
             app:fabCustomSize="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="14dp"
+            app:layout_constraintVertical_bias="0.0"
             app:tint="?attr/colorPrimary"
             />
 

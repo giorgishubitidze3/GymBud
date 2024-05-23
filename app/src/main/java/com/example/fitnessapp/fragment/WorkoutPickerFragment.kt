@@ -1,11 +1,15 @@
 package com.example.fitnessapp.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +21,7 @@ import com.example.fitnessapp.WorkoutDetails
 import com.example.fitnessapp.adapter.AddExerciseAdapter
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
+import java.util.Locale
 
 
 class WorkoutPickerFragment : Fragment() {
@@ -37,6 +42,10 @@ class WorkoutPickerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         workoutViewModel = ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
+
+        val searchBar = view.findViewById<SearchView>(R.id.workoutPickerSearchView)
+        //search bar icon
+        val searchViewIcon = view.findViewById<ImageView>(androidx.appcompat.R.id.search_mag_icon)
 
         val navController = activity?.findNavController(R.id.fragment_container)
         val backButton = view.findViewById<ImageButton>(R.id.back_button)
@@ -68,6 +77,39 @@ class WorkoutPickerFragment : Fragment() {
             navController?.navigate(R.id.currentSession)
         }
 
+
+
+
+
+
+
+
+        searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val list : MutableList<GymExercise> = mutableListOf()
+
+                if(newText != null){
+                    for(i in data){
+                        if(i.name.lowercase(Locale.ROOT).contains(newText)){
+                            list.add(i)
+                        }
+                    }
+                }
+
+                if(list.isEmpty()){
+                    Toast.makeText(requireContext(),"No data", Toast.LENGTH_SHORT).show()
+                }else{
+                    adapter.setData(list)
+                }
+
+                return true
+            }
+
+        })
 
     }
 

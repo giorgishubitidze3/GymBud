@@ -6,6 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +21,7 @@ import com.example.fitnessapp.WorkoutDetails
 import com.example.fitnessapp.adapter.ExerciseAdapter
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
+import java.util.Locale
 
 class WorkoutsFragment : Fragment() {
 
@@ -41,6 +46,9 @@ class WorkoutsFragment : Fragment() {
 
         val workoutDetail = WorkoutDetails()
 
+        val workoutsTextView = view.findViewById<TextView>(R.id.workoutsTextView)
+        val searchView = view.findViewById<SearchView>(R.id.searchView)
+
         var data: List<GymExercise> = emptyList()
         val adapter = ExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
 
@@ -52,6 +60,55 @@ class WorkoutsFragment : Fragment() {
         }
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapter
+
+
+        //WORKOUTS text visibility based on searchview focus
+        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            if (hasFocus && !searchView.isIconified) {
+                workoutsTextView.visibility = View.GONE
+            } else {
+                workoutsTextView.visibility = View.VISIBLE
+            }
+        }
+
+        //iconify searchview on back button press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!searchView.isIconified) {
+                    searchView.setIconified(true)
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        })
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val list : MutableList<GymExercise> = mutableListOf()
+
+                if(newText != null){
+                    for(i in data){
+                        if(i.name.lowercase(Locale.ROOT).contains(newText)){
+                            list.add(i)
+                        }
+                    }
+                }
+
+                if(list.isEmpty()){
+                    Toast.makeText(requireContext(),"No data",Toast.LENGTH_SHORT).show()
+                }else{
+                    adapter.setData(list)
+                }
+
+                return true
+            }
+
+        })
 
 
         val viewModel: SharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
@@ -66,4 +123,7 @@ class WorkoutsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
     }
+
+
+
 }
