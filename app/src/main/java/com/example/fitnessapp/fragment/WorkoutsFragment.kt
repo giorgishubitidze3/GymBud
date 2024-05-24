@@ -48,6 +48,7 @@ class WorkoutsFragment : Fragment() {
 
         val workoutsTextView = view.findViewById<TextView>(R.id.workoutsTextView)
         val searchView = view.findViewById<SearchView>(R.id.searchView)
+        val searchAutoComplete = searchView.findViewById<SearchView.SearchAutoComplete>(androidx.appcompat.R.id.search_src_text)
 
         var data: List<GymExercise> = emptyList()
         val adapter = ExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
@@ -64,10 +65,10 @@ class WorkoutsFragment : Fragment() {
 
         //WORKOUTS text visibility based on searchview focus
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            if (hasFocus && !searchView.isIconified) {
+            if (hasFocus) {
                 workoutsTextView.visibility = View.GONE
-            } else {
-                workoutsTextView.visibility = View.VISIBLE
+            } else{
+                workoutsTextView.visibility = View.GONE
             }
         }
 
@@ -76,12 +77,26 @@ class WorkoutsFragment : Fragment() {
             override fun handleOnBackPressed() {
                 if (!searchView.isIconified) {
                     searchView.setIconified(true)
+                    searchView.onActionViewCollapsed()
+                    searchView.clearFocus()
+                    workoutsTextView.visibility = View.VISIBLE
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressed()
                 }
             }
         })
+
+        searchAutoComplete.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                searchView.setIconified(true)
+                searchView.onActionViewCollapsed()
+                 workoutsTextView.visibility = View.VISIBLE
+            }
+        }
+
+
+
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
