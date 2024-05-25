@@ -31,7 +31,6 @@ class CurrentSessionAdapter(
     inner class CurrentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView? = itemView.findViewById(R.id.setTitle)
         val tvClass: TextView? = itemView.findViewById(R.id.tvClass2)
-//        val imageViewMuscle: ImageView = itemView.findViewById(R.id.imageViewMuscle2)
         val addBtn: Button = itemView.findViewById(R.id.addSetBtn)
         val removeBtn: Button = itemView.findViewById(R.id.removeSetBtn)
         val childRecyclerView: RecyclerView = itemView.findViewById(R.id.childRecyclerView)
@@ -67,18 +66,19 @@ class CurrentSessionAdapter(
         }
 
         holder.addBtn.setOnClickListener {
-            val newSet = WorkoutSet(currentWorkout.name, 0, 0, 0, false)
+            val newSetId = viewModel.generateUniqueSetId() // Generate a unique setId
+            val newSet = WorkoutSet(currentWorkout.name, newSetId, 0, 0, 0, false)
             viewModel.updateCurrentSets(newSet)
             viewModel.addSetCount(currentWorkout)
         }
 
         holder.removeBtn.setOnClickListener {
-            val currentSets = viewModel.currentSets.value ?: return@setOnClickListener
-            if (currentSets.size > 1) {
-                val updatedSets = currentSets.toMutableList().apply {
-                    removeAt(position)
-                }
-                viewModel.updateCurrentSets(updatedSets)
+            val currentSets = viewModel.currentSets.value?.filter { it.workoutName == currentWorkout.name } ?: return@setOnClickListener
+
+            if (currentSets.isNotEmpty()) {
+                val setToRemove = currentSets.last() // Remove the last set for the specific exercise
+                viewModel.removeSet(setToRemove)
+                viewModel.removeSetCount(currentWorkout)
             } else {
                 Toast.makeText(context, "Cannot remove the last set", Toast.LENGTH_SHORT).show()
                 vibratePhone(context)

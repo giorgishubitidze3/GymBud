@@ -30,13 +30,10 @@
         tools:layout="@layout/fragment_session" >
         <action
             android:id="@+id/action_sessionFragment_to_workoutsFragment"
-            app:destination="@id/workoutsFragment"
-            app:enterAnim="@transition/slide_down_anim"/>
+            app:destination="@id/workoutsFragment" />
         <action
             android:id="@+id/action_sessionFragment_to_currentSession"
-            app:destination="@id/currentSession"
-            app:enterAnim="@transition/slide_up_anim"
-            app:exitAnim="@transition/slide_down_anim"/>
+            app:destination="@id/currentSession" />
     </fragment>
     <fragment
         android:id="@+id/workoutsFragment"
@@ -62,7 +59,7 @@
         <action
             android:id="@+id/action_currentSession_to_sessionFragment"
             app:destination="@id/sessionFragment"
-            app:enterAnim="@transition/slide_down_anim"/>
+            app:popUpTo="@id/currentSession" />
     </fragment>
     <fragment
         android:id="@+id/workoutPicker"

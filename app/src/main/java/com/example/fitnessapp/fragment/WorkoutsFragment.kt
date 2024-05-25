@@ -2,6 +2,7 @@ package com.example.fitnessapp.fragment
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,7 +69,7 @@ class WorkoutsFragment : Fragment() {
             if (hasFocus) {
                 workoutsTextView.visibility = View.GONE
             } else{
-                workoutsTextView.visibility = View.GONE
+                workoutsTextView.visibility = View.VISIBLE
             }
         }
 
@@ -115,7 +116,8 @@ class WorkoutsFragment : Fragment() {
                 }
 
                 if(list.isEmpty()){
-                    Toast.makeText(requireContext(),"No data",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(),"No data",Toast.LENGTH_SHORT).show()
+                    Log.d("WorkoutFragment","No data")
                 }else{
                     adapter.setData(list)
                 }

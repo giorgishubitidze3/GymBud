@@ -1,6 +1,7 @@
 package com.example.fitnessapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -101,7 +102,8 @@ class WorkoutPickerFragment : Fragment() {
                 }
 
                 if(list.isEmpty()){
-                    Toast.makeText(requireContext(),"No data", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(),"No data", Toast.LENGTH_SHORT).show()
+                    Log.d("WorkoutPicker Fragment" , "No data")
                 }else{
                     adapter.setData(list)
                 }

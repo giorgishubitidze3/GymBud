@@ -50,34 +50,71 @@ class InnerSetAdapter(
         holder.completedCheckBox.isChecked = currentSet.isCompleted
 
 //TODO: change this stuff
-        holder.editTextKg.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                //TODO Not needed for this case, but required to implement TextWatcher interface
-            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //TODO Not needed for this case, but required to implement TextWatcher interface
-            }
+        holder.editTextKg.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                // Update the WorkoutSet only if the text is different from the current value
-                val kgValue = s?.toString()?.toIntOrNull() ?: 0
-                if (currentSet.currentKg != kgValue) {
-                    currentSet.currentKg = kgValue
-                    viewModel.updateCurrentSet(currentSet)
+                kgDebounceJob?.cancel()
+                kgDebounceJob = viewLifecycleOwner.lifecycleScope.launch {
+                    delay(300)
+                    val kgValue = s?.toString()?.toIntOrNull() ?: 0
+                    if (currentSet.currentKg != kgValue) {
+                        currentSet.currentKg = kgValue
+                        viewModel.updateCurrentSet(currentSet)
+                    }
                 }
             }
         })
 
-        holder.editTextRep.addTextChangedListener {
-            repDebounceJob?.cancel()
-            repDebounceJob = viewLifecycleOwner.lifecycleScope.launch {
-                delay(300)
-                val repValue = it.toString().toIntOrNull() ?: 0
-                currentSet.currentReps = repValue
-                viewModel.updateCurrentSet(currentSet)
+
+//        holder.editTextKg.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//                //TODO Not needed for this case, but required to implement TextWatcher interface
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                //TODO Not needed for this case, but required to implement TextWatcher interface
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                val kgValue = s?.toString()?.toIntOrNull() ?: 0
+//                if (currentSet.currentKg != kgValue) {
+//                    currentSet.currentKg = kgValue
+//                    viewModel.updateCurrentSet(currentSet)
+//                }
+//            }
+//        })
+
+        holder.editTextRep.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                repDebounceJob?.cancel()
+                repDebounceJob = viewLifecycleOwner.lifecycleScope.launch {
+                    delay(300)
+                    val repValue = s?.toString()?.toIntOrNull() ?: 0
+                    if (currentSet.currentReps != repValue) {
+                        currentSet.currentReps = repValue
+                        viewModel.updateCurrentSet(currentSet)
+                    }
+                }
             }
-        }
+        })
+
+//        holder.editTextRep.addTextChangedListener {
+//            repDebounceJob?.cancel()
+//            repDebounceJob = viewLifecycleOwner.lifecycleScope.launch {
+//                delay(300)
+//                val repValue = it.toString().toIntOrNull() ?: 0
+//                currentSet.currentReps = repValue
+//                viewModel.updateCurrentSet(currentSet)
+//            }
+//        }
 
         holder.completedCheckBox.setOnCheckedChangeListener { _, isChecked ->
             currentSet.isCompleted = isChecked

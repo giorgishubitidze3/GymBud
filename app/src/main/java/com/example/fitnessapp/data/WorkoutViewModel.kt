@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +14,8 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class WorkoutViewModel(application: Application): AndroidViewModel(application) {
+
+    private var setIdCounter = 0
 
     val readAllData: LiveData<List<Workout>>
     private val repository: AppRepository
@@ -35,14 +38,20 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
     private var elapsedTimeInSeconds = -1L
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
-        return WorkoutSet(workoutName, 1, 0, 0, false)
+        return WorkoutSet(workoutName, setIdCounter++, 1, 0, 0, false)
     }
+
+    fun generateUniqueSetId(): Int {
+        return setIdCounter++
+    }
+
     fun updateCurrentSets(set: WorkoutSet){
         val currentSets = _currentSets.value ?: emptyList()
         val updatedSets = currentSets.toMutableList().also{
             it.add(set)
         }
-        Log.d("ViewModel", "Added set ${set.workoutName}, new size: ${updatedSets.size}")
+        Log.d("ViewModel", "Added set ${set.workoutName}, new size: ${updatedSets.size} ${set}")
+        Log.d("ViewModel", "${_currentSets.value}")
 
         _currentSets.postValue(updatedSets)
     }
@@ -81,12 +90,25 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
     }
 
     // Function to remove a set
+//    fun removeSet(set: WorkoutSet) {
+//        val currentSets = _currentSets.value ?: return
+//        val updatedSets = currentSets.toMutableList().also {
+//            it.remove(set)
+//        }
+//        _currentSets.postValue(updatedSets)
+//    }
+
     fun removeSet(set: WorkoutSet) {
         val currentSets = _currentSets.value ?: return
-        val updatedSets = currentSets.toMutableList().also {
-            it.remove(set)
+        val setsForExercise = currentSets.filter { it.workoutName == set.workoutName }
+        if (setsForExercise.size > 1) {
+            val updatedSets = currentSets.toMutableList().apply {
+                remove(set)
+            }
+            _currentSets.postValue(updatedSets)
+        } else {
+            Log.d("WorkoutViewModel", "Cannot remove the last set for ${set.workoutName}")
         }
-        _currentSets.postValue(updatedSets)
     }
 
     fun updateCurrentWorkout(exercise: GymExercise){
