@@ -49,7 +49,7 @@ class InnerSetAdapter(
         holder.editTextRep.setText(currentSet.currentReps.toString())
         holder.completedCheckBox.isChecked = currentSet.isCompleted
 
-//TODO: change this stuff
+
 
         holder.editTextKg.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
