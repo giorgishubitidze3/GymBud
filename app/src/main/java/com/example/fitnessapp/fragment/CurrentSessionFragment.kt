@@ -93,6 +93,8 @@ class CurrentSessionFragment : Fragment() {
         buttonCancel.setOnClickListener {
             //TODO modify later
             cancelDialogBuilder.show()
+            viewModel.resetCurrentWorkouts()
+            viewModel.resetCurrentSets()
         }
 
         val slideDownButton = view.findViewById<ImageButton>(R.id.slide_down_button)

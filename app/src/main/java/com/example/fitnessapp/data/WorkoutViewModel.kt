@@ -57,6 +57,14 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
     }
 
 
+    fun resetCurrentSets(){
+        val updatedSets = emptyList<WorkoutSet>()
+        _currentSets.postValue(updatedSets)
+    }
+    fun resetCurrentWorkouts(){
+        val updatedWorkouts = emptyList<GymExercise>()
+        _currentWorkouts.postValue(updatedWorkouts)
+    }
     fun updateWorkoutSetValues(workoutName: String, currentKg: Int, currentReps: Int, isCompleted:Boolean){
         val currentSets = _currentSets.value ?: return
         val updatedSets = currentSets.map {set ->
