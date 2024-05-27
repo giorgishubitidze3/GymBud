@@ -1,5 +1,6 @@
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,24 +51,36 @@ class InnerSetAdapter(
         holder.completedCheckBox.isChecked = currentSet.isCompleted
 
 
-
-        holder.editTextKg.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                kgDebounceJob?.cancel()
-                kgDebounceJob = viewLifecycleOwner.lifecycleScope.launch {
-                    delay(300)
-                    val kgValue = s?.toString()?.toIntOrNull() ?: 0
-                    if (currentSet.currentKg != kgValue) {
-                        currentSet.currentKg = kgValue
-                        viewModel.updateCurrentSet(currentSet)
-                    }
+        holder.editTextKg.setOnKeyListener{ v, keyCode, event ->
+            if(keyCode == KeyEvent.KEYCODE_ENTER){
+                val kgValue = holder.editTextKg.text.toString().toIntOrNull() ?: 0
+                if (currentSet.currentKg != kgValue) {
+                    currentSet.currentKg = kgValue
+                    viewModel.updateCurrentSet(currentSet)
                 }
+
+                return@setOnKeyListener true
             }
-        })
+            false
+        }
+
+//        holder.editTextKg.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                kgDebounceJob?.cancel()
+//                kgDebounceJob = viewLifecycleOwner.lifecycleScope.launch {
+//                    delay(300)
+//                    val kgValue = s?.toString()?.toIntOrNull() ?: 0
+//                    if (currentSet.currentKg != kgValue) {
+//                        currentSet.currentKg = kgValue
+//                        viewModel.updateCurrentSet(currentSet)
+//                    }
+//                }
+//            }
+//        })
 
 
 //        holder.editTextKg.addTextChangedListener(object : TextWatcher {
@@ -91,7 +104,8 @@ class InnerSetAdapter(
         holder.editTextRep.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
 
             override fun afterTextChanged(s: Editable?) {
                 repDebounceJob?.cancel()
