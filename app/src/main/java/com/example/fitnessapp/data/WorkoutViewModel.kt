@@ -46,14 +46,19 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
     }
 
     fun updateCurrentSets(set: WorkoutSet){
-        val currentSets = _currentSets.value ?: emptyList()
-        val updatedSets = currentSets.toMutableList().also{
-            it.add(set)
+        val currentSets = _currentSets.value?.toMutableList() ?: mutableListOf()
+        if (!currentSets.contains(set)) {
+            currentSets.add(set)
+            _currentSets.postValue(currentSets)
         }
-        Log.d("ViewModel", "Added set ${set.workoutName}, new size: ${updatedSets.size} ${set}")
-        Log.d("ViewModel", "${_currentSets.value}")
 
-        _currentSets.postValue(updatedSets)
+//        val updatedSets = currentSets.toMutableList().apply{
+//            add(set)
+//        }
+//        Log.d("ViewModel", "Added set ${set.workoutName}, new size: ${updatedSets.size} ${set}")
+//        Log.d("ViewModel", "${_currentSets.value}")
+
+//        _currentSets.postValue(updatedSets)
     }
 
 

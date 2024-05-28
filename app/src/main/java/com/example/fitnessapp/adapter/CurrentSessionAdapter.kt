@@ -66,7 +66,7 @@ class CurrentSessionAdapter(
         }
 
         holder.addBtn.setOnClickListener {
-            val newSetId = viewModel.generateUniqueSetId() // Generate a unique setId
+            val newSetId = viewModel.generateUniqueSetId()
             val newSet = WorkoutSet(currentWorkout.name, newSetId, 0, 0, 0, false)
             viewModel.updateCurrentSets(newSet)
             viewModel.addSetCount(currentWorkout)
@@ -74,18 +74,13 @@ class CurrentSessionAdapter(
 
         holder.removeBtn.setOnClickListener {
             val currentSets = viewModel.currentSets.value?.filter { it.workoutName == currentWorkout.name } ?: return@setOnClickListener
-
-            Log.d("InnerSetAdapter" , currentSets.size.toString())
             if (currentSets.size > 1) {
                 val setToRemove = currentSets.last()
-                Log.d("InnerSetAdapter" , currentSets.size.toString())
                 viewModel.removeSet(setToRemove)
                 viewModel.removeSetCount(currentWorkout)
             } else {
-                Log.d("Inner Set Adapter" , "Remove button pressed")
                 Toast.makeText(context, "Cannot remove the last set", Toast.LENGTH_SHORT).show()
                 vibratePhone(context)
-                Log.d("InnerSetAdapter" , currentSets.size.toString())
             }
         }
     }
