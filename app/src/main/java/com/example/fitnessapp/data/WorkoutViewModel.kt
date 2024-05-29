@@ -6,16 +6,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 class WorkoutViewModel(application: Application): AndroidViewModel(application) {
 
-    private var setIdCounter = 0
+    private val setIdCounters = mutableMapOf<String, Int>()
 
     val readAllData: LiveData<List<Workout>>
     private val repository: AppRepository
@@ -38,28 +35,62 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
     private var elapsedTimeInSeconds = -1L
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
-        return WorkoutSet(workoutName, setIdCounter++, 1, 0, 0, false)
+        return WorkoutSet(workoutName, increaseSetId(workoutName), 1, 0, 0, false)
     }
 
-    fun generateUniqueSetId(): Int {
-        return setIdCounter++
+    fun increaseSetId(workoutName: String): Int {
+        val currentCounter = setIdCounters[workoutName] ?: 0
+        val newCounter = currentCounter + 1
+        setIdCounters[workoutName] = newCounter
+        return newCounter
     }
 
-    fun updateCurrentSets(set: WorkoutSet){
+    fun decreaseSetId(workoutName: String) {
+        val currentCounter = setIdCounters[workoutName] ?: return
+        if (currentCounter > 1) {
+            setIdCounters[workoutName] = currentCounter - 1
+        } else {
+            setIdCounters[workoutName] = 0
+        }
+    }
+
+
+    fun addSet(newSet: WorkoutSet) {
         val currentSets = _currentSets.value?.toMutableList() ?: mutableListOf()
-        if (!currentSets.contains(set)) {
-            currentSets.add(set)
-            _currentSets.postValue(currentSets)
+
+        val existingSetIndex = currentSets.indexOfFirst { it.workoutName == newSet.workoutName && it.setId == newSet.setId }
+        if (existingSetIndex != -1) {
+            currentSets[existingSetIndex] = newSet
+        } else {
+            currentSets.add(newSet)
         }
 
-//        val updatedSets = currentSets.toMutableList().apply{
-//            add(set)
-//        }
-//        Log.d("ViewModel", "Added set ${set.workoutName}, new size: ${updatedSets.size} ${set}")
-//        Log.d("ViewModel", "${_currentSets.value}")
-
-//        _currentSets.postValue(updatedSets)
+        _currentSets.postValue(currentSets)
     }
+
+
+
+
+//    fun updateCurrentSets(newSet: WorkoutSet) {
+//        val currentSets = _currentSets.value?.toMutableList() ?: mutableListOf()
+//
+//        if (currentSets.any { it.workoutName == newSet.workoutName && it.setId == newSet.setId }) {
+//            val existingSet = currentSets.find { it.workoutName == newSet.workoutName && it.setId == newSet.setId }
+//            if (existingSet != null) {
+//                val updatedSet = existingSet.copy(
+//                    currentKg = newSet.currentKg,
+//                    currentReps = newSet.currentReps,
+//                    isCompleted = newSet.isCompleted
+//                )
+//                currentSets.remove(existingSet)
+//                currentSets.add(updatedSet)
+//            }
+//        } else {
+//            currentSets.add(newSet)
+//        }
+//
+//        _currentSets.postValue(currentSets)
+//    }
 
 
     fun resetCurrentSets(){
@@ -98,7 +129,7 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
 
 
    // To add a set
-    fun updateCurrentSets(sets: List<WorkoutSet>) {
+    fun addSet(sets: List<WorkoutSet>) {
         _currentSets.postValue(sets)
     }
 
@@ -111,18 +142,31 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
 //        _currentSets.postValue(updatedSets)
 //    }
 
+
+
     fun removeSet(set: WorkoutSet) {
         val currentSets = _currentSets.value ?: return
-        val setsForExercise = currentSets.filter { it.workoutName == set.workoutName }
-        if (setsForExercise.size > 1) {
-            val updatedSets = currentSets.toMutableList().apply {
-                remove(set)
-            }
-            _currentSets.postValue(updatedSets)
-        } else {
+        if (currentSets.size <= 1) {
             Log.d("WorkoutViewModel", "Cannot remove the last set for ${set.workoutName}")
+            return
         }
+        val updatedSets = currentSets.toMutableList().apply { remove(set) }
+        _currentSets.postValue(updatedSets)
+        decreaseSetId(set.workoutName)
     }
+
+//    fun removeSet(set: WorkoutSet) {
+//        val currentSets = _currentSets.value ?: return
+//        val setsForExercise = currentSets.filter { it.workoutName == set.workoutName }
+//        if (setsForExercise.size > 1) {
+//            val updatedSets = currentSets.toMutableList().apply {
+//                remove(set)
+//            }
+//            _currentSets.postValue(updatedSets)
+//        } else {
+//            Log.d("WorkoutViewModel", "Cannot remove the last set for ${set.workoutName}")
+//        }
+//    }
 
     fun updateCurrentWorkout(exercise: GymExercise){
         val currentExercises = _currentWorkouts.value ?: emptyList()
@@ -137,19 +181,19 @@ class WorkoutViewModel(application: Application): AndroidViewModel(application) 
 //            }
 //        }
         val defaultSet = createDefaultSet(exercise.name)
-        updateCurrentSets(defaultSet)
+        addSet(defaultSet)
         _currentWorkouts.postValue(updatedExercises)
     }
 
 
 
-    fun addSetCount(exercise: GymExercise){
-        exercise.setCount++
-    }
-
-    fun removeSetCount(exercise: GymExercise){
-        exercise.setCount--
-    }
+//    fun addSetCount(exercise: GymExercise){
+//        exercise.setCount++
+//    }
+//
+//    fun removeSetCount(exercise: GymExercise) {
+//        if (exercise.setCount > 0) exercise.setCount--
+//    }
 
     fun startWorkout(){
         _workoutState.value = true

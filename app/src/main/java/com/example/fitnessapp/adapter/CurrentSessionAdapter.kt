@@ -5,17 +5,14 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
-import com.example.fitnessapp.data.ExerciseInfo
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutSet
 import com.example.fitnessapp.data.WorkoutViewModel
@@ -66,10 +63,9 @@ class CurrentSessionAdapter(
         }
 
         holder.addBtn.setOnClickListener {
-            val newSetId = viewModel.generateUniqueSetId()
+            val newSetId = viewModel.increaseSetId(currentWorkout.name)
             val newSet = WorkoutSet(currentWorkout.name, newSetId, 0, 0, 0, false)
-            viewModel.updateCurrentSets(newSet)
-            viewModel.addSetCount(currentWorkout)
+            viewModel.addSet(newSet)
         }
 
         holder.removeBtn.setOnClickListener {
@@ -77,7 +73,7 @@ class CurrentSessionAdapter(
             if (currentSets.size > 1) {
                 val setToRemove = currentSets.last()
                 viewModel.removeSet(setToRemove)
-                viewModel.removeSetCount(currentWorkout)
+                viewModel.decreaseSetId(currentWorkout.name)
             } else {
                 Toast.makeText(context, "Cannot remove the last set", Toast.LENGTH_SHORT).show()
                 vibratePhone(context)

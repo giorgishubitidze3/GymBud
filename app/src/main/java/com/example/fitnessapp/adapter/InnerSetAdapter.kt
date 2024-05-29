@@ -1,22 +1,17 @@
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
 import com.example.fitnessapp.data.WorkoutSet
 import com.example.fitnessapp.data.WorkoutViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class InnerSetAdapter(
     private var list: List<WorkoutSet>,
@@ -49,7 +44,7 @@ class InnerSetAdapter(
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     if (p0 != null && p0.isNotEmpty()) {
                         set.currentKg = p0.toString().toIntOrNull() ?: 0
-                        viewModel.updateCurrentSets(set)
+                        viewModel.addSet(set)
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {}
@@ -63,7 +58,7 @@ class InnerSetAdapter(
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     if (p0 != null && p0.isNotEmpty()) {
                         set.currentReps = p0.toString().toIntOrNull() ?: 0
-                        viewModel.updateCurrentSets(set)
+                        viewModel.addSet(set)
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {}
