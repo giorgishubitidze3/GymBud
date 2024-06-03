@@ -44,16 +44,25 @@ class CurrentSessionFragment : Fragment() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
         val buttonCancel = view.findViewById<Button>(R.id.btnCancel)
         val buttonAdd = view.findViewById<Button>(R.id.btnAdd)
+        val routineNameTV = view.findViewById<TextView>(R.id.routineName)
+
 
         var listCurrentWorkouts = emptyList<GymExercise>()
 
         val exercisesAdapter = CurrentSessionAdapter(viewModel, viewLifecycleOwner, requireContext())
+
 
         viewModel.currentWorkouts.observe(viewLifecycleOwner){
             Log.d("Observer", "Called")
             exercisesAdapter.setData(it)
             listCurrentWorkouts = it
         }
+
+
+        viewModel.currentRoutineName.observe(viewLifecycleOwner){
+            routineNameTV.text = it
+        }
+
 
 
 //        viewModel.currentWorkouts.observe(viewLifecycleOwner) { exercises ->

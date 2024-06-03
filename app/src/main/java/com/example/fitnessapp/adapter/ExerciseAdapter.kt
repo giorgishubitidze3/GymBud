@@ -23,7 +23,7 @@ class ExerciseAdapter(private val context: Context,
                          private val switchToDetailCallback: (GymExercise) -> Unit
 ): RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
     val appDatabase: AppDatabase = myApplication.database
-    val workoutDao = appDatabase.workoutDao()
+//    val workoutDao = appDatabase.workoutDao()
     fun setData(newData: List<GymExercise>) {
         exercises = newData
         notifyDataSetChanged()

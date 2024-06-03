@@ -1,12 +1,17 @@
 package com.example.fitnessapp.data
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName="workout_sets")
 data class WorkoutSet(
-    val workoutName: String,
-    val setId: Int,
-    val prevSet: Int,
-    var currentKg: Int,
-    var currentReps: Int,
-    var isCompleted: Boolean
+    @ColumnInfo(name = "workout_name") val workoutName: String,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "set_id") val setId: Int,
+    @ColumnInfo(name = "prev_set") val prevSet: Int,
+    @ColumnInfo(name = "current_kg") var currentKg: Int,
+    @ColumnInfo(name = "current_reps")  var currentReps: Int,
+    @ColumnInfo(name = "is_completed") var isCompleted: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

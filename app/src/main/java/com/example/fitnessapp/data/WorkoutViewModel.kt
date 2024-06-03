@@ -16,8 +16,10 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private val setIdCounters = mutableMapOf<String, Int>()
     private val availableSetIds = mutableMapOf<String, MutableList<Int>>()
+    val allWorkoutSets: LiveData<List<WorkoutSet>>
 
-    val readAllData: LiveData<List<Workout>>
+//    val readAllData: LiveData<List<Workout>>
+
     private val repository: AppRepository
 
     private val _workoutState: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -35,6 +37,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _currentSets = MutableLiveData<List<WorkoutSet>>()
     val currentSets: LiveData<List<WorkoutSet>> get() = _currentSets
 
+    private val _currentRoutineName = MutableLiveData<String>()
+    val currentRoutineName: LiveData<String> get() = _currentRoutineName
+
     private var elapsedTimeInSeconds = -1L
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
@@ -42,15 +47,20 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun generateUniqueSetId(workoutName: String): Int {
-        val availableIds = availableSetIds[workoutName]
-        if (availableIds != null && availableIds.isNotEmpty()) {
-            return availableIds.removeAt(0)
+        val currentSets = _currentSets.value ?: return 1
+
+        // Filter out removed sets for the given workoutName
+        val remainingSets = currentSets.filter { it.workoutName == workoutName }
+        val existingIds = remainingSets.map { it.setId }.toSet()
+
+        // Find the next available ID that is not used
+        var nextId = 1
+        while (existingIds.contains(nextId)) {
+            nextId++
         }
-        val currentCounter = setIdCounters[workoutName] ?: 0
-        val newCounter = currentCounter + 1
-        setIdCounters[workoutName] = newCounter
-        Log.d("Function", "generateUniqueSetId: $newCounter for $workoutName")
-        return newCounter
+
+        Log.d("Function", "generateUniqueSetId: $nextId for $workoutName")
+        return nextId
     }
 
     fun decreaseSetId(workoutName: String, setId: Int) {
@@ -70,6 +80,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         Log.d("Function", "addSet: ${newSet.setId} for ${newSet.workoutName}")
     }
 
+
+
+    fun changeRoutineName(name: String){
+        _currentRoutineName.value = name
+    }
 
 
     fun resetCurrentSets() {
@@ -137,9 +152,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     init {
         Log.d("WorkoutState", "ViewModel created")
-        val workoutDao = AppDatabase.getDatabase(application).workoutDao()
-        repository = AppRepository(workoutDao)
-        readAllData = repository.readAllData
+//        val workoutDao = AppDatabase.getDatabase(application).workoutDao()
+//        repository = AppRepository(workoutDao)
+//        readAllData = repository.readAllData
+//        initializeTimer()
+
+        val workoutSetDao = AppDatabase.getDatabase(application).workoutSetDao()
+        repository = AppRepository(workoutSetDao)
+        allWorkoutSets = repository.allWorkoutSets
         initializeTimer()
     }
 
@@ -159,6 +179,15 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun insert(workoutSet: WorkoutSet) = viewModelScope.launch {
+        repository.insert(workoutSet)
+    }
+
+    fun clearAll() = viewModelScope.launch {
+        repository.clearAll()
+    }
+
+
     fun startTimer() {
         timer?.start()
     }
@@ -173,11 +202,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         Log.d("WorkoutState", "ViewModel cleared")
     }
 
-    fun addWorkout(workout: Workout) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addWorkout(workout)
-        }
-    }
+//    fun addWorkout(workout: Workout) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.addWorkout(workout)
+//        }
+//    }
 
     fun updateCurrentSet(updatedSet: WorkoutSet) {
         val currentSets = _currentSets.value?.toMutableList() ?: mutableListOf()

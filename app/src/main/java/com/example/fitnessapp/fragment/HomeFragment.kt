@@ -74,9 +74,9 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager= LinearLayoutManager(requireContext())
 
-        workoutViewModel.readAllData.observe(viewLifecycleOwner, Observer { workout ->
-            adapter.setData(workout)
-        } )
+//        workoutViewModel.readAllData.observe(viewLifecycleOwner, Observer { workout ->
+//            adapter.setData(workout)
+//        } )
 
 
 

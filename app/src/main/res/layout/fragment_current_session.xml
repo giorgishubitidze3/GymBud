@@ -17,7 +17,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/routineName"
         tools:layout_conversion_absoluteHeight="0dp"
         tools:layout_conversion_absoluteWidth="0dp" />
 
@@ -50,7 +50,7 @@
         tools:listitem="@layout/current_session_rv_item" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/routineName"
         android:layout_marginBottom="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,16 +66,18 @@
         tools:layout_conversion_absoluteWidth="0dp" />
 
     <ImageButton
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/baseline_keyboard_arrow_down_24"
+        android:src="@drawable/baseline_more_vert_24"
         app:layout_constraintBottom_toBottomOf="@+id/currentTimer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.264"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintStart_toEndOf="@+id/routineName"
+        app:layout_constraintTop_toTopOf="@+id/routineName"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginBottom="1dp"
+        app:tint="?attr/colorPrimary"/>
 
     <Button
         android:id="@+id/btnAdd"

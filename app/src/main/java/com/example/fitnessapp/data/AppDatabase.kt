@@ -3,30 +3,23 @@ package com.example.fitnessapp.data
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = [Workout::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
-    abstract fun workoutDao(): WorkoutDao
+@Database(entities = [WorkoutSet::class], version = 1, exportSchema = false)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun workoutSetDao(): WorkoutSetDao
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase{
-            val tempInstance = INSTANCE
-            if(tempInstance !=null){
-                return tempInstance
-            }
-
-            synchronized(this){
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
+                    "fitness_database"
                 ).build()
                 INSTANCE = instance
-
-                return instance
-
+                instance
             }
         }
     }
