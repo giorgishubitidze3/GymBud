@@ -1,13 +1,18 @@
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
 import com.example.fitnessapp.data.WorkoutSet
@@ -81,11 +86,54 @@ class InnerSetAdapter(
             editTextRep.addTextChangedListener(repsTextWatcher)
             editTextRep.tag = repsTextWatcher
 
-            completedCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                set.isCompleted = isChecked
-                viewModel.updateCurrentSet(set)
+            // Handle Enter key on etKG to move to etRep
+//            editTextKg.setOnEditorActionListener { _, actionId, event ->
+//                if (actionId == EditorInfo.IME_ACTION_NEXT || event?.keyCode == KeyEvent.KEYCODE_ENTER) {
+//                    editTextRep.requestFocus()
+//                    true
+//                } else {
+//                    false
+//                }
+//            }
+
+            editTextKg.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_NULL) {
+                    editTextRep.requestFocus()
+                    return@setOnEditorActionListener true
+                }
+                false
             }
-        }
+
+            // Handle Enter key on etRep to remove focus and mark set as completed
+            editTextRep.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL) {
+                    // Remove focus from edit texts
+                    editTextKg.clearFocus()
+                    editTextRep.clearFocus()
+
+                    // Hide keyboard
+                    val imm = itemView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(editTextRep.windowToken, 0)
+
+                    // Mark set as completed
+                    set.isCompleted = true
+                    completedCheckBox.isChecked = true
+                    viewModel.updateCurrentSet(set)
+
+                    return@setOnEditorActionListener true
+                }
+                false
+            }
+
+            completedCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                if (set.isCompleted != isChecked) {
+                    set.isCompleted = isChecked
+                    viewModel.updateCurrentSet(set)
+                }
+                }
+
+    }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InnerViewHolder {
@@ -102,8 +150,16 @@ class InnerSetAdapter(
     }
 
     fun setData(newData: List<WorkoutSet>) {
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = list.size
+            override fun getNewListSize() = newData.size
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                list[oldItemPosition].setId == newData[newItemPosition].setId
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                list[oldItemPosition] == newData[newItemPosition]
+        })
         list = newData
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 }
-
