@@ -37,6 +37,7 @@ class InnerSetAdapter(
         val editTextKg: EditText = itemView.findViewById(R.id.etKG)
         val editTextRep: EditText = itemView.findViewById(R.id.etREP)
         val completedCheckBox: CheckBox = itemView.findViewById(R.id.setCheckBox)
+        val overlay : View = itemView.findViewById(R.id.overlay)
 
         fun bind(set: WorkoutSet) {
             tvSetNumber.text = set.setId.toString()
@@ -129,8 +130,11 @@ class InnerSetAdapter(
                 if (set.isCompleted != isChecked) {
                     set.isCompleted = isChecked
                     viewModel.updateCurrentSet(set)
+                    overlay.alpha = if (isChecked) 1F else 0F
                 }
                 }
+
+
 
     }
 

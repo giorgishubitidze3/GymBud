@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -45,7 +46,7 @@ class CurrentSessionFragment : Fragment() {
         val buttonCancel = view.findViewById<Button>(R.id.btnCancel)
         val buttonAdd = view.findViewById<Button>(R.id.btnAdd)
         val routineNameTV = view.findViewById<TextView>(R.id.routineName)
-
+        val editRoutineNameBtn = view.findViewById<ImageButton>(R.id.editRoutineName)
 
         var listCurrentWorkouts = emptyList<GymExercise>()
 
@@ -64,11 +65,36 @@ class CurrentSessionFragment : Fragment() {
         }
 
 
+        fun showEditTextDialog(){
+            val builder = AlertDialog.Builder(requireContext())
+            val inflater = layoutInflater
+            val dialogLayout = inflater.inflate(R.layout.edit_text_dialog_layout, null)
+            val editText = dialogLayout.findViewById<EditText>(R.id.et_dialogEditText)
+
+            with(builder){
+                setTitle("Enter workout name")
+                setPositiveButton("OK"){dialog, which ->
+                   viewModel.changeRoutineName(editText.text.toString())
+                }
+
+                setNegativeButton("Cancel"){dialog, which ->
+                    Log.d("DialogEditText", "cancel button pressed")
+                }
+
+                setView(dialogLayout)
+                show()
+            }
+
+        }
+
+        editRoutineNameBtn.setOnClickListener {
+            showEditTextDialog()
+        }
 
 //        viewModel.currentWorkouts.observe(viewLifecycleOwner) { exercises ->
 //            exercisesAdapter.setData(exercises)
 //        }
-        ///????????????????
+        ///
 
         val recyclerViewCurrent = view.findViewById<RecyclerView>(R.id.recyclerViewCurrentSession)
         recyclerViewCurrent.layoutManager = LinearLayoutManager(requireContext())
