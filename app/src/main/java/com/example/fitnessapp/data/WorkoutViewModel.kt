@@ -7,8 +7,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.fitnessapp.data.RoutineWithSets
+import com.example.fitnessapp.data.Routine
 
 
 
@@ -16,7 +17,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private val setIdCounters = mutableMapOf<String, Int>()
     private val availableSetIds = mutableMapOf<String, MutableList<Int>>()
-    val allWorkoutSets: LiveData<List<WorkoutSet>>
+    val allWorkoutSets: LiveData<List<RoutineWithSets>>
 
 //    val readAllData: LiveData<List<Workout>>
 
@@ -43,7 +44,35 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private var elapsedTimeInSeconds = -1L
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
-        return WorkoutSet(workoutName, generateUniqueSetId(workoutName), 1, 0, 0, false)
+        return WorkoutSet(0,generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
+
+//        return WorkoutSet(generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
+    }
+
+
+    fun getAllCompletedSets(): List<WorkoutSet> {
+        val list: List<WorkoutSet> = _currentSets.value ?: emptyList()
+
+        val latestRoutineIdLiveData = getLastRoutine()
+        var latestRoutineId = 0
+
+        latestRoutineIdLiveData.observeForever { routineWithSets ->
+            latestRoutineId = routineWithSets?.routineId ?: 0
+        }
+
+        val completedSets = list.filter { it.isCompleted }
+
+        return completedSets.map { it.copy(routineId = latestRoutineId + 1) }
+    }
+
+
+    fun getRoutineObj(): Routine{
+        return Routine(0,_currentRoutineName.value.toString(),System.currentTimeMillis())
+    }
+
+
+    fun resetCurrentRoutineName(){
+        _currentRoutineName.value = "Workout"
     }
 
     fun generateUniqueSetId(workoutName: String): Int {
@@ -61,6 +90,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
         Log.d("Function", "generateUniqueSetId: $nextId for $workoutName")
         return nextId
+
     }
 
     fun decreaseSetId(workoutName: String, setId: Int) {
@@ -157,9 +187,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 //        readAllData = repository.readAllData
 //        initializeTimer()
 
-        val workoutSetDao = AppDatabase.getDatabase(application).workoutSetDao()
-        repository = AppRepository(workoutSetDao)
-        allWorkoutSets = repository.allWorkoutSets
+        val routineDao = AppDatabase.getDatabase(application).routineDao()
+        repository = AppRepository(routineDao)
+        allWorkoutSets = repository.getAllRoutinesWithSets()
         initializeTimer()
     }
 
@@ -179,12 +209,28 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun insert(workoutSet: WorkoutSet) = viewModelScope.launch {
-        repository.insert(workoutSet)
+    fun insertRoutineWithSets(routine: Routine, sets: List<WorkoutSet>) {
+        viewModelScope.launch {
+            repository.insertRoutineWithSets(routine, sets)
+        }
     }
 
-    fun clearAll() = viewModelScope.launch {
-        repository.clearAll()
+    fun getAllRoutinesWithSets(): LiveData<List<RoutineWithSets>> {
+        return repository.getAllRoutinesWithSets()
+    }
+
+    fun getRoutineWithSets(routineId: Int): LiveData<RoutineWithSets> {
+        return repository.getRoutineWithSets(routineId)
+    }
+
+    fun getLastRoutine(): LiveData<RoutineWithSets>{
+        return repository.getLastRoutine()
+    }
+
+    fun clearAllData() {
+        viewModelScope.launch {
+            repository.clearAllData()
+        }
     }
 
 

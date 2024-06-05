@@ -8,7 +8,7 @@ data class Workout(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name:String,
-//    val bodyPart: String,
+//    val bodyPart: String,  //TODO checkout later
     val  weight: String,
     val reps: String,
     var setCount: Int,

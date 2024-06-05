@@ -65,7 +65,8 @@ class CurrentSessionAdapter(
 
         holder.addBtn.setOnClickListener {
             val newSetId = viewModel.generateUniqueSetId(currentWorkout.name)
-            val newSet = WorkoutSet(currentWorkout.name, newSetId, 0, 0, 0, false)
+            val newSet = WorkoutSet(0,newSetId,0,currentWorkout.name, 0, 0, 0, false)
+
             viewModel.addSet(newSet)
             innerAdapter.setData(viewModel.currentSets.value?.filter { it.workoutName == currentWorkout.name } ?: emptyList())
         }

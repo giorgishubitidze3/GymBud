@@ -3,9 +3,10 @@ package com.example.fitnessapp.data
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = [WorkoutSet::class], version = 1, exportSchema = false)
+@Database(entities = [WorkoutSet::class, Routine::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun workoutSetDao(): WorkoutSetDao
+    abstract fun routineDao(): RoutineDao // Add RoutineDao
 
     companion object {
         @Volatile

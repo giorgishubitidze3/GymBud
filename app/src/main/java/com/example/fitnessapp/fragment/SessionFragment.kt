@@ -44,77 +44,59 @@ class SessionFragment : Fragment() {
 
 
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Warning")
-        alertDialogBuilder.setMessage("Are you sure you want to start a new workout?")
-
-        alertDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
-            viewModel.stopTimer()
-            viewModel.endWorkout()
-            Log.d("ALERTBOXMAIN","yes clicked")
-
-            navController?.navigate(R.id.currentSession)
-            //openNewSessionFragment()
-            viewModel.startWorkout()
-            viewModel.startTimer()
-
-        }
-
-        alertDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
-        }
-
-
-
-
-
-
+            .setTitle("Warning")
+            .setMessage("Are you sure you want to start a new workout?")
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                viewModel.stopTimer()
+                viewModel.endWorkout()
+                viewModel.resetCurrentSets()
+                viewModel.resetCurrentWorkouts()
+                Log.d("ALERTBOXMAIN", "yes clicked")
+                viewModel.resetCurrentRoutineName()
+                navController?.navigate(R.id.currentSession)
+                viewModel.startWorkout()
+                viewModel.startTimer()
+            }
+            .setNegativeButton(android.R.string.no) { _, _ ->
+                Toast.makeText(requireContext(), android.R.string.no, Toast.LENGTH_SHORT).show()
+            }
 
 
         viewModel.workoutState.observe(viewLifecycleOwner) { isWorkoutActive ->
-            currentSessionContainer.visibility = if (isWorkoutActive) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            currentSessionContainer.visibility = if (isWorkoutActive) View.VISIBLE else View.GONE
         }
 
 
-        fun showEditTextDialog(){
+        fun showEditTextDialog() {
             val builder = AlertDialog.Builder(requireContext())
             val inflater = layoutInflater
             val dialogLayout = inflater.inflate(R.layout.edit_text_dialog_layout, null)
             val editText = dialogLayout.findViewById<EditText>(R.id.et_dialogEditText)
 
-            with(builder){
-                setTitle("Enter workout name")
-                setPositiveButton("OK"){dialog, which ->
-                    var firstState = false
-                    viewModel.workoutState.observe(viewLifecycleOwner){
-                            state ->
-                        firstState = state
-
-                    }
-                    if (firstState){
-                        alertDialogBuilder.show()
-                    }else{
-                        navController?.navigate(R.id.currentSession)
-                        //openNewSessionFragment()
-                        viewModel.startWorkout()
-                        viewModel.startTimer()
-                        //TODO add null check for edit text
-                        viewModel.changeRoutineName(editText.text.toString())
+            builder.setTitle("Enter workout name")
+                .setPositiveButton("OK") { _, _ ->
+                    val newRoutineName = editText.text.toString()
+                    if (newRoutineName.isNotBlank()) {
+                        if (viewModel.workoutState.value == true) {
+                            alertDialogBuilder.setMessage("Are you sure you want to change the current workout name?")
+                                .setPositiveButton(android.R.string.yes) { _, _ ->
+                                    viewModel.changeRoutineName(newRoutineName)
+                                    navController?.navigate(R.id.currentSession)
+                                }
+                                .show()
+                        } else {
+                            navController?.navigate(R.id.currentSession)
+                            viewModel.startWorkout()
+                            viewModel.startTimer()
+                            viewModel.changeRoutineName(newRoutineName)
+                        }
                     }
                 }
-
-                setNegativeButton("Cancel"){dialog, which ->
-                    Log.d("DialogEditText", "cancel button pressed")
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
                 }
-
-                setView(dialogLayout)
-                show()
-            }
-
+                .setView(dialogLayout)
+                .show()
         }
 
 
@@ -141,6 +123,7 @@ class SessionFragment : Fragment() {
                 alertDialogBuilder.show()
             }else{
                 navController?.navigate(R.id.currentSession)
+                viewModel.resetCurrentRoutineName()
                 //openNewSessionFragment()
                 viewModel.startWorkout()
                 viewModel.startTimer()

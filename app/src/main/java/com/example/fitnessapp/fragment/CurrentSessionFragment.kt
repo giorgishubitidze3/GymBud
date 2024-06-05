@@ -74,7 +74,12 @@ class CurrentSessionFragment : Fragment() {
             with(builder){
                 setTitle("Enter workout name")
                 setPositiveButton("OK"){dialog, which ->
+                    if (editText.text.toString().isNotBlank()){
                    viewModel.changeRoutineName(editText.text.toString())
+                    }else{
+                        Toast.makeText(requireContext(),"Routine name can't be blank",Toast.LENGTH_SHORT).show()
+                    }
+
                 }
 
                 setNegativeButton("Cancel"){dialog, which ->
@@ -162,7 +167,11 @@ class CurrentSessionFragment : Fragment() {
             currentTimer.text = formattedTime
         }
 
-        finishButton.setOnClickListener { finishDialogBuilder.show() }
+        finishButton.setOnClickListener {
+            finishDialogBuilder.show()
+            viewModel.insertRoutineWithSets(viewModel.getRoutineObj(),viewModel.getAllCompletedSets())
+            Toast.makeText(requireContext(),"Routine inserted",Toast.LENGTH_SHORT).show()
+        }
 
         slideDownButton.setOnClickListener {
             navController?.navigate(R.id.sessionFragment)

@@ -2,16 +2,26 @@ package com.example.fitnessapp.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName="workout_sets")
+@Entity(tableName="workout_sets",
+    foreignKeys = [ForeignKey(
+        entity = Routine::class,
+        parentColumns = ["routineId"],
+        childColumns = ["routineId"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class WorkoutSet(
-    @ColumnInfo(name = "workout_name") val workoutName: String,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "set_id") val setId: Int,
-    @ColumnInfo(name = "prev_set") val prevSet: Int,
-    @ColumnInfo(name = "current_kg") var currentKg: Int,
-    @ColumnInfo(name = "current_reps")  var currentReps: Int,
-    @ColumnInfo(name = "is_completed") var isCompleted: Boolean
+    @PrimaryKey(autoGenerate = true) val newId: Int,
+    val setId: Int,
+    var routineId: Int  = 0,// Foreign key to associate with a Routine
+    val workoutName: String,
+    val prevSet: Int,
+    var currentKg: Int,
+    var currentReps: Int,
+    var isCompleted: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
