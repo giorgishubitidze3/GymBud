@@ -26,6 +26,7 @@ class CurrentSessionFragment : Fragment() {
     private lateinit var viewModel: WorkoutViewModel
     private lateinit var cancelDialogBuilder: AlertDialog.Builder
     private lateinit var finishDialogBuilder: AlertDialog.Builder
+    private lateinit var cancelDialogBuilderTemplate: AlertDialog.Builder
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +39,7 @@ class CurrentSessionFragment : Fragment() {
 
         cancelDialogBuilder = AlertDialog.Builder(requireContext())
         finishDialogBuilder = AlertDialog.Builder(requireContext())
+        cancelDialogBuilderTemplate = AlertDialog.Builder(requireContext())
 
         viewModel= ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
         val finishButton = view.findViewById<Button>(R.id.buttonFinish)
@@ -54,15 +56,84 @@ class CurrentSessionFragment : Fragment() {
 
         val exercisesAdapter = CurrentSessionAdapter(viewModel, viewLifecycleOwner, requireContext())
 
+        cancelDialogBuilder.setTitle("Cancel Workout")
+        cancelDialogBuilder.setMessage("Are you sure you want to cancel this workout?")
+
+
+        //finishButton
+        //alertBoxYES
+        cancelDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
+            navController?.navigate(R.id.sessionFragment)
+            viewModel.stopTimer()
+            viewModel.endWorkout()
+//                exercisesAdapter.clearData()
+            Log.d("ALERTBOX","yes clicked")
+
+        }
+
+        cancelDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
+            Toast.makeText(requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT).show()
+        }
+
+
+        cancelDialogBuilderTemplate.setTitle("Cancel Workout")
+        cancelDialogBuilderTemplate.setMessage("Are you sure you want to cancel this workout?")
+        cancelDialogBuilderTemplate.setPositiveButton(android.R.string.yes){  _, _ ->
+            navController?.navigate(R.id.sessionFragment)
+            viewModel.stopTimer()
+            viewModel.endWorkout()
+            viewModel.endTemplateMaker()
+            viewModel.resetCurrentWorkouts()
+            viewModel.resetCurrentSets()
+            Log.d("ALERTBOX","yes clicked")
+
+        }
+
+        cancelDialogBuilderTemplate.setNegativeButton(android.R.string.no) { _, _  ->
+            Toast.makeText(requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT).show()
+        }
+
+
+
+
+
+        finishDialogBuilder.setTitle("Finish Workout")
+        finishDialogBuilder.setMessage("Are you sure you want to finish this workout?")
+
+        finishDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
+            navController?.navigate(R.id.sessionFragment)
+            viewModel.stopTimer()
+            viewModel.endWorkout()
+//            exercisesAdapter.clearData()
+            Log.d("ALERTBOX","yes clicked")
+
+        }
+
+        //alertBoxNO
+        finishDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
+            Toast.makeText(requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT).show()
+        }
+
+
         viewModel.templateState.observe(viewLifecycleOwner) { state ->
             if (state) {
                 finishButton.text = "Save"
                 currentTimer.visibility = View.GONE
                 slideDownButton.visibility = View.GONE
                 finishButton.setOnClickListener {
-
                     navController?.navigate(R.id.sessionFragment)
+                    viewModel.resetCurrentSets()
+                    viewModel.resetCurrentWorkouts()
                     viewModel.endTemplateMaker()
+
+                }
+
+                buttonCancel.setOnClickListener {
+                    //TODO modify later
+                    cancelDialogBuilderTemplate.show()
                 }
             } else {
                 finishButton.text = "Finish"
@@ -72,6 +143,13 @@ class CurrentSessionFragment : Fragment() {
                     finishDialogBuilder.show()
                     viewModel.insertRoutineWithSets(viewModel.getRoutineObj(), viewModel.getAllCompletedSets())
                     Toast.makeText(requireContext(), "Routine inserted", Toast.LENGTH_SHORT).show()
+                }
+
+                buttonCancel.setOnClickListener {
+                    //TODO modify later
+                    cancelDialogBuilder.show()
+                    viewModel.resetCurrentWorkouts()
+                    viewModel.resetCurrentSets()
                 }
             }
         }
@@ -129,61 +207,6 @@ class CurrentSessionFragment : Fragment() {
         recyclerViewCurrent.adapter = exercisesAdapter
 
 
-        cancelDialogBuilder.setTitle("Cancel Workout")
-        cancelDialogBuilder.setMessage("Are you sure you want to cancel this workout?")
-
-
-        //finishButton
-        //alertBoxYES
-        cancelDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
-                navController?.navigate(R.id.sessionFragment)
-                viewModel.stopTimer()
-                viewModel.endWorkout()
-//                exercisesAdapter.clearData()
-                Log.d("ALERTBOX","yes clicked")
-
-        }
-
-
-        //alertBoxNO
-        cancelDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
-        }
-
-
-        //Cancel Button
-        buttonCancel.setOnClickListener {
-            //TODO modify later
-            cancelDialogBuilder.show()
-            viewModel.resetCurrentWorkouts()
-            viewModel.resetCurrentSets()
-        }
-
-
-
-
-        finishDialogBuilder.setTitle("Finish Workout")
-        finishDialogBuilder.setMessage("Are you sure you want to finish this workout?")
-
-        finishDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
-            navController?.navigate(R.id.sessionFragment)
-            viewModel.stopTimer()
-            viewModel.endWorkout()
-//            exercisesAdapter.clearData()
-            Log.d("ALERTBOX","yes clicked")
-
-        }
-
-        //alertBoxNO
-        finishDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
-        }
-
-
-
-
 
         viewModel.elapsedtime.observe(viewLifecycleOwner) { formattedTime ->
             currentTimer.text = formattedTime
@@ -207,7 +230,6 @@ class CurrentSessionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.endTemplateMaker()
         Log.d("CurrentSession", "onDestroyView called")
 
     }
