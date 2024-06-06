@@ -10,6 +10,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -45,6 +46,9 @@ class MainActivity : AppCompatActivity() {
 
 
         bottomNavigationBar.setupWithNavController(navController)
+
+        val viewModel: SharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
+        viewModel.fetchData()
 
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

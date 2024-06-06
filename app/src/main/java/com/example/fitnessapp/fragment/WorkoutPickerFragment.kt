@@ -64,7 +64,7 @@ class WorkoutPickerFragment : Fragment() {
 
 
         val viewModel: SharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-        viewModel.fetchData()
+//        viewModel.fetchData()
 
         viewModel.data.observe(viewLifecycleOwner){newData ->
             data = newData

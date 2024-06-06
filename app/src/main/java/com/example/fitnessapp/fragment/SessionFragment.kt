@@ -81,6 +81,8 @@ class SessionFragment : Fragment() {
                             alertDialogBuilder.setMessage("Are you sure you want to change the current workout name?")
                                 .setPositiveButton(android.R.string.yes) { _, _ ->
                                     viewModel.changeRoutineName(newRoutineName)
+                                    viewModel.resetCurrentWorkouts()
+                                    viewModel.resetCurrentSets()
                                     navController?.navigate(R.id.currentSession)
                                 }
                                 .show()
@@ -88,6 +90,8 @@ class SessionFragment : Fragment() {
                             navController?.navigate(R.id.currentSession)
                             viewModel.startWorkout()
                             viewModel.startTimer()
+                            viewModel.resetCurrentWorkouts()
+                            viewModel.resetCurrentSets()
                             viewModel.changeRoutineName(newRoutineName)
                         }
                     }
@@ -100,8 +104,68 @@ class SessionFragment : Fragment() {
         }
 
 
+        val alertDialogBuilderTemplate = AlertDialog.Builder(requireContext())
+            .setTitle("Warning")
+            .setMessage("Are you sure you want to end the current session")
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                viewModel.stopTimer()
+                viewModel.endWorkout()
+                viewModel.resetCurrentSets()
+                viewModel.resetCurrentWorkouts()
+                Log.d("ALERTBOXMAIN", "yes clicked")
+                viewModel.resetCurrentRoutineName()
+                navController?.navigate(R.id.currentSession)
+                viewModel.startTemplateMaker()
+            }
+            .setNegativeButton(android.R.string.no) { _, _ ->
+                Toast.makeText(requireContext(), android.R.string.no, Toast.LENGTH_SHORT).show()
+            }
+
+//        fun showEditTextDialogTemplate() {
+//            val builder = AlertDialog.Builder(requireContext())
+//            val inflater = layoutInflater
+//
+//            builder.setTitle("")
+//                .setPositiveButton("OK") { _, _ ->
+//                    if (viewModel.workoutState.value == true) {
+//                        if (viewModel.workoutState.value == true) {
+//                            alertDialogBuilder.setMessage("Are you sure you want to change the current workout name?")
+//                                .setPositiveButton(android.R.string.yes) { _, _ ->
+//                                    viewModel.changeRoutineName(newRoutineName)
+//                                    viewModel.resetCurrentWorkouts()
+//                                    viewModel.resetCurrentSets()
+//                                    navController?.navigate(R.id.currentSession)
+//                                }
+//                                .show()
+//                        } else {
+//                            navController?.navigate(R.id.currentSession)
+//                            viewModel.startWorkout()
+//                            viewModel.startTimer()
+//                            viewModel.resetCurrentWorkouts()
+//                            viewModel.resetCurrentSets()
+//                            viewModel.changeRoutineName(newRoutineName)
+//                        }
+//                    }
+//                }
+//                .setNegativeButton("Cancel") { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//                .setView(dialogLayout)
+//                .show()
+//        }
+
+
         addRoutineBtn.setOnClickListener {
-            showEditTextDialog()
+            //showEditTextDialog()
+            viewModel.workoutState.observe(viewLifecycleOwner){state->
+
+                if(state){
+                    alertDialogBuilderTemplate.show()
+                }else{
+                    viewModel.startTemplateMaker()
+                    navController?.navigate(R.id.currentSession)
+                }
+            }
         }
 
 
@@ -127,6 +191,8 @@ class SessionFragment : Fragment() {
                 //openNewSessionFragment()
                 viewModel.startWorkout()
                 viewModel.startTimer()
+                viewModel.resetCurrentWorkouts()
+                viewModel.resetCurrentSets()
             }
         }
 
@@ -139,6 +205,7 @@ class SessionFragment : Fragment() {
         currentSessionContainer.setOnClickListener{
            navController?.navigate(R.id.currentSession)
         }
+
 
     }
 

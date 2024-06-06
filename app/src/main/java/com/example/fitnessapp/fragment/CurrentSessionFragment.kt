@@ -47,11 +47,34 @@ class CurrentSessionFragment : Fragment() {
         val buttonAdd = view.findViewById<Button>(R.id.btnAdd)
         val routineNameTV = view.findViewById<TextView>(R.id.routineName)
         val editRoutineNameBtn = view.findViewById<ImageButton>(R.id.editRoutineName)
+        val slideDownButton = view.findViewById<ImageButton>(R.id.slide_down_button)
+        val currentTimer = view.findViewById<TextView>(R.id.currentTimer)
 
         var listCurrentWorkouts = emptyList<GymExercise>()
 
         val exercisesAdapter = CurrentSessionAdapter(viewModel, viewLifecycleOwner, requireContext())
 
+        viewModel.templateState.observe(viewLifecycleOwner) { state ->
+            if (state) {
+                finishButton.text = "Save"
+                currentTimer.visibility = View.GONE
+                slideDownButton.visibility = View.GONE
+                finishButton.setOnClickListener {
+
+                    navController?.navigate(R.id.sessionFragment)
+                    viewModel.endTemplateMaker()
+                }
+            } else {
+                finishButton.text = "Finish"
+                currentTimer.visibility = View.VISIBLE
+                slideDownButton.visibility = View.VISIBLE
+                finishButton.setOnClickListener {
+                    finishDialogBuilder.show()
+                    viewModel.insertRoutineWithSets(viewModel.getRoutineObj(), viewModel.getAllCompletedSets())
+                    Toast.makeText(requireContext(), "Routine inserted", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         viewModel.currentWorkouts.observe(viewLifecycleOwner){
             Log.d("Observer", "Called")
@@ -137,8 +160,7 @@ class CurrentSessionFragment : Fragment() {
             viewModel.resetCurrentSets()
         }
 
-        val slideDownButton = view.findViewById<ImageButton>(R.id.slide_down_button)
-        val currentTimer = view.findViewById<TextView>(R.id.currentTimer)
+
 
 
         finishDialogBuilder.setTitle("Finish Workout")
@@ -167,11 +189,11 @@ class CurrentSessionFragment : Fragment() {
             currentTimer.text = formattedTime
         }
 
-        finishButton.setOnClickListener {
-            finishDialogBuilder.show()
-            viewModel.insertRoutineWithSets(viewModel.getRoutineObj(),viewModel.getAllCompletedSets())
-            Toast.makeText(requireContext(),"Routine inserted",Toast.LENGTH_SHORT).show()
-        }
+//        finishButton.setOnClickListener {
+//            finishDialogBuilder.show()
+//            viewModel.insertRoutineWithSets(viewModel.getRoutineObj(),viewModel.getAllCompletedSets())
+//            Toast.makeText(requireContext(),"Routine inserted",Toast.LENGTH_SHORT).show()
+//        }
 
         slideDownButton.setOnClickListener {
             navController?.navigate(R.id.sessionFragment)
@@ -185,6 +207,7 @@ class CurrentSessionFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.endTemplateMaker()
         Log.d("CurrentSession", "onDestroyView called")
 
     }

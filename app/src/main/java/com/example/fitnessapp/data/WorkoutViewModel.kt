@@ -26,6 +26,9 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _workoutState: MutableLiveData<Boolean> = MutableLiveData(false)
     val workoutState: LiveData<Boolean> = _workoutState
 
+    private val _templateState: MutableLiveData<Boolean> = MutableLiveData(false)
+    val templateState: LiveData<Boolean> get() = _templateState
+
     private val _currentWorkouts = MutableLiveData<List<GymExercise>>()
         .apply { value = emptyList() }
     val currentWorkouts: LiveData<List<GymExercise>> get() = _currentWorkouts
@@ -167,6 +170,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _currentWorkouts.postValue(updatedExercises)
         Log.d("Function", "updateCurrentWorkout: ${exercise.name}")
     }
+
+
+    fun startTemplateMaker(){
+        _templateState.value = true
+    }
+
+    fun endTemplateMaker(){
+        _templateState.value = false
+    }
+
 
     fun startWorkout() {
         _workoutState.value = true
