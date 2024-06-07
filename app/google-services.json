@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "62588180433",
+    "project_id": "gymbud-application",
+    "storage_bucket": "gymbud-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62588180433:android:0194cfdd05389ef8c872f0",
+        "android_client_info": {
+          "package_name": "com.example.fitnessapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8DslbZMr9s-xCJPGoDgnLQg9Q1ydJSho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

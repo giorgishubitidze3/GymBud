@@ -1,29 +1,18 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.activity
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.fitnessapp.data.AppDatabase
+import com.example.fitnessapp.R
+import com.example.fitnessapp.SharedViewModel
 import com.example.fitnessapp.data.GymExercise
-import com.example.fitnessapp.network.RetrofitInstance
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
