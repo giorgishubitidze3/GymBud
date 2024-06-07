@@ -12,6 +12,8 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
@@ -19,22 +21,26 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivitySignUpBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         supportActionBar?.hide()
 
         auth = Firebase.auth
 
-
+        val database = FirebaseDatabase.getInstance("https://gymbud-application-default-rtdb.europe-west1.firebasedatabase.app")
+        val usersRef = database.getReference("users")
         binding.signInBtn.setOnClickListener {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
             finish()
         }
+
 
 
         binding.buttonSignUp.setOnClickListener {
@@ -49,6 +55,23 @@ class SignUpActivity : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(mail,password).addOnCompleteListener{
                     if(it.isSuccessful){
 
+                        val currentUserId = auth.currentUser?.uid.toString()
+                        val user = mapOf(
+                            "username" to userName,
+                            "mail" to mail,
+                            "name" to name,
+                            "surname" to surname,
+                        )
+
+
+                        usersRef.child(currentUserId).setValue(user)
+                            .addOnSuccessListener {
+                                Log.d("Firebase", "User1 data written successfully")
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.e("Firebase", "Failed to write user1 data", exception)
+                            }
+
                         val intent = Intent(this, MainActivity::class.java)
                         intent.putExtra("userCurrentMail", mail)
                         startActivity(intent)
@@ -62,8 +85,14 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
         }
-
+        fun signUp(){
+            var email = binding.etMail.text.toString()
+            var password = binding.etPassword.text.toString()
+            var username = binding.etUsername.text.toString()
+        }
     }
+
+
 
     private fun checkAllField(): Boolean{
         val email = binding.etMail.text.toString()

@@ -3,6 +3,7 @@ package com.example.fitnessapp
 import android.app.Application
 import androidx.room.Room
 import com.example.fitnessapp.data.AppDatabase
+import com.google.firebase.FirebaseApp
 
 class MyApplication: Application() {
 
@@ -12,5 +13,7 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        FirebaseApp.initializeApp(this)
     }
 }

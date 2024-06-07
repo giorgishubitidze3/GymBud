@@ -2,6 +2,7 @@ package com.example.fitnessapp.data
 
 import android.app.Application
 import android.os.CountDownTimer
+import android.system.Os.remove
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -10,10 +11,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.example.fitnessapp.data.RoutineWithSets
 import com.example.fitnessapp.data.Routine
-
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
 
 
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
+
+    val auth = Firebase.auth
+
+
 
     private val setIdCounters = mutableMapOf<String, Int>()
     private val availableSetIds = mutableMapOf<String, MutableList<Int>>()
@@ -46,12 +54,26 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     private var elapsedTimeInSeconds = -1L
 
+    private val _currentUserUsername = MutableLiveData<String>()
+    val currentUserUsername : LiveData<String> get() = _currentUserUsername
+
+    private val _currentUserFullName = MutableLiveData<String>()
+    val currentUserFullName : LiveData<String> get() = _currentUserFullName
+
+
+
     private fun createDefaultSet(workoutName: String): WorkoutSet {
         return WorkoutSet(0,generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
 
 //        return WorkoutSet(generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
     }
 
+
+    fun updateCurrentUserData(username:String,name:String,surname:String) {
+        _currentUserUsername.postValue(username)
+        var fullName = "${name} ${surname}"
+        _currentUserFullName.postValue(fullName)
+    }
 
     fun getAllCompletedSets(): List<WorkoutSet> {
         val list: List<WorkoutSet> = _currentSets.value ?: emptyList()

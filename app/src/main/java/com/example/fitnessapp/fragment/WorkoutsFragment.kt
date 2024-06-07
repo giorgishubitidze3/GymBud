@@ -73,6 +73,16 @@ class WorkoutsFragment : Fragment() {
             }
         }
 
+        searchView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            val isIconified = searchView.isIconified
+            if (isIconified) {
+                workoutsTextView.visibility = View.VISIBLE
+            } else {
+                workoutsTextView.visibility = View.GONE
+            }
+        }
+
+
         //iconify searchview on back button press
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
