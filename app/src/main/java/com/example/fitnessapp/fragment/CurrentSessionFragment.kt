@@ -123,10 +123,17 @@ class CurrentSessionFragment : Fragment() {
                 finishButton.text = "Save"
                 currentTimer.visibility = View.GONE
                 slideDownButton.visibility = View.GONE
+
                 finishButton.setOnClickListener {
                     navController?.navigate(R.id.sessionFragment)
+                    viewModel.currentSets.value?.let { it1 ->
+                        viewModel.insertTemplateWithSets(viewModel.getTemplateObj(),
+                            it1
+                        )
+                    }
                     viewModel.resetCurrentSets()
                     viewModel.resetCurrentWorkouts()
+                    viewModel.resetCurrentRoutineName()
                     viewModel.endTemplateMaker()
 
                 }
@@ -149,6 +156,7 @@ class CurrentSessionFragment : Fragment() {
                     //TODO modify later
                     cancelDialogBuilder.show()
                     viewModel.resetCurrentWorkouts()
+                    viewModel.resetCurrentRoutineName()
                     viewModel.resetCurrentSets()
                 }
             }

@@ -16,6 +16,9 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutSet
 import com.example.fitnessapp.data.WorkoutViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 
 class CurrentSessionAdapter(
@@ -25,6 +28,7 @@ class CurrentSessionAdapter(
 ) : RecyclerView.Adapter<CurrentSessionAdapter.CurrentViewHolder>() {
 
     private var exercises: List<GymExercise> = emptyList()
+    val auth = Firebase.auth
 
     inner class CurrentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView? = itemView.findViewById(R.id.setTitle)
@@ -65,7 +69,7 @@ class CurrentSessionAdapter(
 
         holder.addBtn.setOnClickListener {
             val newSetId = viewModel.generateUniqueSetId(currentWorkout.name)
-            val newSet = WorkoutSet(0,newSetId,0,currentWorkout.name, 0, 0, 0, false)
+            val newSet = WorkoutSet(0,newSetId,0,currentWorkout.name, 0, 0, 0, false, auth.currentUser?.uid.toString())
 
             viewModel.addSet(newSet)
             innerAdapter.setData(viewModel.currentSets.value?.filter { it.workoutName == currentWorkout.name } ?: emptyList())

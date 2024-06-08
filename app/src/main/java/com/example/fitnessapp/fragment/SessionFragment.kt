@@ -15,7 +15,10 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
+import com.example.fitnessapp.adapter.TemplateAdapter
 import com.example.fitnessapp.data.WorkoutViewModel
 
 class SessionFragment : Fragment() {
@@ -41,6 +44,11 @@ class SessionFragment : Fragment() {
         val addRoutineBtn = view.findViewById<ImageButton>(R.id.addRoutineBtn)
 
         val currentSessionNameTV = view.findViewById<TextView>(R.id.currentSessionName)
+
+        val templateRecyclerView = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
+        val templateAdapter = TemplateAdapter()
+
+
 
 
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
@@ -168,6 +176,14 @@ class SessionFragment : Fragment() {
             }
         }
 
+
+        viewModel.currentTemplatesWithSets.observe(viewLifecycleOwner){item ->
+            templateAdapter.setData(item)
+        }
+
+        templateRecyclerView.adapter =templateAdapter
+
+        templateRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
         viewModel.currentRoutineName.observe(viewLifecycleOwner){

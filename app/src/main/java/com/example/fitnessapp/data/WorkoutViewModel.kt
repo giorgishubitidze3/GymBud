@@ -6,6 +6,7 @@ import android.system.Os.remove
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -20,7 +21,8 @@ import com.google.firebase.auth.ktx.auth
 class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
 
     val auth = Firebase.auth
-
+    private val templateDao: TemplateDao = AppDatabase.getDatabase(application).templateDao()
+    private val templateSetDao : TemplateSetDao = AppDatabase.getDatabase(application).templateSetDao()
 
 
     private val setIdCounters = mutableMapOf<String, Int>()
@@ -49,8 +51,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _currentSets = MutableLiveData<List<WorkoutSet>>()
     val currentSets: LiveData<List<WorkoutSet>> get() = _currentSets
 
-    private val _currentRoutineName = MutableLiveData<String>()
+    private val _currentRoutineName = MutableLiveData<String>("Workout")
     val currentRoutineName: LiveData<String> get() = _currentRoutineName
+
+    private val _currentTemplatesWithSets = MediatorLiveData<List<TemplateWithSets>>()
+    val currentTemplatesWithSets: LiveData<List<TemplateWithSets>> get() = _currentTemplatesWithSets
+
 
     private var elapsedTimeInSeconds = -1L
 
@@ -60,10 +66,11 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     private val _currentUserFullName = MutableLiveData<String>()
     val currentUserFullName : LiveData<String> get() = _currentUserFullName
 
+    val currentUserId = auth.currentUser?.uid.toString()
 
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
-        return WorkoutSet(0,generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
+        return WorkoutSet(0,generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false, currentUserId )
 
 //        return WorkoutSet(generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
     }
@@ -92,7 +99,12 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
 
     fun getRoutineObj(): Routine{
-        return Routine(0,_currentRoutineName.value.toString(),System.currentTimeMillis())
+        return Routine(0,_currentRoutineName.value.toString(),System.currentTimeMillis(), currentUserId)
+    }
+
+
+    fun getTemplateObj(): Template{
+        return Template(0,_currentRoutineName.value.toString(),currentUserId)
     }
 
 
@@ -170,6 +182,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         _currentSets.postValue(updatedSets)
     }
 
+    fun workoutSetToTemplateSet(workoutSet: WorkoutSet, templateId: Int): TemplateSet {
+        return TemplateSet(
+            newTempId = 0,
+            setId = workoutSet.setId,
+            templateId = templateId,
+            exerciseName = workoutSet.workoutName,
+            userId = auth.currentUser?.uid.toString()
+        )
+    }
+
     fun removeSet(set: WorkoutSet) {
         val currentSets = _currentSets.value ?: return
         if (currentSets.size <= 1) {
@@ -215,6 +237,16 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    private fun combineTemplateAndSets(templates: List<Template>?, templateSets: List<TemplateSet>?) {
+        if (templates != null && templateSets != null) {
+            val templateWithSetsList = templates.map { template ->
+                val setsForTemplate = templateSets.filter { it.templateId == template.templateId }
+                TemplateWithSets(template, setsForTemplate)
+            }
+            _currentTemplatesWithSets.value = templateWithSetsList
+        }
+    }
+
     init {
         Log.d("WorkoutState", "ViewModel created")
 //        val workoutDao = AppDatabase.getDatabase(application).workoutDao()
@@ -222,8 +254,20 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 //        readAllData = repository.readAllData
 //        initializeTimer()
 
+        val templatesLiveData = templateDao.getAllTemplates(auth.currentUser?.uid.toString())
+        val templateSetsLiveData = templateSetDao.getAllTemplateSets(auth.currentUser?.uid.toString())
+
+        _currentTemplatesWithSets.addSource(templatesLiveData){templates ->
+            combineTemplateAndSets(templates, templateSetsLiveData.value)
+        }
+
+        _currentTemplatesWithSets.addSource(templateSetsLiveData) { templateSets ->
+            combineTemplateAndSets(templatesLiveData.value, templateSets)
+        }
+
         val routineDao = AppDatabase.getDatabase(application).routineDao()
-        repository = AppRepository(routineDao)
+        val templateDao = AppDatabase.getDatabase(application).templateDao()
+        repository = AppRepository(routineDao, templateDao)
         allWorkoutSets = repository.getAllRoutinesWithSets()
         initializeTimer()
     }
@@ -247,6 +291,22 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
     fun insertRoutineWithSets(routine: Routine, sets: List<WorkoutSet>) {
         viewModelScope.launch {
             repository.insertRoutineWithSets(routine, sets)
+        }
+    }
+
+    fun getTemplateWithSets(){
+
+    }
+
+
+    fun insertTemplateWithSets(template: Template, sets: List<WorkoutSet>){
+
+        val listOfTemplateSets : MutableList<TemplateSet> = mutableListOf()
+
+        sets.forEach { set -> listOfTemplateSets.add(workoutSetToTemplateSet(set, 0)) }
+
+        viewModelScope.launch{
+            repository.insertTemplateWithSets(template,listOfTemplateSets)
         }
     }
 

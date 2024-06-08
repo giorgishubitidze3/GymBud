@@ -34,9 +34,6 @@
         <action
             android:id="@+id/action_sessionFragment_to_currentSession"
             app:destination="@id/currentSession" />
-        <action
-            android:id="@+id/action_sessionFragment_to_templateMakerFragment"
-            app:destination="@id/templateMakerFragment" />
     </fragment>
     <fragment
         android:id="@+id/workoutsFragment"
@@ -72,16 +69,5 @@
         <action
             android:id="@+id/action_workoutPicker_to_workoutDetails"
             app:destination="@id/workoutDetails" />
-    </fragment>
-    <fragment
-        android:id="@+id/templateMakerFragment"
-        android:name="com.example.fitnessapp.fragment.TemplateMakerFragment"
-        android:label="TemplateMakerFragment" >
-        <action
-            android:id="@+id/action_templateMakerFragment_to_currentSession"
-            app:destination="@id/currentSession" />
-        <action
-            android:id="@+id/action_templateMakerFragment_to_sessionFragment"
-            app:destination="@id/sessionFragment" />
     </fragment>
 </navigation>

@@ -17,6 +17,4 @@ interface WorkoutDao{
     fun getAllWorkouts(): LiveData<List<Workout>>
     @Query("DELETE FROM workouts")
     suspend fun deleteAll()
-
-
 }

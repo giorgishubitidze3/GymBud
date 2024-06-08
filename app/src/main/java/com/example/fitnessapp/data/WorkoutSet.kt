@@ -21,7 +21,8 @@ data class WorkoutSet(
     val prevSet: Int,
     var currentKg: Int,
     var currentReps: Int,
-    var isCompleted: Boolean
+    var isCompleted: Boolean,
+    val userId: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
