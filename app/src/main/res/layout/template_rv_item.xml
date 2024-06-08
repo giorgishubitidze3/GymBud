@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:layout_marginTop="8dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -39,7 +40,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="8dp"
                 android:src="@drawable/baseline_more_vert_24"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                app:tint="?attr/colorPrimary" />
 
 
             <androidx.recyclerview.widget.RecyclerView

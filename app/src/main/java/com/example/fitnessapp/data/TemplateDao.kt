@@ -35,4 +35,9 @@ interface TemplateDao {
     @Query("SELECT * FROM templates WHERE templateId = (SELECT MAX(templateId) FROM templates)")
     fun getLastTemplate(): LiveData<TemplateWithSets>
 
+    @Query("UPDATE templates SET name = :name WHERE templateId = :templateId")
+    suspend fun updateTemplateName(templateId: Int, name: String)
+
+    @Query("DELETE FROM templates WHERE templateId = :templateId")
+    suspend fun deleteTemplateById(templateId: Int)
 }

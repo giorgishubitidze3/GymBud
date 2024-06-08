@@ -46,7 +46,7 @@ class SessionFragment : Fragment() {
         val currentSessionNameTV = view.findViewById<TextView>(R.id.currentSessionName)
 
         val templateRecyclerView = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
-        val templateAdapter = TemplateAdapter()
+        val templateAdapter = TemplateAdapter(requireContext(), viewModel)
 
 
 

@@ -267,7 +267,7 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
         val routineDao = AppDatabase.getDatabase(application).routineDao()
         val templateDao = AppDatabase.getDatabase(application).templateDao()
-        repository = AppRepository(routineDao, templateDao)
+        repository = AppRepository(routineDao, templateDao, templateSetDao)
         allWorkoutSets = repository.getAllRoutinesWithSets()
         initializeTimer()
     }
@@ -294,8 +294,17 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun getTemplateWithSets(){
+    fun updateTemplateName(templateId : Int, name:String){
+        viewModelScope.launch{
+            repository.updateTemplateName(templateId,name)
+        }
+    }
 
+    fun deleteTemplateById(templateId: Int){
+        viewModelScope.launch{
+            repository.deleteTemplateById(templateId)
+            repository.deleteTemplateSetById(templateId)
+        }
     }
 
 

@@ -17,4 +17,7 @@ interface TemplateSetDao {
 
     @Query("DELETE FROM template_sets")
     suspend fun clearAllTemplateSets()
+
+    @Query("DELETE FROM template_sets WHERE templateId = :templateId")
+    suspend fun deleteTemplateSetById(templateId:Int)
 }
