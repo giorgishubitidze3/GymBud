@@ -12,13 +12,14 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
 import com.example.fitnessapp.data.TemplateWithSets
 import com.example.fitnessapp.data.WorkoutViewModel
 
-class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel): RecyclerView.Adapter<TemplateAdapter.ViewHolder>() {
+class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel, private val navController : NavController): RecyclerView.Adapter<TemplateAdapter.ViewHolder>() {
 
     var list : List<TemplateWithSets> = listOf()
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -78,7 +79,7 @@ class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel): R
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.template_popup_edit -> {
-                    Toast.makeText(view.context, "Item 1", Toast.LENGTH_SHORT).show()
+                    openEditDialog(currentItem)
                     true
                 }
                 R.id.template_popup_rename -> {
@@ -135,6 +136,30 @@ class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel): R
 
             setNegativeButton("NO"){_,_ ->
                 Log.d("templateViewModel", "pressed no on delete dialog")
+            }
+
+            show()
+        }
+    }
+
+
+    private fun openEditDialog(item: TemplateWithSets){
+        val builder = AlertDialog.Builder(context)
+
+        with(builder){
+            setTitle("Do you want to edit this template?")
+            setPositiveButton("YES"){_,_ ->
+                viewModel.endWorkout()
+                viewModel.stopTimer()
+                viewModel.resetCurrentSets()
+                viewModel.resetCurrentWorkouts()
+                viewModel.startTemplateEditor()
+                viewModel.loadTemplateIntoCurrent(item)
+                viewModel.changeRoutineName(item.template.name)
+                navController.navigate(R.id.currentSession)
+            }
+            setNegativeButton("NO"){_,_ ->
+                Log.d("templateViewModel", "pressed no on edit dialog")
             }
 
             show()

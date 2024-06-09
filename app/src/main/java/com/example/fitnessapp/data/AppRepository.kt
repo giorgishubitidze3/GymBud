@@ -24,6 +24,11 @@ class AppRepository(private val routineDao: RoutineDao, private val templateDao:
         templateDao.updateTemplateName(templateId,name)
     }
 
+    suspend fun updateTemplateSets(templateId: Int, newSets: List<TemplateSet>) {
+        templateSetDao.deleteTemplateSetById(templateId)
+        newSets.forEach{set -> templateSetDao.insertTemplateSet(set)}
+    }
+
     suspend fun deleteTemplateById(templateId:Int){
         templateDao.deleteTemplateById(templateId)
     }

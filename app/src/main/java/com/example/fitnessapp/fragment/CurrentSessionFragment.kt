@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.R
 import com.example.fitnessapp.adapter.CurrentSessionAdapter
 import com.example.fitnessapp.data.GymExercise
+import com.example.fitnessapp.data.TemplateSet
 import com.example.fitnessapp.data.WorkoutViewModel
 
 
@@ -118,6 +119,28 @@ class CurrentSessionFragment : Fragment() {
         }
 
 
+        viewModel.templateEditState.observe(viewLifecycleOwner){ state ->
+            if(state){
+                finishButton.text = "Save"
+                currentTimer.visibility = View.GONE
+                slideDownButton.visibility = View.GONE
+
+                finishButton.setOnClickListener {
+                    navController?.navigate(R.id.sessionFragment)
+                    viewModel.currentSets.value?.let { it1 ->
+                        viewModel.insertTemplateWithSets(viewModel.getTemplateObj(),
+                            it1
+                        )
+                    }
+                    viewModel.resetCurrentSets()
+                    viewModel.resetCurrentWorkouts()
+                    viewModel.resetCurrentRoutineName()
+                    viewModel.endTemplateMaker()
+
+                }
+            }
+        }
+
         viewModel.templateState.observe(viewLifecycleOwner) { state ->
             if (state) {
                 finishButton.text = "Save"
@@ -143,22 +166,61 @@ class CurrentSessionFragment : Fragment() {
                     cancelDialogBuilderTemplate.show()
                 }
             } else {
-                finishButton.text = "Finish"
-                currentTimer.visibility = View.VISIBLE
-                slideDownButton.visibility = View.VISIBLE
-                finishButton.setOnClickListener {
-                    finishDialogBuilder.show()
-                    viewModel.insertRoutineWithSets(viewModel.getRoutineObj(), viewModel.getAllCompletedSets())
-                    Toast.makeText(requireContext(), "Routine inserted", Toast.LENGTH_SHORT).show()
+                viewModel.templateEditState.observe(viewLifecycleOwner) { isEditing ->
+                    if (isEditing) {
+                        finishButton.text = "Update"
+                        currentTimer.visibility = View.GONE
+                        slideDownButton.visibility = View.GONE
+
+                        finishButton.setOnClickListener {
+                            navController?.navigate(R.id.sessionFragment)
+                            val templateId = viewModel.getTemplateObj().templateId
+                            var sets: List<TemplateSet> = emptyList()
+                            viewModel.currentSets.value?.let { currentSets ->
+                                sets = currentSets.map { set ->
+                                    viewModel.workoutSetToTemplateSet(set, templateId)
+                                }
+                            }
+                            viewModel.updateTemplate(
+                                templateId,
+                                viewModel.currentRoutineName.value.toString(),
+                                sets
+                            )
+                            viewModel.resetCurrentSets()
+                            viewModel.resetCurrentWorkouts()
+                            viewModel.resetCurrentRoutineName()
+                            viewModel.endTemplateEditor()
+                        }
+
+                        buttonCancel.setOnClickListener {
+                            //TODO modify later
+                            cancelDialogBuilderTemplate.show()
+                        }
+                    } else {
+                        finishButton.text = "Finish"
+                        currentTimer.visibility = View.VISIBLE
+                        slideDownButton.visibility = View.VISIBLE
+                        finishButton.setOnClickListener {
+                            finishDialogBuilder.show()
+                            viewModel.insertRoutineWithSets(
+                                viewModel.getRoutineObj(),
+                                viewModel.getAllCompletedSets()
+                            )
+                            Toast.makeText(requireContext(), "Routine inserted", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                        buttonCancel.setOnClickListener {
+                            //TODO modify later
+                            cancelDialogBuilder.show()
+                            viewModel.resetCurrentWorkouts()
+                            viewModel.resetCurrentRoutineName()
+                            viewModel.resetCurrentSets()
+                        }
+                    }
+
                 }
 
-                buttonCancel.setOnClickListener {
-                    //TODO modify later
-                    cancelDialogBuilder.show()
-                    viewModel.resetCurrentWorkouts()
-                    viewModel.resetCurrentRoutineName()
-                    viewModel.resetCurrentSets()
-                }
             }
         }
 

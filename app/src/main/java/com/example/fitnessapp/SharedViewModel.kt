@@ -46,11 +46,9 @@ class SharedViewModel: ViewModel() {
 
     }
 
-
-
-
-
-
+    fun getExerciseByName(name: String): GymExercise? {
+        return _data.value?.find { it.name == name }
+    }
 
 
 }

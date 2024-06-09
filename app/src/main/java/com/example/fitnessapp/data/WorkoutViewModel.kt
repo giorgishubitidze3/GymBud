@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.fitnessapp.SharedViewModel
 import kotlinx.coroutines.launch
 import com.example.fitnessapp.data.RoutineWithSets
 import com.example.fitnessapp.data.Routine
@@ -18,7 +19,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 
 
-class WorkoutViewModel(application: Application) : AndroidViewModel(application) {
+class WorkoutViewModel(application: Application, private val sharedViewModel: SharedViewModel) : AndroidViewModel(application) {
 
     val auth = Firebase.auth
     private val templateDao: TemplateDao = AppDatabase.getDatabase(application).templateDao()
@@ -68,6 +69,10 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 
     val currentUserId = auth.currentUser?.uid.toString()
 
+    private val _templateEditState = MutableLiveData<Boolean>()
+
+    val templateEditState : LiveData<Boolean> get() = _templateEditState
+
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
         return WorkoutSet(0,generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false, currentUserId )
@@ -75,6 +80,14 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 //        return WorkoutSet(generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false)
     }
 
+
+    fun startTemplateEditor(){
+        _templateEditState.value = true
+    }
+
+    fun endTemplateEditor(){
+        _templateEditState.value = false
+    }
 
     fun updateCurrentUserData(username:String,name:String,surname:String) {
         _currentUserUsername.postValue(username)
@@ -288,6 +301,19 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun updateTemplate(templateId: Int, name: String, newSets: List<TemplateSet>) {
+        viewModelScope.launch {
+            try {
+                repository.updateTemplateName(templateId, name)
+
+                repository.updateTemplateSets(templateId, newSets)
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error updating template: ${e.message}", e)
+            }
+        }
+    }
+
+
     fun insertRoutineWithSets(routine: Routine, sets: List<WorkoutSet>) {
         viewModelScope.launch {
             repository.insertRoutineWithSets(routine, sets)
@@ -357,6 +383,31 @@ class WorkoutViewModel(application: Application) : AndroidViewModel(application)
 //            repository.addWorkout(workout)
 //        }
 //    }
+
+    fun loadTemplateIntoCurrent(templateWithSets: TemplateWithSets) {
+        // Use a set to avoid duplicates
+        val workoutSet = mutableSetOf<GymExercise>()
+        val sets = templateWithSets.templateSets.map { set ->
+            sharedViewModel.getExerciseByName(set.exerciseName)?.let { exercise ->
+                workoutSet.add(exercise)
+            }
+            WorkoutSet(
+                newId = 0,
+                routineId=0,
+                setId = set.setId,
+                workoutName = set.exerciseName,
+                prevSet = 0,
+                currentKg = 0,
+                currentReps = 0,
+                isCompleted = false,
+                userId = set.userId
+            )
+        }
+
+        _currentWorkouts.postValue(workoutSet.toList())
+        _currentSets.postValue(sets)
+    }
+
 
     fun updateCurrentSet(updatedSet: WorkoutSet) {
         val currentSets = _currentSets.value?.toMutableList() ?: mutableListOf()

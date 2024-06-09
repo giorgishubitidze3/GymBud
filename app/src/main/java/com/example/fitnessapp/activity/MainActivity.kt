@@ -15,6 +15,7 @@ import com.example.fitnessapp.SharedViewModel
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.User
 import com.example.fitnessapp.data.WorkoutViewModel
+import com.example.fitnessapp.data.WorkoutViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -42,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationBar.setupWithNavController(navController)
 
         val viewModel: SharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
-        val workoutViewModel: WorkoutViewModel = ViewModelProvider(this)[WorkoutViewModel::class.java]
+        val workoutViewModelFactory = WorkoutViewModelFactory(application, viewModel)
+        val workoutViewModel: WorkoutViewModel = ViewModelProvider(this, workoutViewModelFactory).get(WorkoutViewModel::class.java)
         viewModel.fetchData()
 
         val currentUser = auth.currentUser

@@ -46,7 +46,11 @@ class SessionFragment : Fragment() {
         val currentSessionNameTV = view.findViewById<TextView>(R.id.currentSessionName)
 
         val templateRecyclerView = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
-        val templateAdapter = TemplateAdapter(requireContext(), viewModel)
+        val templateAdapter = navController?.let {
+            TemplateAdapter(requireContext(), viewModel,
+                it
+            )
+        }
 
 
 
@@ -178,7 +182,7 @@ class SessionFragment : Fragment() {
 
 
         viewModel.currentTemplatesWithSets.observe(viewLifecycleOwner){item ->
-            templateAdapter.setData(item)
+            templateAdapter?.setData(item)
         }
 
         templateRecyclerView.adapter =templateAdapter
