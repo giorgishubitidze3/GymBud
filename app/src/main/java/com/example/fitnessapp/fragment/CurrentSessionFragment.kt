@@ -172,20 +172,35 @@ class CurrentSessionFragment : Fragment() {
                         currentTimer.visibility = View.GONE
                         slideDownButton.visibility = View.GONE
 
+
+                        val templateId = viewModel.currentTemplateSets.value?.get(0)?.templateId ?: 0
+                        Log.d("templateSets", "${templateId.toString()} this is templateId in fragment")
+
                         finishButton.setOnClickListener {
                             navController?.navigate(R.id.sessionFragment)
-                            val templateId = viewModel.getTemplateObj().templateId
-                            var sets: List<TemplateSet> = emptyList()
-                            viewModel.currentSets.value?.let { currentSets ->
-                                sets = currentSets.map { set ->
-                                    viewModel.workoutSetToTemplateSet(set, templateId)
+
+                            var templateSets: MutableList<TemplateSet> = mutableListOf()
+
+
+
+                            viewModel.currentSets.observe(viewLifecycleOwner) { currentSets ->
+                                if(currentSets!=null) {
+                                    // Ensure correct templateId in each set
+                                    currentSets.forEach { set ->
+                                        templateSets.add(viewModel.workoutSetToTemplateSet(set, templateId))
+                                    }
+                                    templateSets.forEach { set -> Log.d("templateSets", set.templateId.toString() ) }
                                 }
                             }
+
+
                             viewModel.updateTemplate(
                                 templateId,
                                 viewModel.currentRoutineName.value.toString(),
-                                sets
+                                templateSets.toList()
                             )
+
+
                             viewModel.resetCurrentSets()
                             viewModel.resetCurrentWorkouts()
                             viewModel.resetCurrentRoutineName()

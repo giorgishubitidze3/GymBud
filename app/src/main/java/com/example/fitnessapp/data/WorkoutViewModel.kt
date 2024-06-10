@@ -58,6 +58,8 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     private val _currentTemplatesWithSets = MediatorLiveData<List<TemplateWithSets>>()
     val currentTemplatesWithSets: LiveData<List<TemplateWithSets>> get() = _currentTemplatesWithSets
 
+    private val _currentTemplateSets = MutableLiveData<List<TemplateSet>>()
+    val currentTemplateSets : LiveData<List<TemplateSet>> get() = _currentTemplateSets
 
     private var elapsedTimeInSeconds = -1L
 
@@ -95,6 +97,16 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
         _currentUserFullName.postValue(fullName)
     }
 
+    fun resetCurrentTemplateSets(){
+        _currentTemplateSets.value = emptyList<TemplateSet>()
+    }
+
+    fun addCurrentToCurrentTemplateSets(list: List<TemplateSet>){
+        val tempList = _currentTemplateSets.value?.toMutableList() ?: mutableListOf()
+        tempList.addAll(list)
+        _currentTemplateSets.value = tempList
+    }
+
     fun getAllCompletedSets(): List<WorkoutSet> {
         val list: List<WorkoutSet> = _currentSets.value ?: emptyList()
 
@@ -118,11 +130,23 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
     fun getTemplateObj(): Template{
         return Template(0,_currentRoutineName.value.toString(),currentUserId)
+
+    }
+
+
+    fun getTemplateByName(name:String):LiveData<Template>{
+        Log.d("templateSets", "${templateDao.getTemplateByName(name).value?.templateId.toString()} this is from viewModels getTemplateFunction , and this is name given to the" +
+                "constructor ${name}, and this is template name ${templateDao.getTemplateByName(name).value?.name}")
+          return templateDao.getTemplateByName(name)
     }
 
 
     fun resetCurrentRoutineName(){
         _currentRoutineName.value = "Workout"
+    }
+
+    fun getCurrentRoutineName() : String{
+        return _currentRoutineName.value.toString()
     }
 
     fun generateUniqueSetId(workoutName: String): Int {
@@ -301,17 +325,32 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
         }
     }
 
+
     fun updateTemplate(templateId: Int, name: String, newSets: List<TemplateSet>) {
         viewModelScope.launch {
             try {
                 repository.updateTemplateName(templateId, name)
-
                 repository.updateTemplateSets(templateId, newSets)
+
+                val updatedTemplate = repository.getLastTemplate().value
+                Log.d("WorkoutViewModel", "Updated template: $updatedTemplate")
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error updating template: ${e.message}", e)
             }
         }
     }
+
+//    fun updateTemplate(templateId: Int, name: String, newSets: List<TemplateSet>) {
+//        viewModelScope.launch {
+//            try {
+//                repository.updateTemplateName(templateId, name)
+//
+//                repository.updateTemplateSets(templateId, newSets)
+//            } catch (e: Exception) {
+//                Log.e("WorkoutViewModel", "Error updating template: ${e.message}", e)
+//            }
+//        }
+//    }
 
 
     fun insertRoutineWithSets(routine: Routine, sets: List<WorkoutSet>) {
@@ -385,7 +424,6 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 //    }
 
     fun loadTemplateIntoCurrent(templateWithSets: TemplateWithSets) {
-        // Use a set to avoid duplicates
         val workoutSet = mutableSetOf<GymExercise>()
         val sets = templateWithSets.templateSets.map { set ->
             sharedViewModel.getExerciseByName(set.exerciseName)?.let { exercise ->
@@ -406,6 +444,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
         _currentWorkouts.postValue(workoutSet.toList())
         _currentSets.postValue(sets)
+        _currentTemplateSets.postValue(templateWithSets.templateSets)
     }
 
 

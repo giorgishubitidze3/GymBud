@@ -25,7 +25,7 @@ interface TemplateDao {
 
     @Query("SELECT * FROM routines WHERE name = :name")
     suspend fun getRoutineByName(name: String): List<Routine>
-    @Query("DELETE FROM routines")
+    @Query("DELETE FROM templates")
     suspend fun clearAllTemplates()
 
     @Query("DELETE FROM template_sets")
@@ -40,4 +40,7 @@ interface TemplateDao {
 
     @Query("DELETE FROM templates WHERE templateId = :templateId")
     suspend fun deleteTemplateById(templateId: Int)
+
+    @Query("SELECT * FROM templates WHERE name = :name")
+    fun getTemplateByName(name: String): LiveData<Template>
 }

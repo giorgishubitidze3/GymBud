@@ -10,6 +10,7 @@ class AppRepository(private val routineDao: RoutineDao, private val templateDao:
         routineDao.insertWorkoutSets(sets)
     }
 
+
     suspend fun insertTemplateWithSets(template: Template, sets:List<TemplateSet>){
         val templateId = templateDao.insertTemplate(template)
         sets.forEach{it.templateId = templateId.toInt()}
@@ -25,8 +26,13 @@ class AppRepository(private val routineDao: RoutineDao, private val templateDao:
     }
 
     suspend fun updateTemplateSets(templateId: Int, newSets: List<TemplateSet>) {
-        templateSetDao.deleteTemplateSetById(templateId)
-        newSets.forEach{set -> templateSetDao.insertTemplateSet(set)}
+
+        templateSetDao.deleteAndReplaceTemplateSets(templateId, newSets)
+
+//        templateSetDao.deleteTemplateSetById(templateId)
+//        newSets.forEach { set ->
+//            templateSetDao.insertTemplateSetById(set.newTempId, set.setId, templateId, set.exerciseName, set.userId)
+//        }
     }
 
     suspend fun deleteTemplateById(templateId:Int){
