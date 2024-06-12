@@ -6,14 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".fragment.HomeFragment">
 
+    <TextView
+        android:id="@+id/home_welcome_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="WELCOME"
+        android:layout_marginLeft="8dp"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/home_username_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_welcome_tv"
+        android:text="USER"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:textSize="48sp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_username_tv"
         app:layout_constraintVertical_bias="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

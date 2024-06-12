@@ -1,5 +1,6 @@
 package com.example.fitnessapp.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 class AppRepository(private val routineDao: RoutineDao, private val templateDao: TemplateDao, private val templateSetDao: TemplateSetDao) {
@@ -46,7 +47,14 @@ class AppRepository(private val routineDao: RoutineDao, private val templateDao:
 
     fun getAllTemplatesWithSets(): LiveData<List<TemplateWithSets>>{
         return templateDao.getAllTemplatesWithSets()
-    }  //TODO checkout this doesnt return sets maybe
+    }
+
+    fun getAllTemplates(userId:String): LiveData<List<Template>>{
+
+        val templateList = templateDao.getAllTemplates(userId)
+        Log.d("templateSet", "This is from app repository ${templateList.value.toString()}")
+        return templateList
+    }
 
     fun getRoutineWithSets(routineId: Int): LiveData<RoutineWithSets> {
         return routineDao.getRoutineWithSets(routineId)

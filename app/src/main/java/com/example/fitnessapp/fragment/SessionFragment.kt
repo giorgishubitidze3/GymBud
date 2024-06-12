@@ -48,7 +48,7 @@ class SessionFragment : Fragment() {
         val templateRecyclerView = view.findViewById<RecyclerView>(R.id.routinesRecyclerView)
         val templateAdapter = navController?.let {
             TemplateAdapter(requireContext(), viewModel,
-                it
+                it, viewLifecycleOwner
             )
         }
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,12 +27,22 @@ import com.google.gson.reflect.TypeToken
 class HomeFragment : Fragment() {
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var binding: FragmentHomeBinding
-        private lateinit var workoutViewModel: WorkoutViewModel
+    private lateinit var workoutViewModel: WorkoutViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+
+
+
+        workoutViewModel = ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
+        workoutViewModel.currentUserName.observe(viewLifecycleOwner) { name ->
+            binding.homeUsernameTv.text = name
+            binding.homeUsernameTv.visibility = View.VISIBLE
+        }
+
 
         // Logging for debugging
         println("HomeFragment: onCreateView")
@@ -53,6 +64,8 @@ class HomeFragment : Fragment() {
             return gson.fromJson(jsonString, object : TypeToken<List<GymExercise>>() {}.type)
         }
 
+        workoutViewModel = ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
+
 
         //parse json
         val jsonString = readJsonFromAssets(requireContext(),"main.json")
@@ -65,9 +78,10 @@ class HomeFragment : Fragment() {
 
 
         Log.d("HomeFragment", "parsed item count is ${parsedGymExercises.count()}")
-        workoutViewModel = ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
+
 
         sharedViewModel.updateData(parsedGymExercises)
+
 
         val recyclerView: RecyclerView = view.findViewById(R.id.historyRecyclerView)
         val adapter = HistoryAdapter()

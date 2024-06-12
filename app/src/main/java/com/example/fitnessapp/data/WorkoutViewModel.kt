@@ -71,10 +71,15 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
     val currentUserId = auth.currentUser?.uid.toString()
 
-    private val _templateEditState = MutableLiveData<Boolean>()
+    private val _templateEditState = MutableLiveData<Boolean>(false)
 
     val templateEditState : LiveData<Boolean> get() = _templateEditState
 
+    private val _currentUserName = MutableLiveData<String>()
+    val currentUserName : LiveData<String> get() = _currentUserName
+
+
+    var getTemplateByNameVariable = MutableLiveData<Template>()
 
     private fun createDefaultSet(workoutName: String): WorkoutSet {
         return WorkoutSet(0,generateUniqueSetId(workoutName), 0, workoutName,0, 0, 0,false, currentUserId )
@@ -94,7 +99,9 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     fun updateCurrentUserData(username:String,name:String,surname:String) {
         _currentUserUsername.postValue(username)
         var fullName = "${name} ${surname}"
+        var name = name
         _currentUserFullName.postValue(fullName)
+        _currentUserName.postValue(name)
     }
 
     fun resetCurrentTemplateSets(){
@@ -117,7 +124,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
             latestRoutineId = routineWithSets?.routineId ?: 0
         }
 
-        val completedSets = list.filter { it.isCompleted }
+        val completedSets = list.filter { it.isCompleted && it.currentReps != 0 }
 
         return completedSets.map { it.copy(routineId = latestRoutineId + 1) }
     }
@@ -134,10 +141,11 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     }
 
 
-    fun getTemplateByName(name:String):LiveData<Template>{
-        Log.d("templateSets", "${templateDao.getTemplateByName(name).value?.templateId.toString()} this is from viewModels getTemplateFunction , and this is name given to the" +
-                "constructor ${name}, and this is template name ${templateDao.getTemplateByName(name).value?.name}")
-          return templateDao.getTemplateByName(name)
+    fun getAllTemplates(userId:String):LiveData<List<Template>>{
+
+       val templateList = repository.getAllTemplates(userId)
+        Log.d("templateSet", "this is from workout viewModel ${templateList.value.toString()}")
+        return templateList
     }
 
 
@@ -231,14 +239,21 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
     fun removeSet(set: WorkoutSet) {
         val currentSets = _currentSets.value ?: return
-        if (currentSets.size <= 1) {
-            Log.d("WorkoutViewModel", "Cannot remove the last set for ${set.workoutName}")
-            return
-        }
+//        if (currentSets.size <= 1) {
+//            Log.d("WorkoutViewModel", "Cannot remove the last set for ${set.workoutName}")
+//            return
+//        }
         val updatedSets = currentSets.toMutableList().apply { remove(set) }
         _currentSets.postValue(updatedSets)
         decreaseSetId(set.workoutName, set.setId)
         Log.d("Function", "removeSet: ${set.setId} for ${set.workoutName}")
+    }
+
+    fun removeWorkout(workout: GymExercise){
+        val currentWorkouts = _currentWorkouts.value ?: return
+
+        val updatedWorkouts = currentWorkouts.toMutableList().apply{ remove(workout)}
+        _currentWorkouts.postValue(updatedWorkouts)
     }
 
     fun updateCurrentWorkout(exercise: GymExercise) {

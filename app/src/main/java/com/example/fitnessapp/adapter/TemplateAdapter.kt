@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.data.TemplateWithSets
 import com.example.fitnessapp.data.WorkoutViewModel
 
-class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel, private val navController : NavController): RecyclerView.Adapter<TemplateAdapter.ViewHolder>() {
+class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel, private val navController : NavController, val viewLifecycleOwner: LifecycleOwner): RecyclerView.Adapter<TemplateAdapter.ViewHolder>() {
 
     var list : List<TemplateWithSets> = listOf()
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -64,6 +65,10 @@ class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel, pr
 
         holder.templateEditButton.setOnClickListener {
             showPopupMenu(it, currentItem)
+        }
+
+        holder.itemView.setOnClickListener{
+            openWorkoutDialog(currentItem)
         }
 
     }
@@ -166,4 +171,63 @@ class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel, pr
         }
     }
 
+
+    private fun openWorkoutDialog(item: TemplateWithSets){
+        val builder = AlertDialog.Builder(context)
+
+        with(builder){
+            viewModel.workoutState.observe(viewLifecycleOwner){ workoutProgress ->
+                if(workoutProgress){
+                    setTitle("Workout in progress")
+                    setMessage("Do you want to start a new workout?")
+                    setPositiveButton("YES"){_,_ ->
+                        viewModel.resetCurrentWorkouts()
+                        viewModel.resetCurrentSets()
+                        viewModel.endWorkout()
+                        viewModel.stopTimer()
+                        viewModel.endTemplateEditor()
+                        viewModel.endTemplateMaker()
+
+                        viewModel.loadTemplateIntoCurrent(item)
+                        viewModel.startWorkout()
+                        viewModel.startTimer()
+                        viewModel.changeRoutineName(item.template.name)
+
+                        navController.navigate(R.id.currentSession)
+
+                    }
+
+                    setNegativeButton("NO"){_,_ ->
+
+                    }
+
+
+            }
+                else{
+                    setTitle("Do you want to start a workout?")
+                    setPositiveButton("YES"){_,_ ->
+                        viewModel.resetCurrentWorkouts()
+                        viewModel.resetCurrentSets()
+                        viewModel.endTemplateEditor()
+                        viewModel.endTemplateMaker()
+
+
+                        viewModel.loadTemplateIntoCurrent(item)
+                        viewModel.startWorkout()
+                        viewModel.startTimer()
+                        viewModel.changeRoutineName(item.template.name)
+
+                        navController.navigate(R.id.currentSession)
+                    }
+                    setNegativeButton("NO"){_,_ ->
+
+                    }
+                }
+
+        }
+
+            show()
+    }
+
+}
 }

@@ -1,10 +1,12 @@
 package com.example.fitnessapp.adapter
 
 import InnerSetAdapter
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +83,8 @@ class CurrentSessionAdapter(
                 val setToRemove = currentSets.last()
                 viewModel.removeSet(setToRemove)
             } else {
-                Toast.makeText(context, "Cannot remove the last set", Toast.LENGTH_SHORT).show()
+                val lastSet = currentSets.last()
+                openDeleteWorkoutDialog(currentWorkout, lastSet)
                 vibratePhone(context)
             }
         }
@@ -98,6 +101,24 @@ class CurrentSessionAdapter(
             vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
             vibrator.vibrate(100)
+        }
+    }
+
+    private fun openDeleteWorkoutDialog(currentExercise: GymExercise, set: WorkoutSet){
+        val builder = AlertDialog.Builder(context)
+
+        with(builder){
+            setTitle("Exercise will be deleted")
+            setMessage("Do you want to delete the exercise?")
+            setPositiveButton("YES"){_,_ ->
+                viewModel.removeWorkout(currentExercise)
+                viewModel.removeSet(set)
+            }
+            setNegativeButton("NO"){_,_ ->
+                Log.d("CurrentSessionAdapter" , "pressed no on the delete workout dialog")
+            }
+
+            show()
         }
     }
 }

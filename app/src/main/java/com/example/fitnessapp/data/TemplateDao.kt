@@ -12,9 +12,8 @@ interface TemplateDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTemplate(template: Template): Long
 
-    @Transaction
     @Query("SELECT * FROM templates WHERE userId = :userId")
-    fun getAllTemplates(userId : String): LiveData<List<Template>>
+    fun getAllTemplates(userId: String): LiveData<List<Template>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTemplateSets(sets : List<TemplateSet>)

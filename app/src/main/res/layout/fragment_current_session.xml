@@ -98,6 +98,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,6 +113,7 @@
 
 
         <ImageButton
+            android:layout_marginTop="8dp"
             android:id="@+id/slide_down_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,6 +128,7 @@
             app:tint="?attr/colorPrimary" />
 
         <Button
+            android:layout_marginTop="8dp"
             android:id="@+id/buttonFinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
