@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment">
+    tools:context=".fragment.HomeFragment"
+    >
 
     <TextView
         android:id="@+id/home_welcome_tv"
@@ -18,6 +19,7 @@
         android:textSize="15sp"/>
 
     <TextView
+        android:textColor="?attr/colorPrimaryVariant"
         android:id="@+id/home_username_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,13 +32,197 @@
         android:layout_marginLeft="8dp"
         android:textSize="48sp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:textColor="?attr/colorPrimaryVariant"
+        android:fontFamily="@font/inter_bold"
+        android:layout_margin="8dp"
+        android:textSize="28sp"
+        android:id="@+id/weeklyStatistics_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weekly Statistics"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_username_tv"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/home_username_tv" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/weeklyStatistics_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="8dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="?attr/colorAccent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+
+                >
+
+                <TextView
+                    android:layout_margin="12dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Workout Sessions"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/inter"/>
+
+                <ImageView
+                    android:layout_margin="12dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/icon_fire"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/workoutsThisWeek_tv"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:layout_gravity="bottom"
+                    android:fontFamily="@font/inter_bold"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="8dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="?attr/colorAccent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+
+                >
+
+                <TextView
+                    android:layout_margin="12dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Total KGs"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/inter"/>
+
+                <ImageView
+                    android:layout_margin="12dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/icon_kg"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/totalKgs_tv"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:layout_gravity="bottom"
+                    android:fontFamily="@font/inter_bold"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="8dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="?attr/colorAccent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+
+                >
+
+                <TextView
+                    android:layout_margin="12dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Total Reps"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/inter"/>
+
+                <ImageView
+                    android:layout_margin="12dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/icon_muscle"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/totalReps_tv"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:layout_gravity="bottom"
+                    android:fontFamily="@font/inter_bold"/>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="8dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="?attr/colorAccent"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+
+                >
+
+                <TextView
+                    android:layout_margin="12dp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Current Weight"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/inter"/>
+
+                <ImageView
+                    android:layout_margin="12dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/icon_weight"
+                    app:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/currentWeight_tv"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:layout_gravity="bottom"
+                    android:fontFamily="@font/inter_bold"/>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

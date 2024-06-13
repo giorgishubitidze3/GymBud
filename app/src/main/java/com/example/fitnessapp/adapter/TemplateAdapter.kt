@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -66,6 +67,7 @@ class TemplateAdapter(val context:Context , val viewModel : WorkoutViewModel, pr
         holder.templateEditButton.setOnClickListener {
             showPopupMenu(it, currentItem)
         }
+
 
         holder.itemView.setOnClickListener{
             openWorkoutDialog(currentItem)

@@ -3,7 +3,7 @@ package com.example.fitnessapp.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 
-class AppRepository(private val routineDao: RoutineDao, private val templateDao: TemplateDao, private val templateSetDao: TemplateSetDao) {
+class AppRepository(private val routineDao: RoutineDao, private val templateDao: TemplateDao, private val templateSetDao: TemplateSetDao, private val workoutSetDao: WorkoutSetDao) {
 
     suspend fun insertRoutineWithSets(routine: Routine, sets: List<WorkoutSet>) {
         val routineId = routineDao.insertRoutine(routine)
@@ -21,6 +21,14 @@ class AppRepository(private val routineDao: RoutineDao, private val templateDao:
     fun getAllRoutinesWithSets(): LiveData<List<RoutineWithSets>> {
         return routineDao.getAllRoutinesWithSets()
     }//TODO checkout this doesnt return sets maybe
+
+    suspend fun getRoutinesForCurrentWeek(startOfWeek: Long, endOfWeek: Long): List<RoutineWithSets> {
+        return routineDao.getRoutinesForCurrentWeek(startOfWeek, endOfWeek)
+    }
+
+    suspend fun getWorkoutSetsForRoutineIds(routineIds: List<Int>): List<WorkoutSet> {
+        return workoutSetDao.getWorkoutSetsForCurrentWeek(routineIds)
+    }
 
     suspend fun updateTemplateName(templateId: Int , name: String){
         templateDao.updateTemplateName(templateId,name)

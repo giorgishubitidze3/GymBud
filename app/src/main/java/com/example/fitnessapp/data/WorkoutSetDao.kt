@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface WorkoutSetDao {
@@ -16,4 +17,8 @@ interface WorkoutSetDao {
 
     @Query("DELETE FROM workout_sets")
     suspend fun clearAllWorkoutSets()
+
+    @Transaction
+    @Query("SELECT * FROM workout_sets WHERE routineId IN (:routineIds)")
+    suspend fun getWorkoutSetsForCurrentWeek(routineIds: List<Int>):List<WorkoutSet>
 }

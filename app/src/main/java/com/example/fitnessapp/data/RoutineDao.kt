@@ -21,6 +21,11 @@ interface RoutineDao {
     fun getAllRoutinesWithSets(): LiveData<List<RoutineWithSets>>
 
     @Transaction
+    @Query("SELECT * FROM routines WHERE date BETWEEN :startOfWeek AND :endOfWeek")
+    suspend fun getRoutinesForCurrentWeek(startOfWeek: Long, endOfWeek: Long): List<RoutineWithSets>
+
+
+    @Transaction
     @Query("SELECT * FROM routines WHERE routineId = :routineId")
     fun getRoutineWithSets(routineId: Int): LiveData<RoutineWithSets>
 

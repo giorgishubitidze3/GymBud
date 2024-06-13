@@ -17,6 +17,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
+import kotlinx.coroutines.Dispatchers
 
 
 class WorkoutViewModel(application: Application, private val sharedViewModel: SharedViewModel) : AndroidViewModel(application) {
@@ -24,6 +25,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     val auth = Firebase.auth
     private val templateDao: TemplateDao = AppDatabase.getDatabase(application).templateDao()
     private val templateSetDao : TemplateSetDao = AppDatabase.getDatabase(application).templateSetDao()
+    private val workoutSetDao: WorkoutSetDao = AppDatabase.getDatabase(application).workoutSetDao()
 
 
     private val setIdCounters = mutableMapOf<String, Int>()
@@ -77,6 +79,12 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
     private val _currentUserName = MutableLiveData<String>()
     val currentUserName : LiveData<String> get() = _currentUserName
+
+    private val _currentRoutinesThisWeek = MutableLiveData<List<RoutineWithSets>>()
+    val currentRoutinesThisWeek: LiveData<List<RoutineWithSets>> get() = _currentRoutinesThisWeek
+
+    private val _currentWorkoutSetsThisWeek = MutableLiveData<List<WorkoutSet>>()
+    val currentWorkoutSetsThisWeek: LiveData<List<WorkoutSet>> get() = _currentWorkoutSetsThisWeek
 
 
     var getTemplateByNameVariable = MutableLiveData<Template>()
@@ -138,6 +146,20 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     fun getTemplateObj(): Template{
         return Template(0,_currentRoutineName.value.toString(),currentUserId)
 
+    }
+
+    fun getRoutinesForCurrentWeek(startOfWeek: Long, endOfWeek: Long){
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = repository.getRoutinesForCurrentWeek(startOfWeek, endOfWeek)
+            _currentRoutinesThisWeek.postValue(data)
+        }
+    }
+
+    fun getWorkoutSetsForCurrentWeek(routineId:List<Int>){
+        viewModelScope.launch(Dispatchers.IO){
+            val data = repository.getWorkoutSetsForRoutineIds(routineId)
+            _currentWorkoutSetsThisWeek.postValue(data)
+        }
     }
 
 
@@ -319,7 +341,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
         val routineDao = AppDatabase.getDatabase(application).routineDao()
         val templateDao = AppDatabase.getDatabase(application).templateDao()
-        repository = AppRepository(routineDao, templateDao, templateSetDao)
+        repository = AppRepository(routineDao, templateDao, templateSetDao, workoutSetDao)
         allWorkoutSets = repository.getAllRoutinesWithSets()
         initializeTimer()
     }

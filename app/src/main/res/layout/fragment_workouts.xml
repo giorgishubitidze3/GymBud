@@ -30,7 +30,7 @@
             android:fontFamily="@font/inter_bold"
             android:text="WORKOUTS"
             android:textSize="30dp"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorPrimaryVariant"
             />
 
         <androidx.appcompat.widget.SearchView
@@ -41,12 +41,14 @@
             app:layout_constraintEnd_toStartOf="@+id/filter_button"
             app:layout_constraintHorizontal_bias="0.976"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <ImageButton
             android:id="@+id/filter_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginTop="4dp"
             android:background="@android:color/transparent"
             android:src="@drawable/filter_icon"
             app:fabCustomSize="40dp"

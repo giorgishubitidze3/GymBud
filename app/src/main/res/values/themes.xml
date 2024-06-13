@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.FitnessApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#000</item>
-        <item name="colorPrimaryVariant">#FFFFFF</item>
-        <item name="colorOnPrimary">#000</item>
+        <item name="colorPrimary">@color/chosenAccentColorDay</item>
+        <item name="colorPrimaryVariant">#000</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#E8E8E8</item>
         <item name="colorSecondaryVariant">#808191</item>
