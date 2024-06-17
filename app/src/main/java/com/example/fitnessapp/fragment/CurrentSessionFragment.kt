@@ -45,7 +45,7 @@ class CurrentSessionFragment : Fragment() {
         finishDialogBuilder = AlertDialog.Builder(requireContext())
         cancelDialogBuilderTemplate = AlertDialog.Builder(requireContext())
 
-        viewModel= ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[WorkoutViewModel::class.java]
         val finishButton = view.findViewById<Button>(R.id.buttonFinish)
         val navController = activity?.findNavController(R.id.fragment_container)
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
@@ -58,7 +58,8 @@ class CurrentSessionFragment : Fragment() {
 
         var listCurrentWorkouts = emptyList<GymExercise>()
 
-        val exercisesAdapter = CurrentSessionAdapter(viewModel, viewLifecycleOwner, requireContext())
+        val exercisesAdapter =
+            CurrentSessionAdapter(viewModel, viewLifecycleOwner, requireContext())
 
         cancelDialogBuilder.setTitle("Cancel Workout")
         cancelDialogBuilder.setMessage("Are you sure you want to cancel this workout?")
@@ -66,67 +67,50 @@ class CurrentSessionFragment : Fragment() {
 
         //finishButton
         //alertBoxYES
-        cancelDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
+        cancelDialogBuilder.setPositiveButton(android.R.string.yes) { _, _ ->
             navController?.navigate(R.id.sessionFragment)
             viewModel.stopTimer()
             viewModel.endWorkout()
 //                exercisesAdapter.clearData()
-            Log.d("ALERTBOX","yes clicked")
+            Log.d("ALERTBOX", "yes clicked")
 
         }
 
-        cancelDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
+        cancelDialogBuilder.setNegativeButton(android.R.string.no) { _, _ ->
+            Toast.makeText(
+                requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT
+            ).show()
         }
 
 
         cancelDialogBuilderTemplate.setTitle("Cancel Workout")
         cancelDialogBuilderTemplate.setMessage("Are you sure you want to cancel this workout?")
-        cancelDialogBuilderTemplate.setPositiveButton(android.R.string.yes){  _, _ ->
+        cancelDialogBuilderTemplate.setPositiveButton(android.R.string.yes) { _, _ ->
             navController?.navigate(R.id.sessionFragment)
             viewModel.stopTimer()
             viewModel.endWorkout()
             viewModel.endTemplateMaker()
             viewModel.resetCurrentWorkouts()
             viewModel.resetCurrentSets()
-            Log.d("ALERTBOX","yes clicked")
+            Log.d("ALERTBOX", "yes clicked")
 
         }
 
-        cancelDialogBuilderTemplate.setNegativeButton(android.R.string.no) { _, _  ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
-        }
-
-
-
-        val incompleteSetsDialog = AlertDialog.Builder(requireContext())
-
-        with(incompleteSetsDialog){
-            setTitle("Incomplete sets will not be saved")
-            setMessage("Do you want to end the session anyway ?")
-            setPositiveButton("YES"){_,_ ->
-                val completedSets = viewModel.getAllCompletedSets()
-                viewModel.insertRoutineWithSets(
-                    viewModel.getRoutineObj(),
-                    completedSets
-                )
-            }
-
-            setNegativeButton("NO"){_ , _ ->
-
-            }
-
+        cancelDialogBuilderTemplate.setNegativeButton(android.R.string.no) { _, _ ->
+            Toast.makeText(
+                requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT
+            ).show()
         }
 
 
         val emptyWorkoutDialog = AlertDialog.Builder(requireContext())
 
-        with(emptyWorkoutDialog){
+        with(emptyWorkoutDialog) {
             setTitle("Empty workout won't be saved")
             setMessage("Do you want to continue anyway?")
-            setPositiveButton("YES"){_,_ ->
+            setPositiveButton("YES") { _, _ ->
                 viewModel.resetCurrentWorkouts()
                 viewModel.resetCurrentRoutineName()
                 viewModel.resetCurrentSets()
@@ -138,48 +122,88 @@ class CurrentSessionFragment : Fragment() {
 
                 navController?.navigate(R.id.sessionFragment)
             }
-            setNegativeButton("NO"){_,_ ->
+            setNegativeButton("NO") { _, _ ->
                 Log.d("CurrentSessionFragment", "pressed no on emptyWorkoutDialog")
             }
         }
+
+
+        val incompleteSetsDialog = AlertDialog.Builder(requireContext())
+
+        with(incompleteSetsDialog) {
+            setTitle("Incomplete sets will not be saved")
+            setMessage("Do you want to end the session anyway ?")
+            setPositiveButton("YES") { _, _ ->
+                val completedSets = viewModel.getAllCompletedSets()
+                if(completedSets.isEmpty()){
+                    emptyWorkoutDialog.show()
+                }else{
+                    viewModel.insertRoutineWithSets(
+                        viewModel.getRoutineObj(),
+                        completedSets
+                    )
+                    navController?.navigate(R.id.sessionFragment)
+                    viewModel.stopTimer()
+                    viewModel.endWorkout()
+                }
+            }
+
+            setNegativeButton("NO") { _, _ ->
+
+            }
+
+        }
+
+
+
 
 
 
         finishDialogBuilder.setTitle("Alert")
         finishDialogBuilder.setMessage("Are you sure you want to finish this workout?")
 
-        finishDialogBuilder.setPositiveButton(android.R.string.yes){  _, _ ->
-            navController?.navigate(R.id.sessionFragment)
-            viewModel.stopTimer()
-            viewModel.endWorkout()
+        finishDialogBuilder.setPositiveButton(android.R.string.yes) { _, _ ->
+
 
             val completedSets = viewModel.getAllCompletedSets()
 
-            if(completedSets.any{ !it.isCompleted}){
+            if (completedSets.any { !it.isCompleted }) {
                 incompleteSetsDialog.show()
-            }else{
+            } else {
                 viewModel.insertRoutineWithSets(
                     viewModel.getRoutineObj(),
                     completedSets
                 )
+                navController?.navigate(R.id.sessionFragment)
+                viewModel.stopTimer()
+                viewModel.endWorkout()
+
+            }
+
+            //alertBoxNO
+            finishDialogBuilder.setNegativeButton(android.R.string.no) { _, _ ->
+                Toast.makeText(
+                    requireContext(),
+                    android.R.string.no, Toast.LENGTH_SHORT
+                ).show()
             }
 
 
-
 //            exercisesAdapter.clearData()
-            Log.d("ALERTBOX","yes clicked")
+            Log.d("ALERTBOX", "yes clicked")
 
         }
 
         val finishTemplateEditorDialog = AlertDialog.Builder(requireContext())
 
-        with(finishTemplateEditorDialog){
+        with(finishTemplateEditorDialog) {
             setTitle("Alert")
             setMessage("Do you want to finish editing the template?")
-            setPositiveButton("YES"){_,_ ->
+            setPositiveButton("YES") { _, _ ->
                 navController?.navigate(R.id.sessionFragment)
                 viewModel.currentSets.value?.let { it1 ->
-                    viewModel.insertTemplateWithSets(viewModel.getTemplateObj(),
+                    viewModel.insertTemplateWithSets(
+                        viewModel.getTemplateObj(),
                         it1
                     )
                 }
@@ -188,33 +212,29 @@ class CurrentSessionFragment : Fragment() {
                 viewModel.resetCurrentRoutineName()
                 viewModel.endTemplateMaker()
             }
-            setNegativeButton("NO"){_,_ ->
+            setNegativeButton("NO") { _, _ ->
 
             }
         }
 
 
-        //alertBoxNO
-        finishDialogBuilder.setNegativeButton(android.R.string.no) { _, _  ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
-        }
+
 
 
         val template = viewModel.getAllTemplates(viewModel.currentUserId)
-        Log.d("CurrentSessionFragment","template list ${template.value.toString()}")
+        Log.d("CurrentSessionFragment", "template list ${template.value.toString()}")
 
-        var filteredTemplate : List<Template> = emptyList()
+        var filteredTemplate: List<Template> = emptyList()
 
-        template.observe(viewLifecycleOwner){template ->
-            if(template.isNullOrEmpty()){
-                Log.d("CurrentSessionFragment","filteredtemplates is still empty")
-            }else{
-                Log.d("CurrentSessionFragment","filteredtemplates is not empty")
-                viewModel.currentRoutineName.observe(viewLifecycleOwner){currentName ->
+        template.observe(viewLifecycleOwner) { template ->
+            if (template.isNullOrEmpty()) {
+                Log.d("CurrentSessionFragment", "filteredtemplates is still empty")
+            } else {
+                Log.d("CurrentSessionFragment", "filteredtemplates is not empty")
+                viewModel.currentRoutineName.observe(viewLifecycleOwner) { currentName ->
 
-                    filteredTemplate = template.filter{it.name == currentName}
-                    Log.d("CurrentSessionFragment","$filteredTemplate  heres filteredTemplateList")
+                    filteredTemplate = template.filter { it.name == currentName }
+                    Log.d("CurrentSessionFragment", "$filteredTemplate  heres filteredTemplateList")
                 }
             }
         }
@@ -228,30 +248,44 @@ class CurrentSessionFragment : Fragment() {
                 slideDownButton.visibility = View.GONE
 
                 finishButton.setOnClickListener {
-                    viewModel.currentSets.observe(viewLifecycleOwner){
-                        if(it.isEmpty()){
+                    viewModel.currentSets.observe(viewLifecycleOwner) {
+                        if (it.isEmpty()) {
                             emptyWorkoutDialog.show()
-                        }else{
-                            if(filteredTemplate.any { filteredTemplate -> filteredTemplate.name == viewModel.currentRoutineName.value.toString() }){
-                                val templateAlreadyExistsDialog = AlertDialog.Builder(requireContext())
+                        } else {
+                            if (filteredTemplate.any { filteredTemplate -> filteredTemplate.name == viewModel.currentRoutineName.value.toString() }) {
+                                val templateAlreadyExistsDialog =
+                                    AlertDialog.Builder(requireContext())
 
-                                with(templateAlreadyExistsDialog){
+                                with(templateAlreadyExistsDialog) {
                                     setTitle("Alert")
                                     setMessage("Template already exists with this name, do you want to update it?")
-                                    setPositiveButton("YES"){_,_  ->
+                                    setPositiveButton("YES") { _, _ ->
                                         val template = filteredTemplate[0]
                                         val templateId = template.templateId
-                                        Log.d("templateSets", "${templateId.toString()} this is templateId in templateState")
+                                        Log.d(
+                                            "templateSets",
+                                            "${templateId.toString()} this is templateId in templateState"
+                                        )
 
                                         var templateSets: MutableList<TemplateSet> = mutableListOf()
 
                                         viewModel.currentSets.observe(viewLifecycleOwner) { currentSets ->
-                                            if(currentSets!=null) {
+                                            if (currentSets != null) {
 
                                                 currentSets.forEach { set ->
-                                                    templateSets.add(viewModel.workoutSetToTemplateSet(set, templateId))
+                                                    templateSets.add(
+                                                        viewModel.workoutSetToTemplateSet(
+                                                            set,
+                                                            templateId
+                                                        )
+                                                    )
                                                 }
-                                                templateSets.forEach { set -> Log.d("templateSets", set.templateId.toString() ) }
+                                                templateSets.forEach { set ->
+                                                    Log.d(
+                                                        "templateSets",
+                                                        set.templateId.toString()
+                                                    )
+                                                }
                                             }
                                         }
 
@@ -261,9 +295,11 @@ class CurrentSessionFragment : Fragment() {
                                             templateSets.toList()
                                         )
 
-                                        navController?.navigate(R.id.sessionFragment, null, NavOptions.Builder()
-                                            .setPopUpTo(R.id.currentSession, true)
-                                            .build())
+                                        navController?.navigate(
+                                            R.id.sessionFragment, null, NavOptions.Builder()
+                                                .setPopUpTo(R.id.currentSession, true)
+                                                .build()
+                                        )
 
                                         viewModel.resetCurrentSets()
                                         viewModel.resetCurrentWorkouts()
@@ -272,15 +308,16 @@ class CurrentSessionFragment : Fragment() {
 
                                     }
 
-                                    setNegativeButton("NO"){_,_ ->
+                                    setNegativeButton("NO") { _, _ ->
 
                                     }
                                     show()
                                 }
-                            }else{
+                            } else {
                                 navController?.navigate(R.id.sessionFragment)
                                 viewModel.currentSets.value?.let { it1 ->
-                                    viewModel.insertTemplateWithSets(viewModel.getTemplateObj(),
+                                    viewModel.insertTemplateWithSets(
+                                        viewModel.getTemplateObj(),
                                         it1
                                     )
                                 }
@@ -306,8 +343,12 @@ class CurrentSessionFragment : Fragment() {
                         slideDownButton.visibility = View.GONE
 
 
-                        val templateId = viewModel.currentTemplateSets.value?.get(0)?.templateId ?: 0
-                        Log.d("templateSets", "${templateId.toString()} this is templateId in fragment")
+                        val templateId =
+                            viewModel.currentTemplateSets.value?.get(0)?.templateId ?: 0
+                        Log.d(
+                            "templateSets",
+                            "${templateId.toString()} this is templateId in fragment"
+                        )
 
                         finishButton.setOnClickListener {
 
@@ -316,19 +357,29 @@ class CurrentSessionFragment : Fragment() {
 
 
                             viewModel.currentSets.observe(viewLifecycleOwner) { currentSets ->
-                                if(currentSets!=null) {
+                                if (currentSets != null) {
 
                                     currentSets.forEach { set ->
-                                        templateSets.add(viewModel.workoutSetToTemplateSet(set, templateId))
+                                        templateSets.add(
+                                            viewModel.workoutSetToTemplateSet(
+                                                set,
+                                                templateId
+                                            )
+                                        )
                                     }
-                                    templateSets.forEach { set -> Log.d("templateSets", set.templateId.toString() ) }
+                                    templateSets.forEach { set ->
+                                        Log.d(
+                                            "templateSets",
+                                            set.templateId.toString()
+                                        )
+                                    }
                                 }
                             }
 
 
-                            if(viewModel.currentSets.value?.isEmpty() == true){
+                            if (viewModel.currentSets.value?.isEmpty() == true) {
                                 emptyWorkoutDialog.show()
-                            }else{
+                            } else {
                                 viewModel.updateTemplate(
                                     templateId,
                                     viewModel.currentRoutineName.value.toString(),
@@ -356,26 +407,32 @@ class CurrentSessionFragment : Fragment() {
                             if(viewModel.currentSets.value?.isEmpty() == true){
                                 emptyWorkoutDialog.show()
                             }else{
-                                finishDialogBuilder.show()
-                            }
+                                if(viewModel.currentSets.value?.any { !it.isCompleted || it.currentReps == 0 } == true){
+                                    incompleteSetsDialog.show()
+                                }else{
+                            finishDialogBuilder.show()
+                                }
 
-                            Toast.makeText(requireContext(), "Routine inserted", Toast.LENGTH_SHORT)
-                                .show()
-                        }
 
-                        buttonCancel.setOnClickListener {
-                            //TODO modify later
-                            cancelDialogBuilder.show()
-                            viewModel.resetCurrentWorkouts()
-                            viewModel.resetCurrentRoutineName()
-                            viewModel.resetCurrentSets()
-                        }
+                        Toast.makeText(requireContext(), "Routine inserted", Toast.LENGTH_SHORT)
+                            .show()
                     }
+                        }
 
+                    buttonCancel.setOnClickListener {
+                        //TODO modify later
+                        cancelDialogBuilder.show()
+                        viewModel.resetCurrentWorkouts()
+                        viewModel.resetCurrentRoutineName()
+                        viewModel.resetCurrentSets()
+                    }
                 }
 
             }
+
         }
+    }
+
 
         viewModel.currentWorkouts.observe(viewLifecycleOwner){
             Log.d("Observer", "Called")
@@ -442,7 +499,8 @@ class CurrentSessionFragment : Fragment() {
 //        }
 
         slideDownButton.setOnClickListener {
-            navController?.navigate(R.id.sessionFragment)
+//            navController?.navigate(R.id.sessionFragment)
+            navController?.navigate(R.id.action_currentSession_to_sessionFragment)
         }
 
 

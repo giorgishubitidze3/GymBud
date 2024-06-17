@@ -22,12 +22,17 @@ class AppRepository(private val routineDao: RoutineDao, private val templateDao:
         return routineDao.getAllRoutinesWithSets()
     }//TODO checkout this doesnt return sets maybe
 
-    suspend fun getRoutinesForCurrentWeek(startOfWeek: Long, endOfWeek: Long): List<RoutineWithSets> {
-        return routineDao.getRoutinesForCurrentWeek(startOfWeek, endOfWeek)
+
+    suspend fun getAllRoutines(currentUserId : String): List<Routine>{
+        return routineDao.getAllRoutines(currentUserId)
     }
 
     suspend fun getWorkoutSetsForRoutineIds(routineIds: List<Int>): List<WorkoutSet> {
         return workoutSetDao.getWorkoutSetsForCurrentWeek(routineIds)
+    }
+
+    suspend fun getRoutinesForPeriod(startDate: Long, endDate: Long, currentUserId: String): List<Routine> {
+        return routineDao.getRoutinesForPeriod(startDate, endDate,currentUserId)
     }
 
     suspend fun updateTemplateName(templateId: Int , name: String){

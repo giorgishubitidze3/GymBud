@@ -2,22 +2,19 @@ package com.example.fitnessapp.data
 
 import android.app.Application
 import android.os.CountDownTimer
-import android.system.Os.remove
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.fitnessapp.SharedViewModel
 import kotlinx.coroutines.launch
-import com.example.fitnessapp.data.RoutineWithSets
-import com.example.fitnessapp.data.Routine
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.ktx.auth
 import kotlinx.coroutines.Dispatchers
+import java.util.Calendar
 
 
 class WorkoutViewModel(application: Application, private val sharedViewModel: SharedViewModel) : AndroidViewModel(application) {
@@ -80,11 +77,52 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     private val _currentUserName = MutableLiveData<String>()
     val currentUserName : LiveData<String> get() = _currentUserName
 
-    private val _currentRoutinesThisWeek = MutableLiveData<List<RoutineWithSets>>()
-    val currentRoutinesThisWeek: LiveData<List<RoutineWithSets>> get() = _currentRoutinesThisWeek
+    // Week data
+    private val _currentRoutinesThisWeek = MutableLiveData<List<Routine>>()
+    val currentRoutinesThisWeek: LiveData<List<Routine>> get() = _currentRoutinesThisWeek
 
-    private val _currentWorkoutSetsThisWeek = MutableLiveData<List<WorkoutSet>>()
-    val currentWorkoutSetsThisWeek: LiveData<List<WorkoutSet>> get() = _currentWorkoutSetsThisWeek
+    private val _currentWorkoutSetsForWeek = MutableLiveData<List<WorkoutSet>>()
+    val currentWorkoutSetsForWeek: LiveData<List<WorkoutSet>> get() = _currentWorkoutSetsForWeek
+
+    // Month data
+    private val _currentRoutinesThisMonth = MutableLiveData<List<Routine>>()
+    val currentRoutinesThisMonth: LiveData<List<Routine>> get() = _currentRoutinesThisMonth
+
+    private val _currentWorkoutSetsThisMonth = MutableLiveData<List<WorkoutSet>>()
+    val currentWorkoutSetsThisMonth: LiveData<List<WorkoutSet>> get() = _currentWorkoutSetsThisMonth
+
+    // Year data
+    private val _currentRoutinesThisYear = MutableLiveData<List<Routine>>()
+    val currentRoutinesThisYear: LiveData<List<Routine>> get() = _currentRoutinesThisYear
+
+    private val _currentWorkoutSetsForYear = MutableLiveData<List<WorkoutSet>>()
+    val currentWorkoutSetsForYear: LiveData<List<WorkoutSet>> get() = _currentWorkoutSetsForYear
+
+    // Lifetime data
+    private val _currentRoutinesLifetime = MutableLiveData<List<Routine>>()
+    val currentRoutinesLifetime: LiveData<List<Routine>> get() = _currentRoutinesLifetime
+
+    private val _currentWorkoutSetsLifetime = MutableLiveData<List<WorkoutSet>>()
+    val currentWorkoutSetsLifetime: LiveData<List<WorkoutSet>> get() = _currentWorkoutSetsLifetime
+
+
+    // Custom date data
+
+    private val _currentRoutinesCustomDate = MutableLiveData<List<Routine>>()
+    private val _currentWorkoutSetsCustomDate = MutableLiveData<List<WorkoutSet>>()
+
+    // combined data for diff periods
+    val currentRoutinesAndSetsForWeek = MediatorLiveData<Pair<List<Routine>, List<WorkoutSet>>>()
+
+    val currentRoutinesAndSetsForMonth = MediatorLiveData<Pair<List<Routine>, List<WorkoutSet>>>()
+
+    val currentRoutinesAndSetsForYear = MediatorLiveData<Pair<List<Routine>, List<WorkoutSet>>>()
+
+    val currentRoutinesAndSetsForLifetime = MediatorLiveData<Pair<List<Routine>, List<WorkoutSet>>>()
+
+    val currentRoutinesAndSetsForCustomDate = MediatorLiveData<Pair<List<Routine>, List<WorkoutSet>>>()
+
+
 
 
     var getTemplateByNameVariable = MutableLiveData<Template>()
@@ -139,7 +177,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
 
     fun getRoutineObj(): Routine{
-        return Routine(0,_currentRoutineName.value.toString(),System.currentTimeMillis(), currentUserId)
+        return Routine(0,_currentRoutineName.value.toString(), System.currentTimeMillis(), currentUserId)
     }
 
 
@@ -148,17 +186,46 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
     }
 
-    fun getRoutinesForCurrentWeek(startOfWeek: Long, endOfWeek: Long){
+
+    fun getRoutinesAndSetsForPeriod(startDate: Long, endDate: Long, timeFrame: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val data = repository.getRoutinesForCurrentWeek(startOfWeek, endOfWeek)
-            _currentRoutinesThisWeek.postValue(data)
+            val routines = repository.getRoutinesForPeriod(startDate, endDate, currentUserId)
+            val routineIds = routines.map { it.routineId }
+            val sets = repository.getWorkoutSetsForRoutineIds(routineIds)
+
+            when (timeFrame) {
+                "Week" -> {
+                    _currentRoutinesThisWeek.postValue(routines)
+                    _currentWorkoutSetsForWeek.postValue(sets)
+                }
+
+                "Month" -> {
+                    _currentRoutinesThisMonth.postValue(routines)
+                    _currentWorkoutSetsThisMonth.postValue(sets)
+                }
+
+                "Year" -> {
+                    _currentRoutinesThisYear.postValue(routines)
+                    _currentWorkoutSetsForYear.postValue(sets)
+                }
+
+                "CustomDate"->{
+                    _currentRoutinesCustomDate.postValue(routines)
+                    _currentWorkoutSetsCustomDate.postValue(sets)
+                }
+            }
         }
     }
 
-    fun getWorkoutSetsForCurrentWeek(routineId:List<Int>){
-        viewModelScope.launch(Dispatchers.IO){
-            val data = repository.getWorkoutSetsForRoutineIds(routineId)
-            _currentWorkoutSetsThisWeek.postValue(data)
+
+    fun getRoutinesAndSetsLifetime() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val routines = repository.getAllRoutines(currentUserId)
+            val routineIds = routines.map { it.routineId }
+            val sets = repository.getWorkoutSetsForRoutineIds(routineIds)
+
+            _currentRoutinesLifetime.postValue(routines)
+            _currentWorkoutSetsLifetime.postValue(sets)
         }
     }
 
@@ -338,6 +405,42 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
         _currentTemplatesWithSets.addSource(templateSetsLiveData) { templateSets ->
             combineTemplateAndSets(templatesLiveData.value, templateSets)
         }
+
+        currentRoutinesAndSetsForWeek.addSource(_currentRoutinesThisWeek) { routines ->
+            currentRoutinesAndSetsForWeek.value = Pair(routines, _currentWorkoutSetsForWeek.value ?: emptyList())
+        }
+        currentRoutinesAndSetsForWeek.addSource(_currentWorkoutSetsForWeek) { sets ->
+            currentRoutinesAndSetsForWeek.value = Pair(_currentRoutinesThisWeek.value ?: emptyList(), sets)
+        }
+
+        currentRoutinesAndSetsForMonth.addSource(_currentRoutinesThisMonth){ routines ->
+            currentRoutinesAndSetsForMonth.value = Pair(routines, _currentWorkoutSetsThisMonth.value ?: emptyList())
+        }
+        currentRoutinesAndSetsForMonth.addSource(_currentWorkoutSetsThisMonth) { sets ->
+            currentRoutinesAndSetsForMonth.value = Pair(_currentRoutinesThisMonth.value ?: emptyList(), sets)
+        }
+
+        currentRoutinesAndSetsForYear.addSource(_currentRoutinesThisYear){ routines ->
+            currentRoutinesAndSetsForYear.value = Pair(routines, _currentWorkoutSetsForYear.value ?: emptyList())
+        }
+        currentRoutinesAndSetsForYear.addSource(_currentWorkoutSetsForYear) { sets ->
+            currentRoutinesAndSetsForYear.value = Pair(_currentRoutinesThisYear.value ?: emptyList(), sets)
+        }
+
+        currentRoutinesAndSetsForLifetime.addSource(_currentRoutinesLifetime) { routines ->
+            currentRoutinesAndSetsForLifetime.value = Pair(routines, _currentWorkoutSetsLifetime.value ?: emptyList())
+        }
+        currentRoutinesAndSetsForLifetime.addSource(_currentWorkoutSetsLifetime) { sets ->
+            currentRoutinesAndSetsForLifetime.value = Pair(_currentRoutinesLifetime.value ?: emptyList(), sets)
+        }
+
+        currentRoutinesAndSetsForCustomDate.addSource(_currentRoutinesCustomDate) { routines ->
+            currentRoutinesAndSetsForCustomDate.value = Pair(routines, _currentWorkoutSetsCustomDate.value ?: emptyList())
+        }
+        currentRoutinesAndSetsForCustomDate.addSource(_currentWorkoutSetsCustomDate) { sets ->
+            currentRoutinesAndSetsForCustomDate.value = Pair(_currentRoutinesCustomDate.value ?: emptyList(), sets)
+        }
+
 
         val routineDao = AppDatabase.getDatabase(application).routineDao()
         val templateDao = AppDatabase.getDatabase(application).templateDao()

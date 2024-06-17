@@ -6,18 +6,18 @@
     android:id="@+id/homeFragment"
     android:title="@string/navHome"
 
-    android:icon="@drawable/home_icon" />
+    android:icon="@drawable/icon_home" />
     <item
         android:id="@+id/sessionFragment"
         android:title="@string/navSession"
 
-        android:icon="@drawable/google_analytics"/>
+        android:icon="@drawable/icon_bar_chart"/>
 
     <item
         android:id="@+id/workoutsFragment"
         android:title="@string/navWorkouts"
 
-        android:icon="@drawable/bookmark_icon"/>
+        android:icon="@drawable/icon_dumbbell"/>
 
 
     <item

@@ -16,4 +16,9 @@
     <color name="errorRed">#ED4337</color>
     <color name="chosenAccentColorNight">#F6E22E</color>
     <color name="chosenAccentColorDay">#F6E22E</color>
+    <color name="primaryVariant">?attr/colorPrimaryVariant</color>
+    <color name="colorPrimary">?attr/colorPrimary</color>
+    <color name="colorOnPrimary">?attr/colorOnPrimary</color>
+    <color name="colorSecondary">?attr/colorSecondary</color>
+    <color name="colorSecondaryVariant">?attr/colorSecondaryVariant</color>
 </resources>

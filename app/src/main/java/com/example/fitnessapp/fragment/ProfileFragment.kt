@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.activity.SignInActivity
 import com.example.fitnessapp.data.WorkoutViewModel
@@ -35,13 +37,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel: WorkoutViewModel = ViewModelProvider(requireActivity()).get(WorkoutViewModel::class.java)
+        val navController = activity?.findNavController(R.id.fragment_container)
+
 
         auth = Firebase.auth
         val logOutBtn = view.findViewById<ImageButton>(R.id.logout_button)
         val nameTextView = view.findViewById<TextView>(R.id.user_name_profile)
         val usernameTextView = view.findViewById<TextView>(R.id.user_username_profile)
         val userImage = view.findViewById<ImageView>(R.id.user_profile_picture)
-
+        val settingsCardView = view.findViewById<CardView>(R.id.settings_cardview)
+        val friendsCardView = view.findViewById<CardView>(R.id.friends_cardview)
+        val statsCardView = view.findViewById<CardView>(R.id.stats_cardview)
+        val measurementsCardView = view.findViewById<CardView>(R.id.measurements_cardview)
+        val challengesCardView = view.findViewById<CardView>(R.id.challenges_cardview)
 
         viewModel.currentUserFullName.observe(viewLifecycleOwner){
             nameTextView.text = it
@@ -51,7 +59,17 @@ class ProfileFragment : Fragment() {
             usernameTextView.text = "@${it}"
         }
 
+        settingsCardView.setOnClickListener{
+            navController?.navigate(R.id.action_profileFragment_to_settingsFragment)
+        }
 
+        friendsCardView.setOnClickListener {
+         navController?.navigate(R.id.action_profileFragment_to_friendsFragment)
+        }
+
+        statsCardView.setOnClickListener {
+            navController?.navigate(R.id.action_profileFragment_to_statsFragment)
+        }
 
 
 

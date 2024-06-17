@@ -1,5 +1,6 @@
 package com.example.fitnessapp.data
 
+import android.os.Build.VERSION_CODES.S
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -21,10 +22,12 @@ interface RoutineDao {
     fun getAllRoutinesWithSets(): LiveData<List<RoutineWithSets>>
 
     @Transaction
-    @Query("SELECT * FROM routines WHERE date BETWEEN :startOfWeek AND :endOfWeek")
-    suspend fun getRoutinesForCurrentWeek(startOfWeek: Long, endOfWeek: Long): List<RoutineWithSets>
+    @Query("SELECT * FROM routines WHERE userId = :currentUserId")
+    suspend fun getAllRoutines(currentUserId : String): List<Routine>
 
-
+    @Transaction
+    @Query("SELECT * FROM routines WHERE date BETWEEN :startDate AND :endDate AND userId = :currentUserId")
+    suspend fun getRoutinesForPeriod(startDate: Long, endDate: Long, currentUserId: String): List<Routine>
     @Transaction
     @Query("SELECT * FROM routines WHERE routineId = :routineId")
     fun getRoutineWithSets(routineId: Int): LiveData<RoutineWithSets>
