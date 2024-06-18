@@ -20,7 +20,7 @@ class ExerciseAdapter(private val context: Context,
                       var exercises: List<GymExercise>,
                       private val myApplication: MyApplication,
                       val viewModel: WorkoutViewModel,
-                         private val switchToDetailCallback: (GymExercise) -> Unit
+                      private val switchToDetailCallback: (GymExercise) -> Unit
 ): RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
     val appDatabase: AppDatabase = myApplication.database
 //    val workoutDao = appDatabase.workoutDao()

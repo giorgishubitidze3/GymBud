@@ -1,6 +1,5 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import coil.load
 import com.bumptech.glide.Glide
+import com.example.fitnessapp.R
 import com.example.fitnessapp.data.GymExercise
 
 
-class WorkoutDetails : Fragment() {
+class WorkoutDetailsFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -37,6 +37,8 @@
             android:id="@+id/action_profileFragment_to_statsFragment"
             app:destination="@id/statsFragment"
             app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_right"
+            app:popEnterAnim="@anim/slide_left"
             app:popExitAnim="@anim/slide_right" />
         <action
             android:id="@+id/action_profileFragment_to_settingsFragment"
@@ -46,6 +48,13 @@
         <action
             android:id="@+id/action_profileFragment_to_friendsFragment"
             app:destination="@id/friendsFragment"
+            app:enterAnim="@anim/slide_left"
+            app:exitAnim="@anim/slide_right"
+            app:popEnterAnim="@anim/slide_left"
+            app:popExitAnim="@anim/slide_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_measurementsFragment"
+            app:destination="@id/measurementsFragment"
             app:enterAnim="@anim/slide_left"
             app:exitAnim="@anim/slide_right"
             app:popEnterAnim="@anim/slide_left"
@@ -79,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/workoutDetails"
-        android:name="com.example.fitnessapp.WorkoutDetails"
+        android:name="com.example.fitnessapp.fragment.WorkoutDetailsFragment"
         android:label="fragment_workout_details"
         tools:layout="@layout/fragment_workout_details" />
     <fragment
@@ -131,5 +140,27 @@
             app:destination="@id/profileFragment"
             app:enterAnim="@anim/slide_left"
             app:popExitAnim="@anim/slide_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/measurementsFragment"
+        android:name="com.example.fitnessapp.fragment.MeasurementsFragment"
+        android:label="fragment_measurements"
+        tools:layout="@layout/fragment_measurements" >
+        <action
+            android:id="@+id/action_measurementsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popExitAnim="@anim/slide_right" />
+        <action
+            android:id="@+id/action_measurementsFragment_to_measurementsDetailFragment"
+            app:destination="@id/measurementsDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/measurementsDetailFragment"
+        android:name="com.example.fitnessapp.fragment.MeasurementsDetailFragment"
+        android:label="fragment_measurements_detail"
+        tools:layout="@layout/fragment_measurements_detail" >
+        <action
+            android:id="@+id/action_measurementsDetailFragment_to_measurementsFragment"
+            app:destination="@id/measurementsFragment" />
     </fragment>
 </navigation>

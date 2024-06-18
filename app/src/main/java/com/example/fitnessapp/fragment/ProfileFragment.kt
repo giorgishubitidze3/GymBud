@@ -71,6 +71,10 @@ class ProfileFragment : Fragment() {
             navController?.navigate(R.id.action_profileFragment_to_statsFragment)
         }
 
+        measurementsCardView.setOnClickListener {
+            navController?.navigate(R.id.action_profileFragment_to_measurementsFragment)
+        }
+
 
 
 

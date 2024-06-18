@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.MyApplication
 import com.example.fitnessapp.R
 import com.example.fitnessapp.SharedViewModel
-import com.example.fitnessapp.WorkoutDetails
 import com.example.fitnessapp.adapter.ExerciseAdapter
 import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
@@ -45,7 +43,7 @@ class WorkoutsFragment : Fragment() {
 
         val navController = activity?.findNavController(R.id.fragment_container)
 
-        val workoutDetail = WorkoutDetails()
+        val workoutDetail = WorkoutDetailsFragment()
 
         val workoutsTextView = view.findViewById<TextView>(R.id.workoutsTextView)
         val searchView = view.findViewById<SearchView>(R.id.searchView)
@@ -54,7 +52,7 @@ class WorkoutsFragment : Fragment() {
         var data: List<GymExercise> = emptyList()
         val adapter = ExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
 
-            val detail = WorkoutDetails()
+            val detail = WorkoutDetailsFragment()
             val args = Bundle()
             args.putParcelable("selectedExercise", selectedExercise)
             detail.arguments = args

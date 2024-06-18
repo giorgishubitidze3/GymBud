@@ -23,6 +23,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     private val templateDao: TemplateDao = AppDatabase.getDatabase(application).templateDao()
     private val templateSetDao : TemplateSetDao = AppDatabase.getDatabase(application).templateSetDao()
     private val workoutSetDao: WorkoutSetDao = AppDatabase.getDatabase(application).workoutSetDao()
+    private val measurementDao: MeasurementDao = AppDatabase.getDatabase(application).measurementDao()
 
 
     private val setIdCounters = mutableMapOf<String, Int>()
@@ -122,7 +123,8 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
     val currentRoutinesAndSetsForCustomDate = MediatorLiveData<Pair<List<Routine>, List<WorkoutSet>>>()
 
-
+    private val _currentMeasurementDetailsList = MutableLiveData<List<Measurement>>()
+    val currentMeasurementDetailsList: LiveData<List<Measurement>> get() = _currentMeasurementDetailsList
 
 
     var getTemplateByNameVariable = MutableLiveData<Template>()
@@ -229,6 +231,13 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
         }
     }
 
+    fun getMeasurementByName(name:String){
+        viewModelScope.launch (Dispatchers.IO){
+            val measurements = repository.getAllMeasurementsByName(name,currentUserId)
+
+            _currentMeasurementDetailsList.postValue(measurements)
+        }
+    }
 
     fun getAllTemplates(userId:String):LiveData<List<Template>>{
 
@@ -444,7 +453,7 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
 
         val routineDao = AppDatabase.getDatabase(application).routineDao()
         val templateDao = AppDatabase.getDatabase(application).templateDao()
-        repository = AppRepository(routineDao, templateDao, templateSetDao, workoutSetDao)
+        repository = AppRepository(routineDao, templateDao, templateSetDao, workoutSetDao, measurementDao)
         allWorkoutSets = repository.getAllRoutinesWithSets()
         initializeTimer()
     }
@@ -498,6 +507,28 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
             repository.insertRoutineWithSets(routine, sets)
         }
     }
+
+    fun insertMeasurement(name:String, measurement:Double){
+        viewModelScope.launch {
+            val measurement = Measurement(0,name,measurement,System.currentTimeMillis(),currentUserId)
+            Log.d("MeasurementDetail","ViewModel function called insertMeasurement")
+            repository.insertMeasurement(measurement)
+        }
+    }
+
+    fun deleteMeasurementById(id:Int, userId: String){
+        viewModelScope.launch {
+            repository.deleteMeasurementById(id,userId)
+        }
+    }
+
+    fun updateMeasurementById(id: Int,userId: String,value:Double){
+        viewModelScope.launch {
+            measurementDao.updateMeasurementById(id,userId,value)
+        }
+    }
+
+
 
     fun updateTemplateName(templateId : Int, name:String){
         viewModelScope.launch{
