@@ -11,6 +11,11 @@ interface MeasurementDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeasurement(measurement: Measurement)
 
+    suspend fun insertMeasurement(name: String, value: Double, date: Long, userId: String) {
+        val measurement = Measurement(name = name, measurement = value, date = date, userId = userId)
+        insertMeasurement(measurement)
+    }
+
     @Query("SELECT * FROM measurements WHERE userId = :userId")
     suspend fun getAllMeasurements(userId: String): List<Measurement>
 

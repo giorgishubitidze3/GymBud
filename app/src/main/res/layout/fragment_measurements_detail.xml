@@ -17,9 +17,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.github.mikephil.charting.charts.BarChart
+    <com.github.mikephil.charting.charts.LineChart
         android:layout_margin="8dp"
-        android:id="@+id/barChart"
+        android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:layout_margin="8dp"
         android:src="@drawable/add_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barChart" />
+        app:layout_constraintTop_toBottomOf="@+id/lineChart" />
 
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -508,11 +508,19 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
         }
     }
 
+
+
     fun insertMeasurement(name:String, measurement:Double){
         viewModelScope.launch {
             val measurement = Measurement(0,name,measurement,System.currentTimeMillis(),currentUserId)
             Log.d("MeasurementDetail","ViewModel function called insertMeasurement")
             repository.insertMeasurement(measurement)
+        }
+    }
+
+    fun insertMeasurementByDate(name: String,measurement: Double,date:Long,userId: String){
+        viewModelScope.launch {
+            measurementDao.insertMeasurement(name,measurement,date,userId)
         }
     }
 

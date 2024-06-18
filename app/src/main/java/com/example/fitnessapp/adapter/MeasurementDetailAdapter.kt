@@ -1,6 +1,7 @@
 package com.example.fitnessapp.adapter
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.example.fitnessapp.R
 import com.example.fitnessapp.data.Measurement
 import com.example.fitnessapp.data.WorkoutViewModel
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -45,6 +47,7 @@ class MeasurementDetailAdapter(val context: Context, val workoutViewModel: Worko
         holder.itemView.setOnClickListener {
             showEditMeasurementDialog(currentItem, currentItem.name )
         }
+
     }
 
     fun setData(list: List<Measurement>){
@@ -54,7 +57,7 @@ class MeasurementDetailAdapter(val context: Context, val workoutViewModel: Worko
 
     private fun formatDate(timestamp: Long): String {
         val date = Date(timestamp)
-        val format = SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault())
+        val format = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
         return format.format(date)
     }
 
@@ -74,6 +77,7 @@ class MeasurementDetailAdapter(val context: Context, val workoutViewModel: Worko
         titleTextView.text = detail
         dateTextView.text = formatDate(measurement.date)
         measurementEditText.setText(measurement.measurement.toString())
+
 
         val dialog = builder.setView(dialogLayout).create()
 
@@ -101,7 +105,6 @@ class MeasurementDetailAdapter(val context: Context, val workoutViewModel: Worko
 
         dialog.show()
     }
-
 
 
 
