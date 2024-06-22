@@ -49,6 +49,8 @@ class WorkoutsFragment : Fragment() {
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         val searchAutoComplete = searchView.findViewById<SearchView.SearchAutoComplete>(androidx.appcompat.R.id.search_src_text)
 
+
+
         var data: List<GymExercise> = emptyList()
         val adapter = ExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
 

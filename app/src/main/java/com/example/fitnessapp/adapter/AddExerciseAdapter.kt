@@ -14,6 +14,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.fitnessapp.MyApplication
@@ -23,7 +24,7 @@ import com.example.fitnessapp.data.GymExercise
 import com.example.fitnessapp.data.WorkoutViewModel
 
 class AddExerciseAdapter
-    (val context: Context,  var exercises: List<GymExercise>, private val myApplication: MyApplication,
+    (val context: Context,  var exercises: List<GymExercise>, val viewLifecycleOwner: LifecycleOwner,private val myApplication: MyApplication,
      val viewModel: WorkoutViewModel,
      private val switchToDetailCallback: (GymExercise) -> Unit): RecyclerView.Adapter<AddExerciseAdapter.ExerciseViewHolder>() {
 
@@ -67,16 +68,25 @@ class AddExerciseAdapter
             switchToDetailCallback(exercise)
         }
 
-        holder.addBtn.setOnClickListener {
-            val currentWorkouts = viewModel.currentWorkouts.value ?: emptyList()
-            if (currentWorkouts.any { it.name == exercise.name }) {
-                Toast.makeText(context, "Exercise already added", Toast.LENGTH_SHORT).show()
-                vibratePhone(context, 500)
-            } else {
-                viewModel.updateCurrentWorkout(exercise)
-                vibratePhone(context,50)
-                Log.d("addExerciseBtn", "exercise btn pressed")
+        viewModel.challengesState.observe(viewLifecycleOwner){state ->
+            if(state){
+                holder.addBtn.setOnClickListener {
+                    Toast.makeText(context,"pressed on $exercise",Toast.LENGTH_LONG).show()
+                }
+            }else{
+                holder.addBtn.setOnClickListener {
+                    val currentWorkouts = viewModel.currentWorkouts.value ?: emptyList()
+                    if (currentWorkouts.any { it.name == exercise.name }) {
+                        Toast.makeText(context, "Exercise already added", Toast.LENGTH_SHORT).show()
+                        vibratePhone(context, 500)
+                    } else {
+                        viewModel.updateCurrentWorkout(exercise)
+                        vibratePhone(context,50)
+                        Log.d("addExerciseBtn", "exercise btn pressed")
+                    }
+                }
             }
+
         }
     }
 

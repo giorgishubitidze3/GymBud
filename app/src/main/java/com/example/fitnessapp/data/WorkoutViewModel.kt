@@ -78,6 +78,9 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     private val _currentUserName = MutableLiveData<String>()
     val currentUserName : LiveData<String> get() = _currentUserName
 
+    private val _challengesState = MutableLiveData<Boolean>(false)
+    val challengesState : LiveData<Boolean> get() = _challengesState
+
     // Week data
     private val _currentRoutinesThisWeek = MutableLiveData<List<Routine>>()
     val currentRoutinesThisWeek: LiveData<List<Routine>> get() = _currentRoutinesThisWeek
@@ -143,6 +146,15 @@ class WorkoutViewModel(application: Application, private val sharedViewModel: Sh
     fun endTemplateEditor(){
         _templateEditState.value = false
     }
+
+    fun startChallengesMode(){
+        _challengesState.value = true
+    }
+
+    fun endChallengesMode(){
+        _challengesState.value = false
+    }
+
 
     fun updateCurrentUserData(username:String,name:String,surname:String) {
         _currentUserUsername.postValue(username)

@@ -59,6 +59,9 @@
             app:exitAnim="@anim/slide_right"
             app:popEnterAnim="@anim/slide_left"
             app:popExitAnim="@anim/slide_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_challengesFragment"
+            app:destination="@id/challengesFragment" />
     </fragment>
     <fragment
         android:id="@+id/sessionFragment"
@@ -162,5 +165,17 @@
         <action
             android:id="@+id/action_measurementsDetailFragment_to_measurementsFragment"
             app:destination="@id/measurementsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/challengesFragment"
+        android:name="com.example.fitnessapp.fragment.ChallengesFragment"
+        android:label="fragment_challenges"
+        tools:layout="@layout/fragment_challenges" >
+        <action
+            android:id="@+id/action_challengesFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_challengesFragment_to_workoutPicker"
+            app:destination="@id/workoutPicker" />
     </fragment>
 </navigation>

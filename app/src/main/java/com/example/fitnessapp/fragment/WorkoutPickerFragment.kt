@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -47,68 +48,111 @@ class WorkoutPickerFragment : Fragment() {
 
         val navController = activity?.findNavController(R.id.fragment_container)
         val backButton = view.findViewById<ImageButton>(R.id.back_button)
-        var data: List<GymExercise> = emptyList()
-        val adapter = AddExerciseAdapter(requireContext(),data, requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
-
-            val detail = WorkoutDetailsFragment()
-            val args = Bundle()
-            args.putParcelable("selectedExercise", selectedExercise)
-            detail.arguments = args
-            navController?.navigate(R.id.action_workoutPicker_to_workoutDetails, args)
-        }
-        val recyclerView = view.findViewById<RecyclerView>(R.id.add_workout_rv)
-        recyclerView.adapter = adapter
 
 
-        val viewModel: SharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
-//        viewModel.fetchData()
+        workoutViewModel.challengesState.observe(viewLifecycleOwner){state ->
+            if (state){
+                var data: List<GymExercise> = emptyList()
 
-        viewModel.data.observe(viewLifecycleOwner){newData ->
-            data = newData
-            adapter.setData(data)
-            adapter.notifyDataSetChanged()
-        }
-
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        backButton.setOnClickListener {
-            navController?.navigate(R.id.currentSession)
-        }
+                val adapter = AddExerciseAdapter(requireContext(),data, viewLifecycleOwner,requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
 
 
+//                    val detail = WorkoutDetailsFragment()
+//                    val args = Bundle()
+//                    args.putParcelable("selectedExercise", selectedExercise)
+//                    detail.arguments = args
+//                    navController?.navigate(R.id.action_workoutPicker_to_workoutDetails, args)
+                }
+                val recyclerView = view.findViewById<RecyclerView>(R.id.add_workout_rv)
+                recyclerView.adapter = adapter
+
+
+                val viewModel: SharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+
+
+                viewModel.data.observe(viewLifecycleOwner){newData ->
+                    data = newData
+                    adapter.setData(data)
+                    adapter.notifyDataSetChanged()
+                }
+
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
+            }else{
+                var data: List<GymExercise> = emptyList()
+                val adapter = AddExerciseAdapter(requireContext(),data, viewLifecycleOwner,requireActivity().application as MyApplication, workoutViewModel){ selectedExercise->
+
+                    val detail = WorkoutDetailsFragment()
+                    val args = Bundle()
+                    args.putParcelable("selectedExercise", selectedExercise)
+                    detail.arguments = args
+                    navController?.navigate(R.id.action_workoutPicker_to_workoutDetails, args)
+                }
+                val recyclerView = view.findViewById<RecyclerView>(R.id.add_workout_rv)
+                recyclerView.adapter = adapter
+
+
+                val viewModel: SharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+
+
+                viewModel.data.observe(viewLifecycleOwner){newData ->
+                    data = newData
+                    adapter.setData(data)
+                    adapter.notifyDataSetChanged()
+                }
+
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+                backButton.setOnClickListener {
+                    navController?.navigate(R.id.currentSession)
+                }
 
 
 
 
-
-
-        searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val list : MutableList<GymExercise> = mutableListOf()
-
-                if(newText != null){
-                    for(i in data){
-                        if(i.name.lowercase(Locale.ROOT).contains(newText)){
-                            list.add(i)
-                        }
+                searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
                     }
-                }
 
-                if(list.isEmpty()){
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        val list : MutableList<GymExercise> = mutableListOf()
+
+                        if(newText != null){
+                            for(i in data){
+                                if(i.name.lowercase(Locale.ROOT).contains(newText)){
+                                    list.add(i)
+                                }
+                            }
+                        }
+
+                        if(list.isEmpty()){
 //                    Toast.makeText(requireContext(),"No data", Toast.LENGTH_SHORT).show()
-                    Log.d("WorkoutPicker Fragment" , "No data")
-                }else{
-                    adapter.setData(list)
-                }
+                            Log.d("WorkoutPicker Fragment" , "No data")
+                        }else{
+                            adapter.setData(list)
+                        }
 
-                return true
+                        return true
+                    }
+
+                })
             }
+        }
 
-        })
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
