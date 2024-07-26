@@ -1,4 +1,5 @@
 CURRENTLY WORKING ON
+Gym workout companion app
 
 ![img1](https://github.com/giorgishubitidze3/fitnessApp/assets/129633670/cd748d58-1f0d-4566-8b5d-f53556957fdf)
 ![img2](https://github.com/giorgishubitidze3/fitnessApp/assets/129633670/8246d39c-10f1-4fed-a162-ec2209dfad07)
